@@ -195,39 +195,38 @@ function GameMaster ()
     			exit
   			fi
   		done
+	}
 
-  		# START INSTALLATION
-		#===============================================================================
-		function f_start_setup() 
-			{
-				case $(</tmp/installation_mod) in
-					normal )
-						f_autopartition
-						f_normal_installation ;;
-					manual )
-						f_manual_partition
-						f_normal_installation ;;
-					zfs )
-						f_zfs_harddrive_preparation
-						f_zfs_installation ;;
-					btrfs )
-						f_Btrfs_harddrive_preparation
-						f_btrfs_installation ;;
-				esac
-			}
-		#===============================================================================
+# START INSTALLATION
+#===============================================================================
+function f_start_setup() 
+	{
+		case $(</tmp/installation_mod) in
+			normal )
+				f_autopartition
+				f_normal_installation ;;
+			manual )
+				f_manual_partition
+				f_normal_installation ;;
+			zfs )
+				f_zfs_harddrive_preparation
+				f_zfs_installation ;;
+			btrfs )
+				f_Btrfs_harddrive_preparation
+				f_btrfs_installation ;;
+		esac
+	}
+#===============================================================================
 
 
 
-		#===============================================================================
-		echo ===============================================================================
-		echo -e "Setup is done.\nPlease restart the computer"
-		echo ===============================================================================
-		read -p "press ENTER"
-		#===============================================================================
+#===============================================================================
+echo ===============================================================================
+echo -e "Setup is done.\nPlease restart the computer"
+echo ===============================================================================
+read -p "press ENTER"
+#===============================================================================
 
-		exit
-  	}
 
 GameMaster
 
