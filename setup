@@ -53,7 +53,7 @@ source $working_dir/lib/funktions/install_pacages
 			clear
 
 			if [ "$input_cascade" = "12" ]; then
-  				input_cascade=10
+  				input_cascade=11
   			fi
 
   			if [ "$input_cascade" = "0" ]; then
