@@ -1,0 +1,146 @@
+#!/bin/bash
+
+
+################################################################################
+######	ZFS partition funktions	################################################
+################################################################################
+
+function f_zfs_harddrive_preparation() {
+
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+			then
+				echo "UEFI OK"
+				break
+			else
+				dialog \
+					--backtitle 'PrimeArch Installer' \
+					--title 'Partition Table' \
+					--begin $BoxStartY $BoxStartX \
+					--msgbox '\nTo use ZFS installation you have\nto boot in UEFI mode.\n\nAborting setup.\n' 10 $BoxWhith
+				
+				read -p "press ENTER"
+				exit
+	fi
+		
+	#Prepare Disklist
+	#===============================================================================
+	ls -l /dev/disk/by-id/  > /tmp/hdlist
+
+	dialog \
+	--backtitle "PrimeArch" \
+	--begin $BoxStartY $BoxStartX \
+	--infobox "You have to select atleast 2 hard drives.\nUse the SPACE-buton to select them.\n\nAtention the hard drives will be wiped compleatly." 7 $BoxWhith \
+	--and-widget \
+	--begin $(($BoxStartY+10)) $BoxStartX \
+	--title "HDD Selektion" \
+	--separate-output \
+	--checklist "\nShoose the hard drives for the ZPool" 16 $BoxWhith 7 \
+		$(awk 'NR>=2{ if($9 !~ /part/ ) print $9" "$11" " "off"}' < /tmp/hdlist) \
+		2>/tmp/hdd_by_id
+		
+
+	# select raidmod
+	#===============================================================================
+	dialog \
+	--backtitle "PrimeArch" \
+	--begin $BoxStartY $BoxStartX \
+	--title "RAID mode" \
+	--menu "\nShoose the RAID mode for the ZPool" 12 $BoxWhith 3 \
+		stripe 	"2+ harddrives" \
+		mirror	"2+ harddrives" \
+		raidz 	"2+ harddrives" \
+		2>/tmp/raid
+		
+	
+
+
+	# reset/generate partition table
+	#===============================================================================
+	while read line
+		do
+			echo ======================================================
+			wipefs -af 	/dev/disk/by-id/$line
+			sgdisk -Z 	/dev/disk/by-id/$line
+			sgdisk -g 	/dev/disk/by-id/$line
+			sgdisk -o 	/dev/disk/by-id/$line
+
+			sgdisk -n 1:0:+256M 	-c 1:"EFI" 	-t 1:ef00 /dev/disk/by-id/$line
+			sgdisk -n 2:0:0 		-c 2:"ROOT" -t 2:bf00 /dev/disk/by-id/$line
+
+	done < /tmp/hdd_by_id
+
+
+	# format efi partition
+	echo ======================================================
+	while read line
+		do
+			mkfs.fat -F 32 /dev/disk/by-id/"$line-part1"
+	done < /tmp/hdd_by_id
+	echo ======================================================
+
+	awk '{print $1"-part2"}' < /tmp/hdd_by_id > /tmp/part_by_id
+	#===========================================================================
+
+
+
+	# set raidmod
+	#===========================================================================
+	case $(</tmp/raid) in
+		stripe )
+			raidmod=" " ;;
+		mirror )
+			raidmod=mirror ;;
+		raidz )
+			raidmod=raidz ;;
+	esac
+	#===========================================================================
+
+
+
+	# Setup zpool and datasets
+	#===========================================================================
+
+	echo "===== ZPOOL ========================================================="
+	zpool create -f \
+		-o ashift=12 \
+		-O atime=off \
+		-O compression=lz4 \
+		-O normalization=formD \
+		-O canmount=off \
+	zroot $raidmod $(</tmp/part_by_id)
+	echo "===== ZPOOL DON ====================================================="
+
+	echo "===== DATASETS ======================================================"
+	zfs create -o mountpoint=/ 						zroot/root
+	zfs create -o mountpoint=/home -o setuid=off    zroot/home
+	zfs create -o mountpoint=/tmp                   zroot/tmp
+	zfs create -o mountpoint=/var/cache/pacman/pkg  zroot/pkg
+	zfs create -o mountpoint=/var/log				zroot/log
+	echo "===== DATASETS DON =================================================="
+
+	zpool set bootfs=zroot/root zroot
+	zpool export zroot
+
+
+	# MOUNT POOL and BOOT PARTITIONS
+	# ------------------------------------------------------------------------------
+	zpool import -R /mnt zroot
+
+	mkdir /mnt/boot
+	mkdir /mnt/boot2
+
+	s=0
+	while read line
+		do
+			if [[ $s == 0 ]];
+				then
+					mount /dev/disk/by-id/$line"-part1" /mnt/boot
+					((s++))
+				else
+					mount /dev/disk/by-id/$line"-part1" /mnt/boot2
+			fi
+	done < /tmp/hdd_by_id
+	#===============================================================================
+
+}

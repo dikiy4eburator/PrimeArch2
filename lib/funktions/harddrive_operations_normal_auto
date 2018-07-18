@@ -1,0 +1,183 @@
+#!/bin/bash
+
+################################################################################
+######	Automatc partition funktions	########################################
+################################################################################
+
+function f_autopartition() {
+		
+	# Generate HDD selection menu
+	#===============================================================================
+	f_generate_harddrive_menu
+				
+	# EXTRA HOME PARTITION DIALOG
+	#===============================================================================
+	dialog \
+	--backtitle "PrimeArch Installer" \
+	--begin $BoxStartY $BoxStartX \
+	--title "HOME" \
+	--yesno '\nDo you want an extra Home partition?' 7 $BoxWhith \
+
+	if [[ $? -eq 0 ]];
+		then
+			echo "ja" > /tmp/extrahome
+
+			# ROOT size dialog
+			dialog \
+			--backtitle "PrimeArch Installer" \
+			--begin $BoxStartY $BoxStartX \
+			--title "ROOT" \
+			--inputbox '\nROOT partition size (in Gb)' 9 $BoxWhith \
+				2>/tmp/root_size
+
+		else
+			echo "nein" > /tmp/extrahome
+	fi
+				
+	# SWAP size dialog
+	#===============================================================================
+	dialog \
+	--backtitle "PrimeArch Installer" \
+	--begin $BoxStartY $BoxStartX \
+	--title "SWAP" \
+	--inputbox '\nSWAP partition size (in MB)' 9 $BoxWhith \
+		2>/tmp/swap_size
+			
+
+	# wipe hard drive and make new partitions
+	f_auto_generate_partitions
+
+	# Generate Hard drive partition names
+	f_generate_partition_names
+
+	# Format Partitions
+	f_auto_format
+
+	# Mount Partitions
+	f_auto_mount
+}
+
+
+
+#AUTO MAKE PARTITION
+#===============================================================================
+function f_auto_generate_partitions() {
+	
+	wipefs -af 	/dev/$(</tmp/hdd_name)
+	sgdisk -Z 	/dev/$(</tmp/hdd_name)
+	sgdisk -g 	/dev/$(</tmp/hdd_name)
+	sgdisk -o 	/dev/$(</tmp/hdd_name)
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			sgdisk -n 1:0:+256M -c 1:"EFI" 	-t 1:ef00 /dev/$(</tmp/hdd_name)
+		else
+			sgdisk -n 1:0:+5M 	-c 1:"BIOS" -t 1:ef02 /dev/$(</tmp/hdd_name)
+	fi
+
+	case $(</tmp/extrahome)  in
+		ja )
+			sgdisk -n 2:0:+$(</tmp/root_size)G 	-c 2:"ROOT" -t 2:8300 /dev/$(</tmp/hdd_name)
+			sgdisk -n 3:0:0 -c 3:"HOME" -t 3:8300 /dev/$(</tmp/hdd_name) ;;
+		
+		nein )
+			sgdisk -n 2:0:0 -c 2:"ROOT" -t 2:8300 /dev/$(</tmp/hdd_name) ;;
+	esac
+
+}
+
+
+
+#SET PARTITION NAMES FOR SATA
+function f_generate_partition_names() {
+
+	case $(</tmp/hdd_name) in
+		nvme*)
+			
+			ROOT_HD="$(</tmp/hdd_name)p2"
+
+			if [[ -d "/sys/firmware/efi/efivars" ]];
+				then
+					BOOT_HD="$(</tmp/hdd_name)p1"
+				else
+					:
+			fi
+
+			case $(</tmp/extrahome)  in
+				ja )
+					HOME_HD="$(</tmp/hdd_name)p3" ;;
+				nein )
+					: ;;
+			esac
+			;;
+		
+		sd*)
+			
+			ROOT_HD="$(</tmp/hdd_name)2"
+
+			if [[ -d "/sys/firmware/efi/efivars" ]];
+				then
+					BOOT_HD="$(</tmp/hdd_name)1"
+				else
+					:
+			fi
+
+			case $(</tmp/extrahome)  in
+				ja )
+					HOME_HD="$(</tmp/hdd_name)3" ;;
+				nein )
+					: ;;
+			esac
+			;;
+	esac
+}
+
+
+
+
+
+
+# FORMAT HARDDRIVES
+function f_auto_format() {
+
+	mkfs.ext4 /dev/$ROOT_HD
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			mkfs.fat -F32 /dev/$BOOT_HD
+		else
+			:
+	fi
+
+	case $(</tmp/extrahome) in
+		ja )
+			mkfs.ext4 /dev/$HOME_HD ;;
+		nein )
+			: ;;
+	esac
+}
+
+
+
+# MOUNT HARDDRIVES
+function f_auto_mount() {
+
+	mount -t ext4 -o defaults,noatime,discard /dev/$ROOT_HD /mnt
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			mkdir /mnt/boot
+			mkdir /mnt/boot/efi
+			mount /dev/$BOOT_HD /mnt/boot/efi
+		else
+			:
+	fi
+
+	case $(</tmp/extrahome)  in
+		ja )
+			mkdir /mnt/home
+			mount -t ext4 -o defaults,noatime,discard /dev/$HOME_HD /mnt/home ;;
+		nein )
+			: ;;
+	esac
+}

@@ -1,0 +1,89 @@
+#!/bin/bash
+
+################################################################################
+######	Btrfs partition funktions	################################################
+################################################################################
+
+function f_Btrfs_harddrive_preparation(){
+
+	# Generate HDD selection menu
+	#===============================================================================
+	f_generate_harddrive_menu
+				
+	# SWAP size dialog
+	#===============================================================================
+	dialog \
+	--backtitle "PrimeArch Installer" \
+	--begin $BoxStartY $BoxStartX \
+	--title "SWAP" \
+	--inputbox '\nSWAP partition size (in MB)' 9 $BoxWhith \
+		2>/tmp/swap_size
+
+
+
+	wipefs -af 	/dev/$(</tmp/hdd_name)
+	sgdisk -Z 	/dev/$(</tmp/hdd_name)
+	sgdisk -g 	/dev/$(</tmp/hdd_name)
+	sgdisk -o 	/dev/$(</tmp/hdd_name)
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			sgdisk -n 1:0:+256M -c 1:"EFI" 	-t 1:ef00 /dev/$(</tmp/hdd_name)
+		else
+			sgdisk -n 1:0:+5M 	-c 1:"BIOS" -t 1:ef02 /dev/$(</tmp/hdd_name)
+	fi
+	sgdisk -n 2:0:+$(</tmp/swap_size)M -c 2:"SWAP" -t 2:8200 /dev/$(</tmp/hdd_name)
+	sgdisk -n 3:0:0 -c 3:"ROOT" -t 3:8300 /dev/$(</tmp/hdd_name)
+
+
+
+
+	mkfs.btrfs -f /dev/$(</tmp/hdd_name)3
+	mkswap /dev/$(</tmp/hdd_name)2
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			mkfs.fat -F32 /dev/$(</tmp/hdd_name)1
+		else
+			:
+	fi
+
+
+
+
+
+	mount /dev/$(</tmp/hdd_name)3 /mnt
+	cd /mnt
+	btrfs subvolume create ROOT
+	btrfs subvolume create home
+	btrfs subvolume create snapshots
+	btrfs subvolume create pkg
+	btrfs subvolume create var
+	btrfs subvolume create tmp
+	cd ..
+	umount /mnt
+
+
+
+
+	mount -o rw,defaults,noatime,compress=lzo,subvol=ROOT /dev/$(</tmp/hdd_name)3 /mnt
+	
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			mkdir -p /mnt/boot/efi
+			mount /dev/$(</tmp/hdd_name)1 /mnt/boot/efi
+		else
+			:
+	fi
+
+	mkdir /mnt/home
+	mkdir /mnt/.snapshots
+	mkdir -p /mnt/var/cache/pacman/pkg
+	mkdir /mnt/tmp
+	swapon /dev/$(</tmp/hdd_name)2
+	
+	mount -o rw,defaults,noatime,compress=lzo,subvol=home /dev/$(</tmp/hdd_name)3 /mnt/home
+	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots /dev/$(</tmp/hdd_name)3 /mnt/.snapshots
+	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg /dev/$(</tmp/hdd_name)3 /mnt/var/cache/pacman/pkg
+	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp /dev/$(</tmp/hdd_name)3 /mnt/tmp
+}

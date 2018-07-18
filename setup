@@ -25,13 +25,20 @@ INSTALLMOD=normal
 
 # includes
 source $working_dir/lib/input_cascade
+
 source $working_dir/lib/normal_install
 source $working_dir/lib/btrfs_install
 source $working_dir/lib/zfs_install
 
+source $working_dir/lib/funktions/harddrive_operations
+source $working_dir/lib/funktions/harddrive_operations_normal_auto
+source $working_dir/lib/funktions/harddrive_operations_normal_manual
+source $working_dir/lib/funktions/harddrive_operations_btrfs
+source $working_dir/lib/funktions/harddrive_operations_zfs
+
 source $working_dir/lib/funktions/user_operations
 source $working_dir/lib/funktions/install_pacages
-source $working_dir/lib/funktions/harddrive_operations
+
 
 
 

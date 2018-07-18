@@ -43,11 +43,11 @@ function f_create_new_user() {
 function f_set_user_pw() {
 
 	# Clear User Password
-	awk '{ if($1 !~ /'$(</tmp/user_name)'/) print }' /mnt/etc/shadow > /mnt/etc/new_shadow
+	awk '{ if($1 !~ /'$USERNAME'/) print }' /mnt/etc/shadow > /mnt/etc/new_shadow
 
 	# Set new User Password
-	openssl passwd -1 -salt xyz  $(</tmp/user_pw) > /tmp/user_pw
-	echo "$(</tmp/user_name):$(</tmp/user_pw):17393:0:99999:7:::" >> /mnt/etc/new_shadow
+	openssl passwd -1 -salt xyz  $USERPASSWORD > /tmp/user_pw
+	echo "$USERNAME:$(</tmp/user_pw):17393:0:99999:7:::" >> /mnt/etc/new_shadow
 
 	# replace shadow with new shadow file
 	mv /mnt/etc/new_shadow /mnt/etc/shadow
