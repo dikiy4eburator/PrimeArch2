@@ -148,9 +148,6 @@ function f_normal_installation() {
 	# INSTALL YAOURT + COSMETICS
 	#===============================================================================
 	f_install_yaourt_cosmetiks
-	
-	mv -f -v $working_dir/lib/configs/lightdm-config/lightdm.conf /mnt/etc/lightdm/lightdm.conf
-	mv -f -v $working_dir/lib/configs/lightdm-config/slick-greeter.conf /mnt/etc/lightdm/slick-greeter.conf
 	#===============================================================================
 
 
@@ -165,8 +162,8 @@ function f_normal_installation() {
 
 	# FIX USER HOME OWNERSHIP
 	#===============================================================================
-	arch-chroot /mnt /bin/bash -c "chown -R $(</tmp/user_name):users /home/$(</tmp/user_name)"
-	arch-chroot /mnt /bin/bash -c "chmod -R 0700 /home/$(</tmp/user_name)"
+	arch-chroot /mnt /bin/bash -c "chown -R $USERNAME:users /home/$USERNAME"
+	arch-chroot /mnt /bin/bash -c "chmod -R 0700 /home/$USERNAME"
 	#===============================================================================
 
 
