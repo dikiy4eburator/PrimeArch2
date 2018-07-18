@@ -205,7 +205,7 @@ function f_game_master()
     					f_start_setup
   					fi
 
-  					break
+  					
 					;;
 			esac
   			
