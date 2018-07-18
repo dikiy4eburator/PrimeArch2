@@ -34,35 +34,6 @@ function f_autopartition() {
 			echo "nein" > /tmp/extrahome
 	fi
 	
-	echo "==========================================================================="
-	echo "How mutch SWAP do you want"
-	echo -e "1.\t1024 MB"
-	echo -e "2.\t2048 MB"
-	echo -e "3.\t4096 MB"
-	echo -e "4.\t8192 MB"
-	echo -e "5.\t16384 MB"
-	echo -e '\n\n'
-	echo 
-  	read -rsn1 input
-
-  	if [ "$input" = "1" ]; then
-    	SWAPSIZE=1024
-  	elif [ "$input" = "2" ]; then
-    	SWAPSIZE=2048
-  	elif [ "$input" = "3" ]; then
-    	SWAPSIZE=4096
-    elif [ "$input" = "4" ]; then
-    	SWAPSIZE=8192
-    elif [ "$input" = "5" ]; then
-    	SWAPSIZE=16384
-    fi
-
-
-	
-
-
-
-
 	# wipe hard drive and make new partitions
 	f_auto_generate_partitions
 

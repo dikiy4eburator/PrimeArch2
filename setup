@@ -17,7 +17,8 @@ input_cascade=1
 LANGUAGE=German
 USERNAME=user
 USERPASSWORD=arch
-ROOTACCOUNT=no
+ROOTACCOUNT=yes
+ROOTPASSWORD=root
 HOSTNAME="theMashine"
 DESKTOP=xfce
 GRAFIKDRIVER=nvidia
@@ -47,12 +48,11 @@ source $working_dir/lib/funktions/install_pacages
 # //////////////////    START INSTALATION   ///////////////////
 # /////////////////////////////////////////////////////////////
 
-function GameMaster () 
-	{
+
 		while true; do
 			clear
 
-			if [ "$input_cascade" = "11" ]; then
+			if [ "$input_cascade" = "12" ]; then
   				input_cascade=10
   			fi
 
@@ -66,7 +66,7 @@ function GameMaster ()
 					echo "Aktual Language: $LANGUAGE"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -78,7 +78,7 @@ function GameMaster ()
 					echo "Aktual username: $USERNAME"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -90,7 +90,7 @@ function GameMaster ()
 					echo "Aktual password: $USERPASSWORD"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -102,7 +102,7 @@ function GameMaster ()
 					echo "Status ROOT account: $ROOTACCOUNT"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -111,10 +111,10 @@ function GameMaster ()
 					;;
 				5 )
 					echo "==========================================================================="
-					echo "TIMEZONE"
+					echo "TIMEZONE: $(</tmp/time_region_out) | $(</tmp/time_subregion_out) | $(</tmp/time_format)"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -126,7 +126,7 @@ function GameMaster ()
 					echo "Aktual hostname: $HOSTNAME"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -138,7 +138,7 @@ function GameMaster ()
 					echo "Aktual Desktop: $DESKTOP"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -150,7 +150,7 @@ function GameMaster ()
 					echo "Aktual Grafikdriver: $GRAFIKDRIVER"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -162,7 +162,7 @@ function GameMaster ()
 					echo "Aktual installation mode: $INSTALLMOD"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -170,25 +170,41 @@ function GameMaster ()
   					fi
 					;;
 				10 )
-					echo "============================================================================"
-					echo ""
-					echo -e "Languge:\t\t\t$LANGUAGE"
-					echo -e "User:\t\t\t\t$USERNAME"
-					echo -e "User password:\t\t\t$USERPASSWORD"
-					echo -e "Activate Root:\t\t\t$ROOTACCOUNT"
-					echo -e "Timezone:\t\t\tXXX"
-					echo -e "Hostname:\t\t\t$HOSTNAME"
-					echo -e "Desktop:\t\t\t$DESKTOP"
-					echo -e "Grefikdriver:\t\t\t$GRAFIKDRIVER"
-					echo -e "Installmode:\t\t\t$INSTALLMOD" 
+					echo "==========================================================================="
+					echo "Aktual SWAP size: $SWAPSIZE"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (5) Start Installation | (9) Ende | Page $input_cascade of 10"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					f_set_swap_size
+  					fi
+					;;
+				11 )
+					echo "============================================================================"
+					echo "Summary:"
+					echo ""
+					echo -e "Languge:\t\t$LANGUAGE"
+					echo -e "User:\t\t\t$USERNAME"
+					echo -e "User password:\t\t$USERPASSWORD"
+					echo -e "Activate Root:\t\t$ROOTACCOUNT"
+					echo -e "Timezone:\t\t\t$(</tmp/time_region_out) | $(</tmp/time_subregion_out) | $(</tmp/time_format)"
+					echo -e "Hostname:\t\t$HOSTNAME"
+					echo -e "Desktop:\t\t$DESKTOP"
+					echo -e "Grefikdriver:\t\t$GRAFIKDRIVER"
+					echo -e "Installmode:\t\t$INSTALLMOD"
+					echo -e "Installmode:\t\t$SWAPSIZE" 
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (5) Start Installation | (9) Ende | Page $input_cascade of 11"
   					read -rsn1 input
 
   					if [ "$input" = "5" ]; then
     					f_start_setup
   					fi
+
+  					break
 					;;
 			esac
   			
@@ -203,7 +219,7 @@ function GameMaster ()
     			exit
   			fi
   		done
-	}
+	
 
 # START INSTALLATION
 #===============================================================================
@@ -228,10 +244,6 @@ function f_start_setup()
 
 
 
-
-
-
-GameMaster
 
 #===============================================================================
 echo ===============================================================================
