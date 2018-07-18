@@ -13,28 +13,32 @@ function f_pakage_install() {
 
 
 
+
+
+
+
+
 # Desktops installation
 #===============================================================================
 
 function f_install_desktop() {
 	f_pakage_install $1
-
-	# copy APP configs
-	mkdir /mnt/home/$(</tmp/user_name)/.config
-	cp -r -v $working_dir/lib/configs/app_configs/* /mnt/home/$(</tmp/user_name)/.config
 }
-
-
-
-
 
 function f_install_i3_cosmetics() {
 
-	rm -R /mnt/home/$(</tmp/user_name)/.config/i3
-	git clone https://github.com/dikiy4eburator/i3-config.git /mnt/home/$(</tmp/user_name)/.config/i3
-	arch-chroot /mnt /bin/bash -c "sudo -u $(</tmp/user_name) yaourt -S --noconfirm polybar-git"
+	rm -R /mnt/home/$USERNAME/.config/i3
+	git clone https://github.com/dikiy4eburator/i3-config.git /mnt/home/$USERNAME/.config/i3
+	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm polybar-git"
 }
 #===============================================================================
+
+
+
+
+
+
+
 
 
 
@@ -45,12 +49,10 @@ function f_install_i3_cosmetics() {
 
 function f_install_yaourt() {
 
-	mv $working_dir/lib/funktions/yaourt.sh /mnt/home/$(</tmp/user_name)/yaourt.sh
-	arch-chroot /mnt /bin/bash -c "sudo -u $(</tmp/user_name) sh /home/$(</tmp/user_name)/yaourt.sh"
-	rm /mnt/home/$(</tmp/user_name)/yaourt.sh
+	mv $working_dir/lib/funktions/yaourt.sh /mnt/home/$USERNAME/yaourt.sh
+	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME sh /home/$USERNAME/yaourt.sh"
+	rm /mnt/home/$USERNAME/yaourt.sh
 }
-
-
 
 function f_install_yaourt_cosmetiks() {
 
@@ -60,7 +62,7 @@ function f_install_yaourt_cosmetiks() {
 				then
 					:
 				else
-					arch-chroot /mnt /bin/bash -c "sudo -u $(</tmp/user_name) yaourt -S --noconfirm $line"
+					arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm $line"
 			fi
 	done < $working_dir/lib/pakages/pakages_yaourt
 }
