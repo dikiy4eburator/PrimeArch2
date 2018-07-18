@@ -133,7 +133,7 @@ function f_SetDesktop()
 		clear
 		
 		echo "============================================================================"
-		echo "Please Select You Desktop by entering the coresponding number"
+		echo "Please Select You Desktop"
 		echo ""
 		echo "1. i3"
 		echo "2. Cinnamon"
@@ -167,7 +167,7 @@ function f_SetGrefikdriver()
 		clear
 		
 		echo "============================================================================"
-		echo "Please Select You Grafikdriver by entering the coresponding number"
+		echo "Please Select You Grafik driver"
 		echo ""
 		echo "1. VirtualBox"
 		echo "2. Nvidia"

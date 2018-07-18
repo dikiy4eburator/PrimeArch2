@@ -48,7 +48,8 @@ source $working_dir/lib/funktions/install_pacages
 # //////////////////    START INSTALATION   ///////////////////
 # /////////////////////////////////////////////////////////////
 
-
+function f_game_master()
+	{
 		while true; do
 			clear
 
@@ -219,6 +220,7 @@ source $working_dir/lib/funktions/install_pacages
     			exit
   			fi
   		done
+	}
 	
 
 # START INSTALLATION
@@ -242,7 +244,7 @@ function f_start_setup()
 	}
 #===============================================================================
 
-
+f_game_master
 
 
 #===============================================================================
