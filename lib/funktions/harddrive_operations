@@ -6,6 +6,44 @@
 
 # Automatic partitioning control function
 function f_autopartition() {
+		
+	# Generate HDD selection menu
+	#===============================================================================
+	f_generate_harddrive_menu
+				
+	# EXTRA HOME PARTITION DIALOG
+	#===============================================================================
+	dialog \
+	--backtitle "PrimeArch Installer" \
+	--begin $BoxStartY $BoxStartX \
+	--title "HOME" \
+	--yesno '\nDo you want an extra Home partition?' 7 $BoxWhith \
+
+	if [[ $? -eq 0 ]];
+		then
+			echo "ja" > /tmp/extrahome
+
+			# ROOT size dialog
+			dialog \
+			--backtitle "PrimeArch Installer" \
+			--begin $BoxStartY $BoxStartX \
+			--title "ROOT" \
+			--inputbox '\nROOT partition size (in Gb)' 9 $BoxWhith \
+				2>/tmp/root_size
+
+		else
+			echo "nein" > /tmp/extrahome
+	fi
+				
+	# SWAP size dialog
+	#===============================================================================
+	dialog \
+	--backtitle "PrimeArch Installer" \
+	--begin $BoxStartY $BoxStartX \
+	--title "SWAP" \
+	--inputbox '\nSWAP partition size (in MB)' 9 $BoxWhith \
+		2>/tmp/swap_size
+			
 
 	# wipe hard drive and make new partitions
 	f_auto_generate_partitions
