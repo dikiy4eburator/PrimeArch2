@@ -77,10 +77,43 @@ function f_SetRootAccount()
 
 function f_SetTimezone()
 	{
-		clear
-		
-		echo "============================================================================"
-		
+		# SET TIME
+		#====================================================================================
+		# SET TIMEZONE
+		ls -l /usr/share/zoneinfo/ | awk '{ if($1 ~ /d/ && $9 !~ /posix/ && $9 !~ /right/ && $9 !~ /Etc/) print $9 " " ++s}' > /tmp/time_region_in
+
+		dialog \
+		--backtitle "PrimeArch Installer" \
+		--title "Time setup" \
+		--begin $BoxStartY $BoxStartX \
+		--menu "\nSelect your regeon" 20 $BoxWhith 20 \
+			$( awk '{ print }' < /tmp/time_region_in ) \
+			2>/tmp/time_region_out
+
+
+		# SET SUBTIMEZONE
+		ls -l /usr/share/zoneinfo/$(</tmp/time_region_out) | awk 'NR>=2{ print $9 " " ++s }' > /tmp/time_subregion_in
+
+		dialog \
+		--backtitle "PrimeArch Installer" \
+		--title "Time setup" \
+		--begin $BoxStartY $BoxStartX \
+		--menu "\nSelect your sub regeon" 20 $BoxWhith 20 \
+			$( awk '{ print }' < /tmp/time_subregion_in ) \
+			2>/tmp/time_subregion_out
+
+
+		# SET TIMEFORMAT
+		dialog \
+		--backtitle "PrimeArch Installer" \
+		--title "Time setup" \
+		--begin $BoxStartY $BoxStartX \
+		--menu "\nSelect the time format" 11 $BoxWhith 2 \
+			utc         1 \
+			localtime   2 \
+			2>/tmp/time_format
+		#====================================================================================
+
 	}
 
 

@@ -8,7 +8,7 @@ function f_set_root_pw() {
 	awk '{ if($1 !~ /root/) print }' /mnt/etc/shadow > /mnt/etc/new_shadow
 
 	# generate and add root pasword to the new shadow file
-	openssl passwd -1 -salt xyz  $(</tmp/root_pw) > /tmp/root_pw
+	openssl passwd -1 -salt xyz  $ROOTPASSWORD > /tmp/root_pw
 	echo "root:$(</tmp/root_pw):17393::::::" >> /mnt/etc/new_shadow
 
 	# replace shadow with new shadow file

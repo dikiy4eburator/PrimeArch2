@@ -110,7 +110,7 @@ function GameMaster ()
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
-    					:
+    					f_SetTimezone
   					fi
 					;;
 				6 )
@@ -178,8 +178,8 @@ function GameMaster ()
   					echo "(1) Back | (5) Start Installation | (9) Ende | Page $input_cascade of 10"
   					read -rsn1 input
 
-  					if [ "$input" = "3" ]; then
-    					f_SetInstallmode
+  					if [ "$input" = "5" ]; then
+    					f_start_setup
   					fi
 					;;
 			esac
@@ -191,8 +191,6 @@ function GameMaster ()
     			input_cascade=$(( $input_cascade - 1 ))
   			elif [ "$input" = "2" ]; then
     			input_cascade=$(( $input_cascade + 1 ))
-    		elif [ "$input" = "5" ]; then
-    			f_start_setup
     		elif [ "$input" = "9" ]; then
     			exit
   			fi
