@@ -195,7 +195,7 @@ function f_game_master()
 					echo -e "Desktop:\t\t$DESKTOP"
 					echo -e "Grefikdriver:\t\t$GRAFIKDRIVER"
 					echo -e "Installmode:\t\t$INSTALLMOD"
-					echo -e "Installmode:\t\t$SWAPSIZE" 
+					echo -e "SWAP size:\t\t$SWAPSIZE MB" 
 					echo -e '\n\n'
 					echo "==========================================================================="
   					echo "(1) Back | (5) Start Installation | (9) Ende | Page $input_cascade of 11"
