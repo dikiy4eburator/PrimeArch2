@@ -5,14 +5,23 @@
 ######	SWAP File funktions	####################################################
 ################################################################################
 
-function f_make_swap_file() {
-	
-	dd if=/dev/zero of=/mnt/SWAP bs=1M count=$(</tmp/swap_size) status=progress
-	mkswap /mnt/SWAP
-	chmod 600 /mnt/SWAP
+function f_setup_swap() {
+	case $INSTALLMOD in
+		normal )
+			dd if=/dev/zero of=/mnt/SWAP bs=1M count=$SWAPSIZE status=progress
+			mkswap /mnt/SWAP
+			chmod 600 /mnt/SWAP
 
-	echo '# SWAP FILE' >> /mnt/etc/fstab
-	echo '/SWAP			none      	swap      	defaults  	0 0' >> /mnt/etc/fstab
+			echo '# SWAP FILE' >> /mnt/etc/fstab
+			echo '/SWAP			none      	swap      	defaults  	0 0' >> /mnt/etc/fstab
+
+			;;
+		
+		btrfs )
+			mkswap /dev/$(</tmp/hdd_name)2
+	esac
+	
+	
 }
 
 ################################################################################
