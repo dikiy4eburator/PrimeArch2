@@ -1,0 +1,307 @@
+#!/bin/bash
+
+function f_zfs_installation() {
+
+	# UPDATE MIRRORLIST
+	#===============================================================================
+	echo -e '\nUpdating Mirrorlist\n\nthis could take some time\nPlease do not close the terminal\n'
+	reflector --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+	#===============================================================================
+
+
+	# Install base pacages
+	#===============================================================================
+	f_pakage_install pakages_base_zfs
+	f_pakage_install pakages_base_network
+	f_pakage_install pakages_base_video
+	f_pakage_install pakages_base_audio
+	f_pakage_install pakages_base_desktop
+	f_pakage_install pakages_base_cosmetik
+	#===============================================================================
+
+
+
+	# GO TO NO PASSWORD MODE
+	#===============================================================================
+	cp -f -v /mnt/etc/sudoers /mnt/etc/sudoers.back
+	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /mnt/etc/sudoers
+	#===============================================================================
+
+
+
+
+	# Generate fstab
+	#===============================================================================
+	genfstab -U -p /mnt > /tmp/fstab
+	awk '{ if($2 ~ /boot/) print }' /tmp/fstab > /tmp/fstab.new
+	mv -fv /tmp/fstab.new /mnt/etc/fstab
+	#===============================================================================
+
+
+
+	# COPY system config FILES
+	#===============================================================================
+	mv -f -v $working_dir/lib/configs/zfs/mkinitcpio.conf	/mnt/etc/mkinitcpio.conf
+	mv -f -v $working_dir/lib/configs/zfs/pacman.conf		/mnt/etc/pacman.conf
+	mv -f -v $working_dir/lib/configs/zfs/journald.conf		/mnt/etc/systemd/journald.conf
+	#===============================================================================
+
+
+
+	# install_zfs
+	#===============================================================================
+	arch-chroot /mnt /bin/bash -c "pacman-key -r 5E1ABF240EE7A126"
+	arch-chroot /mnt /bin/bash -c "pacman-key --lsign-key 5E1ABF240EE7A126"
+	arch-chroot /mnt /bin/bash -c "pacman -Syy"
+
+	#---	BACKUP	-------
+	# arch-chroot /mnt /bin/bash -c "pacman --noconfirm -S spl-dkms"
+	# arch-chroot /mnt /bin/bash -c "pacman --noconfirm -S zfs-dkms"
+
+	#------------------------------------------------------------------------------
+	cp -fvr /root/ZFS /mnt/
+	arch-chroot /mnt /bin/bash -c "pacman --noconfirm -R linux linux-headers"
+	arch-chroot /mnt /bin/bash -c "pacman --noconfirm -U /ZFS/*.tar.xz"
+	rm -R /mnt/ZFS
+	#===============================================================================
+
+
+
+	#GENERATE SYSTEM LOCALE
+	#===============================================================================
+	f_set_time
+
+	case $(</tmp/language) in
+		English )
+			f_set_english_language ;;
+		German )
+			f_set_german_language ;;
+		Russian )
+			f_set_russian_language ;;
+	esac
+
+	arch-chroot /mnt /bin/bash -c locale-gen
+	#===============================================================================
+
+
+
+	# Set hostname
+	#===============================================================================
+	mv -f -v /tmp/hostname /mnt/etc/hostname
+	#===============================================================================
+
+
+
+	#Set ROOT
+	#===============================================================================
+	case $(</tmp/root_status) in
+		yes )
+			f_set_root_pw ;;
+		no )
+			arch-chroot /mnt /bin/bash -c "passwd -l root" ;;
+	esac
+	#===============================================================================
+
+
+
+	# CREATE NEW USER
+	#===============================================================================
+	f_create_new_user
+	#===============================================================================
+
+
+
+	# INSTALL yaourt
+	#===============================================================================
+	f_install_yaourt
+	#===============================================================================
+
+
+
+	# Desktop installation
+	#===============================================================================
+	case $(</tmp/desktop) in
+		i3 )
+			f_install_desktop pakages_i3
+			f_install_i3_cosmetics ;;
+		
+		xfce )
+			f_install_desktop pakages_xfce4 ;;
+		
+		mate )
+			f_install_desktop pakages_mate ;;
+		
+		gnome )
+			f_install_desktop pakages_gnome ;;
+		
+		cinnamon )
+			f_install_desktop pakages_cinnamon ;;
+		
+		"No Desktop" )
+			;;
+	esac
+	#===============================================================================
+
+
+
+	# Grafik driver installation
+	#===============================================================================
+	case $(</tmp/grafik_treiber) in
+		Virtualbox )
+			pacstrap /mnt virtualbox-guest-dkms virtualbox-guest-utils ;;
+		
+		Nvidia )
+			pacstrap /mnt nvidia-dkms ;;
+		
+		ATI )
+			pacstrap /mnt xf86-video-ati ;;
+		
+		Intel )
+			pacstrap /mnt xf86-video-intel ;;
+		
+		Nouveau )
+			pacstrap /mnt xf86-video-nouveau ;;
+		
+		"No Video driver" )
+			;;
+	esac
+	#===============================================================================
+
+
+
+	# INSTALL YAOURT + COSMETICS
+	#===============================================================================
+	f_install_yaourt_cosmetiks
+	
+	mv -f -v $working_dir/lib/configs/lightdm-config/lightdm.conf /mnt/etc/lightdm/lightdm.conf
+	mv -f -v $working_dir/lib/configs/lightdm-config/slick-greeter.conf /mnt/etc/lightdm/slick-greeter.conf
+	#===============================================================================
+
+
+
+	# GO BACK TO  PASSWORD MODE
+	#===============================================================================
+	mv -f -v /mnt/etc/sudoers.back /mnt/etc/sudoers
+	#===============================================================================
+
+
+
+	# FIX USER HOME OWNERSHIP
+	#===============================================================================
+	arch-chroot /mnt /bin/bash -c "chown -R $(</tmp/user_name):users /home/$(</tmp/user_name)"
+	arch-chroot /mnt /bin/bash -c "chmod -R 0700 /home/$(</tmp/user_name)"
+	#===============================================================================
+
+
+
+	# START DAEMONS
+	#===============================================================================
+	#start system daemons
+	arch-chroot /mnt /bin/bash -c "systemctl enable acpid"
+	arch-chroot /mnt /bin/bash -c "systemctl enable ntpd"
+
+	# network managment
+	arch-chroot /mnt /bin/bash -c "systemctl enable avahi-daemon"
+	arch-chroot /mnt /bin/bash -c "systemctl enable wpa_supplicant"
+	arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
+	arch-chroot /mnt /bin/bash -c "systemctl enable sshd.socket"
+
+	# NFS utils
+	arch-chroot /mnt /bin/bash -c "systemctl enable rpcbind"
+
+	# Cronie
+	arch-chroot /mnt /bin/bash -c "systemctl enable cronie.service"
+
+	# lightdm
+	arch-chroot /mnt /bin/bash -c "systemctl enable lightdm.service"
+
+	# ZFS
+	arch-chroot /mnt /bin/bash -c "systemctl enable zfs.target"
+	arch-chroot /mnt /bin/bash -c "systemctl enable zfs-mount.service"
+	#===============================================================================
+
+
+
+
+	# CLONE BOOTSECTOR
+	#===============================================================================
+	arch-chroot /mnt /bin/bash -c "mkinitcpio -p linux"
+	
+	cp -f -v /mnt/boot/vmlinuz-linux					/mnt/boot/vmlinuz-linux-EmergencySys
+	cp -f -v /mnt/boot/initramfs-linux.img				/mnt/boot/initramfs-linux-EmergencySys.img
+	cp -f -v /mnt/boot/initramfs-linux-fallback.img		/mnt/boot/initramfs-linux-fallback-EmergencySys.img
+
+	rsync -arvz /mnt/boot/ /mnt/boot2/
+	#===============================================================================
+
+
+
+
+	# BOOTCTL INSTALLATION
+	#===============================================================================
+	arch-chroot /mnt /bin/bash -c "bootctl install --path=/boot --no-variables"
+
+	echo "timeout 5"		> /mnt/boot/loader/loader.conf
+	echo "default arch"		>> /mnt/boot/loader/loader.conf
+
+	echo "title		PrimeArch boot A"			> /mnt/boot/loader/entries/arch.conf
+	echo "linux		/vmlinuz-linux"				>> /mnt/boot/loader/entries/arch.conf
+	echo "initrd	/initramfs-linux.img"		>> /mnt/boot/loader/entries/arch.conf
+	echo "options	zfs=zroot/root rw"			>> /mnt/boot/loader/entries/arch.conf
+
+	echo "title		EmergencySys A"							> /mnt/boot/loader/entries/EmergencySys.conf
+	echo "linux		/vmlinuz-linux-EmergencySys"			>> /mnt/boot/loader/entries/EmergencySys.conf
+	echo "initrd	/initramfs-linux-EmergencySys.img"		>> /mnt/boot/loader/entries/EmergencySys.conf
+	echo "options	zfs=zroot/EmergencySys rw"				>> /mnt/boot/loader/entries/EmergencySys.conf
+
+	#------------------------------------------------------------------------------
+	arch-chroot /mnt /bin/bash -c "bootctl install --path=/boot2 --no-variables"
+
+	echo "timeout 5"		> /mnt/boot2/loader/loader.conf
+	echo "default arch"		>> /mnt/boot2/loader/loader.conf
+
+	echo "title		PrimeArch boot B"			> /mnt/boot2/loader/entries/arch.conf
+	echo "linux		/vmlinuz-linux"				>> /mnt/boot2/loader/entries/arch.conf
+	echo "initrd	/initramfs-linux.img"		>> /mnt/boot2/loader/entries/arch.conf
+	echo "options	zfs=zroot/root rw"			>> /mnt/boot2/loader/entries/arch.conf
+
+	echo "title		EmergencySys B"							> /mnt/boot2/loader/entries/EmergencySys.conf
+	echo "linux		/vmlinuz-linux-EmergencySys"			>> /mnt/boot2/loader/entries/EmergencySys.conf
+	echo "initrd	/initramfs-linux-EmergencySys.img"		>> /mnt/boot2/loader/entries/EmergencySys.conf
+	echo "options	zfs=zroot/EmergencySys rw"				>> /mnt/boot2/loader/entries/EmergencySys.conf
+
+	#------------------------------------------------------------------------------
+
+	x=1
+	while read line
+		do
+			if [[ $x == 1 ]];
+				then
+					efibootmgr -c -d /dev/disk/by-id/$line -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Boot $x"
+					((x++))
+				else
+					efibootmgr -c -d /dev/disk/by-id/$line -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "Boot $x"
+			fi
+	done < /tmp/hdd_by_id
+	#===============================================================================
+
+
+
+	# LAST STEPS
+	#===============================================================================
+	zfs snap zroot/root@virgina
+	zfs snap zroot/home@virgina
+
+	zfs clone zroot/root@virgina zroot/EmergencySys
+
+	zfs set canmount=noauto zroot/root
+	zfs set canmount=noauto zroot/EmergencySys
+
+	zpool set cachefile=/etc/zfs/zpool.cache 	zroot
+	cp -f /etc/zfs/zpool.cache /mnt/etc/zfs
+
+	umount -R /mnt
+	zfs umount -a
+	zpool export zroot
+	#===============================================================================
+}

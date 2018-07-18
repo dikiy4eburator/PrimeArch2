@@ -1,0 +1,14 @@
+base
+base-devel
+linux-headers
+efibootmgr
+acpid
+dbus
+fish
+cronie
+xdg-user-dirs
+rsync
+ranger
+dkms
+git
+reflector

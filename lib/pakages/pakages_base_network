@@ -1,0 +1,9 @@
+avahi
+networkmanager
+network-manager-applet
+nm-connection-editor
+ntp
+wireless_tools
+wpa_supplicant
+nfs-utils
+openssh

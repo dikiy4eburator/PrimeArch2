@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Pacage installation
+#===============================================================================
+
+function f_pakage_install() {
+	
+	pacstrap /mnt $(awk '{ if($1 !~ /#/) print }' < $working_dir/lib/pakages/$1)
+}
+#===============================================================================
+
+
+
+
+
+# Desktops installation
+#===============================================================================
+
+function f_install_desktop() {
+	f_pakage_install $1
+
+	# copy APP configs
+	mkdir /mnt/home/$(</tmp/user_name)/.config
+	cp -r -v $working_dir/lib/configs/app_configs/* /mnt/home/$(</tmp/user_name)/.config
+}
+
+
+
+
+
+function f_install_i3_cosmetics() {
+
+	rm -R /mnt/home/$(</tmp/user_name)/.config/i3
+	git clone https://github.com/dikiy4eburator/i3-config.git /mnt/home/$(</tmp/user_name)/.config/i3
+	arch-chroot /mnt /bin/bash -c "sudo -u $(</tmp/user_name) yaourt -S --noconfirm polybar-git"
+}
+#===============================================================================
+
+
+
+
+
+# YAOURT FUNKTIONS
+#===============================================================================
+
+function f_install_yaourt() {
+
+	mv $working_dir/lib/funktions/yaourt.sh /mnt/home/$(</tmp/user_name)/yaourt.sh
+	arch-chroot /mnt /bin/bash -c "sudo -u $(</tmp/user_name) sh /home/$(</tmp/user_name)/yaourt.sh"
+	rm /mnt/home/$(</tmp/user_name)/yaourt.sh
+}
+
+
+
+function f_install_yaourt_cosmetiks() {
+
+	while read line
+		do
+			if [[ `expr "$line" : ".*[!@#\$%^\&*()_+].*"` -gt 0 ]];
+				then
+					:
+				else
+					arch-chroot /mnt /bin/bash -c "sudo -u $(</tmp/user_name) yaourt -S --noconfirm $line"
+			fi
+	done < $working_dir/lib/pakages/pakages_yaourt
+}
+#===============================================================================

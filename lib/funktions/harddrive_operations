@@ -1,0 +1,593 @@
+#!/bin/bash
+
+################################################################################
+######	Automatc partition funktions	########################################
+################################################################################
+
+# Automatic partitioning control function
+function f_autopartition() {
+
+	# wipe hard drive and make new partitions
+	f_auto_generate_partitions
+
+	# Generate Hard drive partition names
+	f_generate_partition_names
+
+	# Format Partitions
+	f_auto_format
+
+	# Mount Partitions
+	f_auto_mount
+}
+
+
+
+#AUTO MAKE PARTITION
+#===============================================================================
+function f_auto_generate_partitions() {
+	
+	wipefs -af 	/dev/$(</tmp/hdd_name)
+	sgdisk -Z 	/dev/$(</tmp/hdd_name)
+	sgdisk -g 	/dev/$(</tmp/hdd_name)
+	sgdisk -o 	/dev/$(</tmp/hdd_name)
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			sgdisk -n 1:0:+256M -c 1:"EFI" 	-t 1:ef00 /dev/$(</tmp/hdd_name)
+		else
+			sgdisk -n 1:0:+5M 	-c 1:"BIOS" -t 1:ef02 /dev/$(</tmp/hdd_name)
+	fi
+
+	case $(</tmp/extrahome)  in
+		ja )
+			sgdisk -n 2:0:+$(</tmp/root_size)G 	-c 2:"ROOT" -t 2:8300 /dev/$(</tmp/hdd_name)
+			sgdisk -n 3:0:0 -c 3:"HOME" -t 3:8300 /dev/$(</tmp/hdd_name) ;;
+		
+		nein )
+			sgdisk -n 2:0:0 -c 2:"ROOT" -t 2:8300 /dev/$(</tmp/hdd_name) ;;
+	esac
+
+}
+
+
+
+#SET PARTITION NAMES FOR SATA
+function f_generate_partition_names() {
+
+	case $(</tmp/hdd_name) in
+		nvme*)
+			
+			ROOT_HD="$(</tmp/hdd_name)p2"
+
+			if [[ -d "/sys/firmware/efi/efivars" ]];
+				then
+					BOOT_HD="$(</tmp/hdd_name)p1"
+				else
+					:
+			fi
+
+			case $(</tmp/extrahome)  in
+				ja )
+					HOME_HD="$(</tmp/hdd_name)p3" ;;
+				nein )
+					: ;;
+			esac
+			;;
+		
+		sd*)
+			
+			ROOT_HD="$(</tmp/hdd_name)2"
+
+			if [[ -d "/sys/firmware/efi/efivars" ]];
+				then
+					BOOT_HD="$(</tmp/hdd_name)1"
+				else
+					:
+			fi
+
+			case $(</tmp/extrahome)  in
+				ja )
+					HOME_HD="$(</tmp/hdd_name)3" ;;
+				nein )
+					: ;;
+			esac
+			;;
+	esac
+}
+
+
+
+
+
+
+# FORMAT HARDDRIVES
+function f_auto_format() {
+
+	mkfs.ext4 /dev/$ROOT_HD
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			mkfs.fat -F32 /dev/$BOOT_HD
+		else
+			:
+	fi
+
+	case $(</tmp/extrahome) in
+		ja )
+			mkfs.ext4 /dev/$HOME_HD ;;
+		nein )
+			: ;;
+	esac
+}
+
+
+
+# MOUNT HARDDRIVES
+function f_auto_mount() {
+
+	mount -t ext4 -o defaults,noatime,discard /dev/$ROOT_HD /mnt
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			mkdir /mnt/boot
+			mkdir /mnt/boot/efi
+			mount /dev/$BOOT_HD /mnt/boot/efi
+		else
+			:
+	fi
+
+	case $(</tmp/extrahome)  in
+		ja )
+			mkdir /mnt/home
+			mount -t ext4 -o defaults,noatime,discard /dev/$HOME_HD /mnt/home ;;
+		nein )
+			: ;;
+	esac
+}
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+######	Manual partition funktions	############################################
+################################################################################
+
+# MANUAL PARTITIONING
+function f_manual_partition() {
+	dialog \
+	--backtitle "PrimeArch" \
+	--begin $BoxStartY $BoxStartX \
+	--title "Manual Partitionig" \
+	--menu "" 11 $BoxWhith 4 \
+		1 "Partition a harddrive" \
+		2 "Mount Partitions" \
+		3 "Set SWAP size" \
+		4 "Done!" \
+		2>/tmp/main_man_part
+
+	case $(</tmp/main_man_part) in
+		1 )
+			f_generate_harddrive_menu
+
+			f_show_info_for_partition
+
+			cgdisk /dev/$(</tmp/hdd_name)
+
+			# Back to main menu
+			f_manual_partition ;;
+
+		2 )
+			# Mount ROOT
+			case $(</tmp/root_mount)  in
+				ok )
+					;;
+				* )
+					f_mount_root ;;
+			esac
+
+			# Mount BOOT
+			if [[ -d "/sys/firmware/efi/efivars" ]];
+				then
+					case $(</tmp/boot_mount)  in
+						ok )
+							;;
+						* )
+							f_mount_boot ;;
+					esac
+				else
+					:
+			fi
+
+			# Mount HOME
+			case $(</tmp/home_mount)  in
+				ok )
+					;;
+				* )
+					dialog \
+					--backtitle 'PrimeArch Installer' \
+					--begin $BoxStartY $BoxStartX \
+					--title "HOME" \
+					--yesno '\n Do you want to mount a HOME partition?' 7 $BoxWhith \
+
+					if [[ $? -eq 0 ]];
+						then
+							f_mount_home
+						else
+							echo 'ok' >> /tmp/boot_mount
+							break
+					fi
+			esac
+
+			# Back to main menu
+			f_manual_partition ;;
+
+		3 )
+			# SWAP size dialog
+			#===============================================================================
+			dialog \
+			--backtitle "PrimeArch Installer" \
+			--begin $BoxStartY $BoxStartX \
+			--title "SWAP" \
+			--inputbox '\nSWAP partition size (in MB)' 9 $BoxWhith \
+				2>/tmp/swap_size
+			
+			# Back to main menu
+			f_manual_partition ;;
+
+		4 )
+			;;
+	esac
+}
+
+
+
+function f_mount_boot() {
+	f_generate_partition_menu BOOT
+	
+	mkfs.fat -F32 /dev/$(</tmp/part_name)
+	mkdir /mnt/boot
+	mkdir /mnt/boot/efi
+	mount /dev/$(</tmp/part_name) /mnt/boot/efi
+	echo 'ok' >> /tmp/boot_mount
+}
+
+
+
+function f_mount_root() {
+	f_generate_partition_menu ROOT
+	
+	mkfs.ext4 /dev/$(</tmp/part_name)
+	mount -t ext4 -o defaults,noatime,discard /dev/$(</tmp/part_name) /mnt
+	echo 'ok' >> /tmp/root_mount
+}
+
+
+
+function f_mount_home() {
+	f_generate_partition_menu HOME
+
+	dialog \
+	--backtitle 'PrimeArch Installer' \
+	--title 'Formating' \
+	--begin $BoxStartY $BoxStartX \
+	--yesno '\nDo you want to format the HOME partition?' 7 $BoxWhith \
+
+	if [[ $? -eq 0 ]];
+		then
+			mkfs.ext4 /dev/$(</tmp/part_name)
+		else
+			break
+	fi
+
+	mkdir /mnt/home
+	mount -t ext4 -o defaults,noatime,discard /dev/$(</tmp/part_name) /mnt/home
+	echo 'ok' >> /tmp/home_mount
+}
+
+
+
+function f_show_info_for_partition() {
+	# Show Partitioning info depending on boot mode
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			dialog \
+			--backtitle 'PrimeArch Installer' \
+			--title 'Partition Table' \
+			--begin $BoxStartY $BoxStartX \
+			--msgbox '
+			Please make shure you make folowing partitions:
+			1. EFI ca. 100-256 Mb ( code: ef00 )
+	
+			if you want an extra HOME partition
+			2. ROOT ca. 20-40 Gb ( code: 8300 )
+			3. HOME rest of the harddrive ( code: 8300 )
+
+			otherwise you can give the rest of the memory
+			to the ROOT partition
+
+			a SWAP partition is not needet, the script will
+			setup a SWAP file.' 20 $BoxWhith
+
+		else
+			dialog \
+			--backtitle 'PrimeArch Installer' \
+			--title 'Partition Table' \
+			--begin $BoxStartY $BoxStartX \
+			--msgbox '
+			Please make shure you make folowing partitions:
+			1. BOOT ca. 5 Mb ( code: ef02)
+
+			if you want an extra HOME partition
+			2. ROOT ca. 20-40 Gb ( code: 8300 )
+			3. HOME rest of the harddrive ( code: 8300 )
+
+			otherwise you can give the rest of the memory
+			to the ROOT partition
+
+			a SWAP partition is not needet, the script will
+			setup a SWAP file.' 20 $BoxWhith
+	fi
+}
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+######	ZFS partition funktions	################################################
+################################################################################
+
+function f_zfs_harddrive_preparation() {
+
+	# reset/generate partition table
+	#===============================================================================
+	while read line
+		do
+			echo ======================================================
+			wipefs -af 	/dev/disk/by-id/$line
+			sgdisk -Z 	/dev/disk/by-id/$line
+			sgdisk -g 	/dev/disk/by-id/$line
+			sgdisk -o 	/dev/disk/by-id/$line
+
+			sgdisk -n 1:0:+256M 	-c 1:"EFI" 	-t 1:ef00 /dev/disk/by-id/$line
+			sgdisk -n 2:0:0 		-c 2:"ROOT" -t 2:bf00 /dev/disk/by-id/$line
+
+	done < /tmp/hdd_by_id
+
+
+	# format efi partition
+	echo ======================================================
+	while read line
+		do
+			mkfs.fat -F 32 /dev/disk/by-id/"$line-part1"
+	done < /tmp/hdd_by_id
+	echo ======================================================
+
+	awk '{print $1"-part2"}' < /tmp/hdd_by_id > /tmp/part_by_id
+	#===========================================================================
+
+
+
+	# set raidmod
+	#===========================================================================
+	case $(</tmp/raid) in
+		stripe )
+			raidmod=" " ;;
+		mirror )
+			raidmod=mirror ;;
+		raidz )
+			raidmod=raidz ;;
+	esac
+	#===========================================================================
+
+
+
+	# Setup zpool and datasets
+	#===========================================================================
+
+	echo "===== ZPOOL ========================================================="
+	zpool create -f \
+		-o ashift=12 \
+		-O atime=off \
+		-O compression=lz4 \
+		-O normalization=formD \
+		-O canmount=off \
+	zroot $raidmod $(</tmp/part_by_id)
+	echo "===== ZPOOL DON ====================================================="
+
+	echo "===== DATASETS ======================================================"
+	zfs create -o mountpoint=/ 						zroot/root
+	zfs create -o mountpoint=/home -o setuid=off    zroot/home
+	zfs create -o mountpoint=/tmp                   zroot/tmp
+	zfs create -o mountpoint=/var/cache/pacman/pkg  zroot/pkg
+	zfs create -o mountpoint=/var/log				zroot/log
+	echo "===== DATASETS DON =================================================="
+
+	zpool set bootfs=zroot/root zroot
+	zpool export zroot
+
+
+	# MOUNT POOL and BOOT PARTITIONS
+	# ------------------------------------------------------------------------------
+	zpool import -R /mnt zroot
+
+	mkdir /mnt/boot
+	mkdir /mnt/boot2
+
+	s=0
+	while read line
+		do
+			if [[ $s == 0 ]];
+				then
+					mount /dev/disk/by-id/$line"-part1" /mnt/boot
+					((s++))
+				else
+					mount /dev/disk/by-id/$line"-part1" /mnt/boot2
+			fi
+	done < /tmp/hdd_by_id
+	#===============================================================================
+
+}
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+######	Btrfs partition funktions	################################################
+################################################################################
+function f_Btrfs_harddrive_preparation(){
+
+	wipefs -af 	/dev/$(</tmp/hdd_name)
+	sgdisk -Z 	/dev/$(</tmp/hdd_name)
+	sgdisk -g 	/dev/$(</tmp/hdd_name)
+	sgdisk -o 	/dev/$(</tmp/hdd_name)
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			sgdisk -n 1:0:+256M -c 1:"EFI" 	-t 1:ef00 /dev/$(</tmp/hdd_name)
+		else
+			sgdisk -n 1:0:+5M 	-c 1:"BIOS" -t 1:ef02 /dev/$(</tmp/hdd_name)
+	fi
+	sgdisk -n 2:0:+$(</tmp/swap_size)M -c 2:"SWAP" -t 2:8200 /dev/$(</tmp/hdd_name)
+	sgdisk -n 3:0:0 -c 3:"ROOT" -t 3:8300 /dev/$(</tmp/hdd_name)
+
+
+
+
+	mkfs.btrfs -f /dev/$(</tmp/hdd_name)3
+	mkswap /dev/$(</tmp/hdd_name)2
+
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			mkfs.fat -F32 /dev/$(</tmp/hdd_name)1
+		else
+			:
+	fi
+
+
+
+
+
+	mount /dev/$(</tmp/hdd_name)3 /mnt
+	cd /mnt
+	btrfs subvolume create ROOT
+	btrfs subvolume create home
+	btrfs subvolume create snapshots
+	btrfs subvolume create pkg
+	btrfs subvolume create var
+	btrfs subvolume create tmp
+	cd ..
+	umount /mnt
+
+
+
+
+	mount -o rw,defaults,noatime,compress=lzo,subvol=ROOT /dev/$(</tmp/hdd_name)3 /mnt
+	
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			mkdir -p /mnt/boot/efi
+			mount /dev/$(</tmp/hdd_name)1 /mnt/boot/efi
+		else
+			:
+	fi
+
+	mkdir /mnt/home
+	mkdir /mnt/.snapshots
+	mkdir -p /mnt/var/cache/pacman/pkg
+	mkdir /mnt/tmp
+	swapon /dev/$(</tmp/hdd_name)2
+	
+	mount -o rw,defaults,noatime,compress=lzo,subvol=home /dev/$(</tmp/hdd_name)3 /mnt/home
+	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots /dev/$(</tmp/hdd_name)3 /mnt/.snapshots
+	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg /dev/$(</tmp/hdd_name)3 /mnt/var/cache/pacman/pkg
+	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp /dev/$(</tmp/hdd_name)3 /mnt/tmp
+}
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+######	SWAP File funktions	####################################################
+################################################################################
+
+function f_make_swap_file() {
+	
+	dd if=/dev/zero of=/mnt/SWAP bs=1M count=$(</tmp/swap_size) status=progress
+	mkswap /mnt/SWAP
+	chmod 600 /mnt/SWAP
+
+	echo '# SWAP FILE' >> /mnt/etc/fstab
+	echo '/SWAP			none      	swap      	defaults  	0 0' >> /mnt/etc/fstab
+}
+
+
+
+
+
+
+
+
+
+
+################################################################################
+######	DYNAMIC MENU GENERATION funktions	####################################
+################################################################################
+
+function f_generate_harddrive_menu() {
+
+	#Prepare Disklist
+	lsblk -o NAME,SIZE,MODEL,TYPE | grep disk > /tmp/hdlist
+
+	dialog \
+	--backtitle "PrimeArch" \
+	--begin $BoxStartY $BoxStartX \
+	--title "HDD Auswahl" \
+	--menu "Shoose the harddrive for the installation" 15 $BoxWhith 7 \
+		$(awk ' { print $1"\t"$2 } ' < /tmp/hdlist) \
+		2>/tmp/hdd_name
+}
+
+
+
+function f_generate_partition_menu() {
+
+	#Prepare Partitionlist
+	lsblk -l -o NAME,SIZE,MODEL,TYPE | grep part > /tmp/partlist
+
+	dialog \
+	--backtitle "PrimeArch" \
+	--begin $BoxStartY $BoxStartX \
+	--title "Shoose the partition" \
+	--menu "Shoose the partition for "$1 15 $BoxWhith 7 \
+		$(awk ' { print $1"\t"$2 } ' < /tmp/partlist) \
+		2>/tmp/part_name
+}
+#===============================================================================

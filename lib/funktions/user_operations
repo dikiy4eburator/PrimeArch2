@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# GENERATE AND WRITE ROOT PW
+#===============================================================================
+function f_set_root_pw() {
+
+	# remove root from shadow file
+	awk '{ if($1 !~ /root/) print }' /mnt/etc/shadow > /mnt/etc/new_shadow
+
+	# generate and add root pasword to the new shadow file
+	openssl passwd -1 -salt xyz  $(</tmp/root_pw) > /tmp/root_pw
+	echo "root:$(</tmp/root_pw):17393::::::" >> /mnt/etc/new_shadow
+
+	# replace shadow with new shadow file
+	mv /mnt/etc/new_shadow /mnt/etc/shadow
+
+	rm /tmp/root_pw
+}
+#===============================================================================
+
+
+
+
+
+# CREATE NEW USER
+#===============================================================================
+function f_create_new_user() {
+
+	arch-chroot /mnt /bin/bash -c "useradd -m -g users -G wheel,storage,power,network,video,audio -s /usr/bin/fish '$(</tmp/user_name)'"
+
+	f_set_user_pw
+
+	echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers.back
+}
+#===============================================================================
+
+
+
+
+
+# GENERATE AND WRITE USER PW
+#===============================================================================
+function f_set_user_pw() {
+
+	# Clear User Password
+	awk '{ if($1 !~ /'$(</tmp/user_name)'/) print }' /mnt/etc/shadow > /mnt/etc/new_shadow
+
+	# Set new User Password
+	openssl passwd -1 -salt xyz  $(</tmp/user_pw) > /tmp/user_pw
+	echo "$(</tmp/user_name):$(</tmp/user_pw):17393:0:99999:7:::" >> /mnt/etc/new_shadow
+
+	# replace shadow with new shadow file
+	mv /mnt/etc/new_shadow /mnt/etc/shadow
+
+	rm /tmp/user_pw
+}
+#===============================================================================
+
+
+
+
+
+# Set Time
+#===============================================================================
+function f_set_time() {
+	arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$(</tmp/time_region_out)/$(</tmp/time_subregion_out) /etc/localtime"
+	arch-chroot /mnt /bin/bash -c "hwclock --systohc --$(</tmp/time_format)"
+}
+#===============================================================================
+
+
+
+
+
+# Set Languages
+#===============================================================================
+function f_set_german_language() {
+
+	# /etc/locale.conf
+	echo LANG=de_DE.UTF-8 				>> /mnt/etc/locale.conf
+	echo LANGUAGE=de_DE 				>> /mnt/etc/locale.conf
+
+	# /etc/vconsole.conf
+	echo KEYMAP=de-latin1-nodeadkeys 	> /mnt/etc/vconsole.conf
+
+	# /etc/locale.gen
+	echo de_DE.UTF-8 UTF-8 				>> /mnt/etc/locale.gen
+
+	# Generate kexboard config
+	f_generate_x_keyboard_config de
+}
+
+
+function f_set_russian_language() {
+
+	# /etc/locale.conf
+	echo LANG=ru_RU.UTF-8 				>> /mnt/etc/locale.conf
+	echo LANGUAGE=ru_RU.UTF-8 			>> /mnt/etc/locale.conf
+
+	# /etc/vconsole.conf
+	echo KEYMAP=ru 						> /mnt/etc/vconsole.conf
+
+	# /etc/locale.gen
+	echo en_US.UTF-8 UTF-8 				>> /mnt/etc/locale.gen
+	echo ru_RU.UTF-8 UTF-8 				>> /mnt/etc/locale.gen
+
+	# Generate kexboard config
+	f_generate_x_keyboard_config ru
+}
+
+
+
+function f_set_english_language() {
+
+	# /etc/locale.conf
+	echo LANG=en_US.UTF-8 				>> /mnt/etc/locale.conf
+	echo LANGUAGE=en_US.UTF-8 			>> /mnt/etc/locale.conf
+
+	# /etc/vconsole.conf
+	echo KEYMAP=en 						> /mnt/etc/vconsole.conf
+
+	# /etc/locale.gen
+	echo en_US.UTF-8 UTF-8 				>> /mnt/etc/locale.gen
+	echo en_US.UTF-8 UTF-8 				>> /mnt/etc/locale.gen
+
+	# Generate kexboard config
+	f_generate_x_keyboard_config ru
+}
+
+
+function f_generate_x_keyboard_config() {
+	echo 'Section "InputClass"'             >  /mnt/etc/X11/xorg.conf.d/00-keyboard.conf
+	echo '  Identifier "system-keyboard"'   >> /mnt/etc/X11/xorg.conf.d/00-keyboard.conf
+	echo '  MatchIsKeyboard "on"'           >> /mnt/etc/X11/xorg.conf.d/00-keyboard.conf
+	echo '  Option "XkbLayout" "'$1'"'      >> /mnt/etc/X11/xorg.conf.d/00-keyboard.conf
+	echo "EndSection"                       >> /mnt/etc/X11/xorg.conf.d/00-keyboard.conf
+}
+#===============================================================================

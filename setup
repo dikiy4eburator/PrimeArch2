@@ -1,0 +1,236 @@
+#!/bin/bash
+
+# ////////////////////////////////////////////////////////////
+# //////////////////    VARIABELS DEFINITION    //////////////
+# ////////////////////////////////////////////////////////////
+
+# set Variabels
+BoxWhith=70
+consol_X=$(tput cols)
+consol_Y=$(tput lines)
+BoxStartX=$(( ($consol_X - $BoxWhith)/2  ))
+BoxStartY=3
+
+working_dir=$(pwd)
+input_cascade=1
+
+LANGUAGE=German
+USERNAME=user
+USERPASSWORD=arch
+ROOTACCOUNT=no
+HOSTNAME="theMashine"
+DESKTOP=xfce
+GRAFIKDRIVER=nvidia
+INSTALLMOD=normal
+
+# includes
+source $working_dir/lib/input_cascade
+source $working_dir/lib/normal_install
+source $working_dir/lib/btrfs_install
+source $working_dir/lib/zfs_install
+
+source $working_dir/lib/funktions/user_operations
+source $working_dir/lib/funktions/install_pacages
+source $working_dir/lib/funktions/harddrive_operations
+
+
+
+# /////////////////////////////////////////////////////////////
+# //////////////////    START INSTALATION   ///////////////////
+# /////////////////////////////////////////////////////////////
+
+function GameMaster () 
+	{
+		while true; do
+			clear
+
+			if [ "$input_cascade" = "11" ]; then
+  				input_cascade=10
+  			fi
+
+  			if [ "$input_cascade" = "0" ]; then
+  				input_cascade=1
+  			fi
+
+			case $input_cascade in
+				1 )
+					echo "==========================================================================="
+					echo "Aktual Language: $LANGUAGE"
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					f_SetLanguage
+  					fi
+					;;
+				2 )
+					echo "==========================================================================="
+					echo "Aktual username: $USERNAME"
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					f_SetUserName
+  					fi
+					;;
+				3 )
+					echo "==========================================================================="
+					echo "Aktual password: $USERPASSWORD"
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					f_SetUserPassword
+  					fi
+  					;;
+				4 )
+					echo "==========================================================================="
+					echo "Status ROOT account: $ROOTACCOUNT"
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					f_SetRootAccount
+  					fi
+					;;
+				5 )
+					echo "==========================================================================="
+					echo "TIMEZONE"
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					:
+  					fi
+					;;
+				6 )
+					echo "==========================================================================="
+					echo "Aktual hostname: $HOSTNAME"
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					f_SetHostname
+  					fi
+					;;
+				7 )
+					echo "==========================================================================="
+					echo "Aktual Desktop: $DESKTOP"
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					f_SetDesktop
+  					fi
+					;;
+				8 )
+					echo "==========================================================================="
+					echo "Aktual Grafikdriver: $GRAFIKDRIVER"
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					f_SetGrefikdriver
+  					fi
+					;;
+				9 )					
+					echo "==========================================================================="
+					echo "Aktual installation mode: $INSTALLMOD"
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 10"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					f_SetInstallmode
+  					fi
+					;;
+				10 )
+					echo "============================================================================"
+					echo ""
+					echo -e "Languge:\t\t\t$LANGUAGE"
+					echo -e "User:\t\t\t\t$USERNAME"
+					echo -e "User password:\t\t\t$USERPASSWORD"
+					echo -e "Activate Root:\t\t\t$ROOTACCOUNT"
+					echo -e "Timezone:\t\t\tXXX"
+					echo -e "Hostname:\t\t\t$HOSTNAME"
+					echo -e "Desktop:\t\t\t$DESKTOP"
+					echo -e "Grefikdriver:\t\t\t$GRAFIKDRIVER"
+					echo -e "Installmode:\t\t\t$INSTALLMOD" 
+					echo -e '\n\n'
+					echo "==========================================================================="
+  					echo "(1) Back | (5) Start Installation | (9) Ende | Page $input_cascade of 10"
+  					read -rsn1 input
+
+  					if [ "$input" = "3" ]; then
+    					f_SetInstallmode
+  					fi
+					;;
+			esac
+  			
+ 
+  			read -rsn0.1 input
+  			
+  			if [ "$input" = "1" ]; then
+    			input_cascade=$(( $input_cascade - 1 ))
+  			elif [ "$input" = "2" ]; then
+    			input_cascade=$(( $input_cascade + 1 ))
+    		elif [ "$input" = "5" ]; then
+    			f_start_setup
+    		elif [ "$input" = "9" ]; then
+    			exit
+  			fi
+  		done
+
+  		# START INSTALLATION
+		#===============================================================================
+		function f_start_setup() 
+			{
+				case $(</tmp/installation_mod) in
+					normal )
+						f_autopartition
+						f_normal_installation ;;
+					manual )
+						f_manual_partition
+						f_normal_installation ;;
+					zfs )
+						f_zfs_harddrive_preparation
+						f_zfs_installation ;;
+					btrfs )
+						f_Btrfs_harddrive_preparation
+						f_btrfs_installation ;;
+				esac
+			}
+		#===============================================================================
+
+
+
+		#===============================================================================
+		echo ===============================================================================
+		echo -e "Setup is done.\nPlease restart the computer"
+		echo ===============================================================================
+		read -p "press ENTER"
+		#===============================================================================
+
+		exit
+  	}
+
+GameMaster
+
+

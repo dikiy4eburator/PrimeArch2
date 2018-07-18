@@ -1,0 +1,211 @@
+#!/bin/bash
+
+function f_normal_installation() {
+
+	# UPDATE MIRRORLIST
+	#===============================================================================
+	echo -e '\nUpdating Mirrorlist\n\nthis could take some time\nPlease do not close the terminal\n'
+	reflector --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+	#===============================================================================
+
+
+	# Install base pacages
+	#===============================================================================
+	f_pakage_install pakages_base
+	f_pakage_install pakages_base_network
+	f_pakage_install pakages_base_video
+	f_pakage_install pakages_base_audio
+	f_pakage_install pakages_base_desktop
+	f_pakage_install pakages_base_cosmetik
+	#===============================================================================
+
+
+
+	# GO TO NO PASSWORD MODE
+	#===============================================================================
+	cp -f -v /mnt/etc/sudoers /mnt/etc/sudoers.back
+	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /mnt/etc/sudoers
+	#===============================================================================
+
+
+
+	# Generate fstab
+	#===============================================================================
+	genfstab -U -p /mnt > /mnt/etc/fstab
+	#===============================================================================
+
+
+
+	# Generate SWAP
+	#===============================================================================
+	f_make_swap_file
+	#===============================================================================
+
+	
+
+	#GENERATE SYSTEM LOCALE
+	#===============================================================================
+	f_set_time
+
+	case $(</tmp/language) in
+		English )
+			f_set_english_language ;;
+		German )
+			f_set_german_language ;;
+		Russian )
+			f_set_russian_language ;;
+	esac
+
+	arch-chroot /mnt /bin/bash -c locale-gen
+	#===============================================================================
+
+
+
+	# Set hostname
+	#===============================================================================
+	mv -f -v /tmp/hostname /mnt/etc/hostname
+	#===============================================================================
+
+
+
+	#Set ROOT
+	#===============================================================================
+	case $(</tmp/root_status) in
+		yes )
+			f_set_root_pw ;;
+		no )
+			arch-chroot /mnt /bin/bash -c "passwd -l root" ;;
+	esac
+	#===============================================================================
+
+
+
+	# CREATE NEW USER
+	#===============================================================================
+	f_create_new_user
+	#===============================================================================
+
+
+
+	# INSTALL YAOURT
+	#===============================================================================
+	f_install_yaourt
+	#===============================================================================
+
+
+
+	# Desktop installation
+	#===============================================================================
+	case $(</tmp/desktop) in
+		i3 )
+			f_install_desktop pakages_i3
+			f_install_i3_cosmetics ;;
+		
+		xfce )
+			f_install_desktop pakages_xfce4 ;;
+		
+		mate )
+			f_install_desktop pakages_mate ;;
+		
+		gnome )
+			f_install_desktop pakages_gnome ;;
+		
+		cinnamon )
+			f_install_desktop pakages_cinnamon ;;
+		
+		"No Desktop" )
+			;;
+	esac
+	#===============================================================================
+
+
+
+	# Grafiktreiber installation
+	#===============================================================================
+	case $(</tmp/grafik_treiber) in
+		Virtualbox )
+			pacstrap /mnt virtualbox-guest-dkms virtualbox-guest-utils ;;
+		
+		Nvidia )
+			pacstrap /mnt nvidia-dkms ;;
+		
+		ATI )
+			pacstrap /mnt xf86-video-ati ;;
+		
+		Intel )
+			pacstrap /mnt xf86-video-intel ;;
+		
+		Nouveau )
+			pacstrap /mnt xf86-video-nouveau ;;
+		
+		"No Video driver" )
+			;;
+	esac
+	#===============================================================================
+
+
+
+	# INSTALL YAOURT + COSMETICS
+	#===============================================================================
+	f_install_yaourt_cosmetiks
+	
+	mv -f -v $working_dir/lib/configs/lightdm-config/lightdm.conf /mnt/etc/lightdm/lightdm.conf
+	mv -f -v $working_dir/lib/configs/lightdm-config/slick-greeter.conf /mnt/etc/lightdm/slick-greeter.conf
+	#===============================================================================
+
+
+
+
+	# GO BACK TO  PASSWORD MODE
+	#===============================================================================
+	mv -f -v /mnt/etc/sudoers.back /mnt/etc/sudoers
+	#===============================================================================
+
+
+
+	# FIX USER HOME OWNERSHIP
+	#===============================================================================
+	arch-chroot /mnt /bin/bash -c "chown -R $(</tmp/user_name):users /home/$(</tmp/user_name)"
+	arch-chroot /mnt /bin/bash -c "chmod -R 0700 /home/$(</tmp/user_name)"
+	#===============================================================================
+
+
+
+	# START DAEMONS
+	#===============================================================================
+	#start system daemons
+	arch-chroot /mnt /bin/bash -c "systemctl enable acpid"
+	arch-chroot /mnt /bin/bash -c "systemctl enable ntpd"
+
+	# network managment
+	arch-chroot /mnt /bin/bash -c "systemctl enable avahi-daemon"
+	arch-chroot /mnt /bin/bash -c "systemctl enable wpa_supplicant"
+	arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
+	arch-chroot /mnt /bin/bash -c "systemctl enable sshd.socket"
+
+	# NFS utils
+	arch-chroot /mnt /bin/bash -c "systemctl enable rpcbind"
+
+	# Cronie
+	arch-chroot /mnt /bin/bash -c "systemctl enable cronie.service"
+
+	#lightdm
+	arch-chroot /mnt /bin/bash -c "systemctl enable lightdm.service"
+	#===============================================================================
+
+
+
+	#GRUB INSTALLATION
+	#===============================================================================
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			# install grub efi
+			arch-chroot /mnt /bin/bash -c "grub-install --efi-directory=/boot/efi --bootloader-id=Arch_$(</mnt/etc/hostname)"
+		else
+			# install grub legacy
+			arch-chroot /mnt /bin/bash -c "grub-install /dev/$(</tmp/hdd_name)"
+	fi
+
+	arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
+	#===============================================================================
+}
