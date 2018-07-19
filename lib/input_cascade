@@ -9,8 +9,7 @@ function f_SetLanguage()
 		echo "1. German"
 		echo "2. English"
 		echo "3. Russian"
-		echo -e '\n'
-		echo "==========================================================================="
+		
   		read -rsn1 input_4
 
   		if [ "$input_4" = "1" ]; then
@@ -27,8 +26,10 @@ function f_SetUserName()
 	{
 		clear
 		
-		echo "============================================================================"
-		echo "Please enter username."
+		echo 	"============================================================================"
+		echo 	"Please enter username."
+		echo -e "\n\n"
+		echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
 		echo -n "Name: " ; read USERNAME
 	}
 
@@ -37,8 +38,10 @@ function f_SetUserPassword()
 	{
 		clear
 		
-		echo "============================================================================"
-		echo "Please enter the password for $USERNAME."
+		echo 	"============================================================================"
+		echo 	"Please enter the password for $USERNAME."
+		echo -e "\n\n"
+		echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
 		echo -n "Password: " ; read USERPASSWORD
 	}
 
@@ -65,8 +68,10 @@ function f_SetRootAccount()
   			yes )
 				clear
 		
-				echo "============================================================================"
-				echo "Please enter the root password"
+				echo 	"============================================================================"
+				echo 	"Please enter the root password"
+				echo -e "\n\n"
+				echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
 				echo -n "Password: " ; read ROOTPASSWORD
 				;;
 			no )
@@ -121,9 +126,11 @@ function f_SetHostname()
 	{
 		clear
 		
-		echo "============================================================================"
-		echo "Please enter the Hostname."
-		echo -n "Name: " ; read HOSTNAME
+		echo 	"============================================================================"
+		echo 	"Please enter the Hostname."
+		echo -e "\n\n"
+		echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
+		echo -n "Hostname: " ; read HOSTNAME
 		
 	}
 
@@ -141,9 +148,7 @@ function f_SetDesktop()
 		echo "4. XFce"
 		echo "5. Mate"
 		echo "6. No Desktop"
-		echo -e '\n'
-		echo -n "Desktop: " ; 
-
+		
 		read -rsn1 input_1
 
   		if [ "$input_1" = "1" ]; then
@@ -205,8 +210,7 @@ function f_set_swap_size()
 		echo -e "3.\t4096 MB"
 		echo -e "4.\t8192 MB"
 		echo -e "5.\t16384 MB"
-		echo -e '\n\n'
-		echo 
+		
   		read -rsn1 input_6
 
   		if [ "$input_6" = "1" ]; then

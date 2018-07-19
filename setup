@@ -16,7 +16,7 @@ input_cascade=1
 
 LANGUAGE=German
 USERNAME=user
-USERPASSWORD=arch
+USERPASSWORD=user
 ROOTACCOUNT=no
 ROOTPASSWORD=root
 HOSTNAME="theMashine"
@@ -86,7 +86,7 @@ function f_game_master()
 					;;
 				3 )
 					echo "==========================================================================="
-					echo "Aktual password: $USERPASSWORD"
+					echo "Aktual password: :) "
 					echo -e '\n\n'
 					echo "==========================================================================="
   					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"

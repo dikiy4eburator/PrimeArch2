@@ -199,7 +199,7 @@ function f_btrfs_installation() {
 	if [[ -d "/sys/firmware/efi/efivars" ]];
 		then
 			# install grub efi
-			arch-chroot /mnt /bin/bash -c "grub-install --efi-directory=/boot/efi --bootloader-id=Arch_$(</mnt/etc/hostname)"
+			arch-chroot /mnt /bin/bash -c "grub-install --efi-directory=/boot/efi --bootloader-id=Arch_$HOSTNAME"
 		else
 			# install grub legacy
 			arch-chroot /mnt /bin/bash -c "grub-install /dev/$(</tmp/hdd_name)"
