@@ -28,7 +28,6 @@ SWAPSIZE=2048
 # includes
 source $working_dir/lib/input_cascade
 
-source $working_dir/lib/normal_install
 source $working_dir/lib/btrfs_install
 source $working_dir/lib/zfs_install
 
