@@ -27,7 +27,7 @@ function f_make_root_part()
 
 function f_make_swap() 
 	{
-		sgdisk -n 2:0:+$SWAPSIZE M -c 2:"SWAP" -t 2:8200 /dev/$(</tmp/hdd_name)
+		sgdisk -n 2:0:+'$SWAPSIZE'M -c 2:"SWAP" -t 2:8200 /dev/$(</tmp/hdd_name)
 		mkswap /dev/$(</tmp/hdd_name)2
 	}
 

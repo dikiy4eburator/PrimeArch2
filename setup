@@ -22,7 +22,7 @@ ROOTPASSWORD=root
 HOSTNAME="theMashine"
 DESKTOP=cinnamon
 GRAFIKDRIVER=nvidia
-INSTALLMOD=normal
+INSTALLMOD=btrfs
 SWAPSIZE=2048
 
 # includes
