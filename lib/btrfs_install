@@ -150,6 +150,7 @@ function f_btrfs_installation() {
 	# INSTALL YAOURT + COSMETICS
 	#===============================================================================
 	f_install_yaourt_cosmetiks
+	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm grub-btrfs"
 	#===============================================================================
 
 
@@ -193,13 +194,6 @@ function f_btrfs_installation() {
 	
 	arch-chroot /mnt /bin/bash -c "mkinitcpio -p linux"
 
-	cp -f -v /mnt/boot/vmlinuz-linux					/mnt/boot/vmlinuz-linux-virgina
-	cp -f -v /mnt/boot/initramfs-linux.img				/mnt/boot/initramfs-linux-virgina.img
-	cp -f -v /mnt/boot/initramfs-linux-fallback.img		/mnt/boot/initramfs-linux-fallback-virgina.img
-
-	arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"
-
-
 	#GRUB INSTALLATION
 	#===============================================================================
 	if [[ -d "/sys/firmware/efi/efivars" ]];
@@ -210,34 +204,13 @@ function f_btrfs_installation() {
 			# install grub legacy
 			arch-chroot /mnt /bin/bash -c "grub-install /dev/$(</tmp/hdd_name)"
 	fi
+
+	cp -f -v /mnt/boot/vmlinuz-linux					/mnt/boot/vmlinuz-linux-virgina
+	cp -f -v /mnt/boot/initramfs-linux.img				/mnt/boot/initramfs-linux-virgina.img
+	cp -f -v /mnt/boot/initramfs-linux-fallback.img		/mnt/boot/initramfs-linux-fallback-virgina.img
+
+	arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"
 	
 	arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 	#===============================================================================
-
-
-
-	## BOOTCTL INSTALLATION
-	##===============================================================================
-	## get uuid for btrfs partition
-	#lsblk -f | grep $(</tmp/hdd_name)3 > /tmp/uuid
-	#awk ' { print $3 } ' < /tmp/uuid > /tmp/uuid_2
-
-	#arch-chroot /mnt /bin/bash -c "bootctl install --path=/boot --no-variables"
-
-	#echo "timeout 5"		> /mnt/boot/loader/loader.conf
-	#echo "default arch"		>> /mnt/boot/loader/loader.conf
-
-	#echo "title		PrimeArch"											> /mnt/boot/loader/entries/arch.conf
-	#echo "linux		/vmlinuz-linux"										>> /mnt/boot/loader/entries/arch.conf
-	#echo "initrd	/initramfs-linux.img"								>> /mnt/boot/loader/entries/arch.conf
-	#echo "options	root=UUID=$(</tmp/uuid_2) rootflags=subvol=ROOT rw"	>> /mnt/boot/loader/entries/arch.conf
-
-	#echo "title		PrimeArch virgina"											> /mnt/boot/loader/entries/virgina.conf
-	#echo "linux		/vmlinuz-linux-virgina"										>> /mnt/boot/loader/entries/virgina.conf
-	#echo "initrd	/initramfs-linux-virgina.img"								>> /mnt/boot/loader/entries/virgina.conf
-	#echo "options	root=UUID=$(</tmp/uuid_2) rootflags=subvol=.sanpshots/virgina rw"	>> /mnt/boot/loader/entries/virgina.conf
-
-	#efibootmgr -c -d /dev/$(</tmp/hdd_name) -p 1 -l /EFI/systemd/systemd-bootx64.efi -L "PrimeArch"
-	##===============================================================================
-
 }

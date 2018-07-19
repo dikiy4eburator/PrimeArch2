@@ -74,19 +74,6 @@ function f_manual_partition() {
 			f_manual_partition ;;
 
 		3 )
-			# SWAP size dialog
-			#===============================================================================
-			dialog \
-			--backtitle "PrimeArch Installer" \
-			--begin $BoxStartY $BoxStartX \
-			--title "SWAP" \
-			--inputbox '\nSWAP partition size (in MB)' 9 $BoxWhith \
-				2>/tmp/swap_size
-			
-			# Back to main menu
-			f_manual_partition ;;
-
-		4 )
 			;;
 	esac
 }

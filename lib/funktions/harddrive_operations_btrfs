@@ -51,8 +51,8 @@ function f_Btrfs_harddrive_preparation(){
 	mkdir /mnt/tmp
 	swapon /dev/$(</tmp/hdd_name)2
 	
-	mount -o rw,defaults,noatime,compress=lzo,subvol=home /dev/$(</tmp/hdd_name)3 /mnt/home
-	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots /dev/$(</tmp/hdd_name)3 /mnt/.snapshots
-	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg /dev/$(</tmp/hdd_name)3 /mnt/var/cache/pacman/pkg
-	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp /dev/$(</tmp/hdd_name)3 /mnt/tmp
+	mount -o rw,defaults,noatime,compress=lzo,subvol=home 		/dev/$(</tmp/hdd_name)3 /mnt/home
+	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots 	/dev/$(</tmp/hdd_name)3 /mnt/.snapshots
+	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg 		/dev/$(</tmp/hdd_name)3 /mnt/var/cache/pacman/pkg
+	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp 		/dev/$(</tmp/hdd_name)3 /mnt/tmp
 }

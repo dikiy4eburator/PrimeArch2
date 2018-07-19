@@ -17,7 +17,7 @@ input_cascade=1
 LANGUAGE=German
 USERNAME=user
 USERPASSWORD=arch
-ROOTACCOUNT=yes
+ROOTACCOUNT=no
 ROOTPASSWORD=root
 HOSTNAME="theMashine"
 DESKTOP=cinnamon
@@ -207,13 +207,13 @@ function f_game_master()
 					;;
 				20 )
 					#===============================================================================
-					echo ===============================================================================
+					echo "==========================================================================="
 					echo -e "Setup is done.\nPlease restart the computer"
-					echo ===============================================================================
-					read -p "press ENTER"
-					exit
-					#===============================================================================
-					;;
+					echo -e '\n'
+					echo "==========================================================================="
+					read -p "(ENTER) End setup |"
+					
+					exit ;;
 			esac
   			
  
