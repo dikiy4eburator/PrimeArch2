@@ -210,15 +210,15 @@ function f_set_swap_size()
   		read -rsn1 input_6
 
   		if [ "$input_6" = "1" ]; then
-    		SWAPSIZE=1024
+    		SWAPSIZE=1024M
   		elif [ "$input_6" = "2" ]; then
-    		SWAPSIZE=2048
+    		SWAPSIZE=2048M
   		elif [ "$input_6" = "3" ]; then
-    		SWAPSIZE=4096
+    		SWAPSIZE=4096M
     	elif [ "$input_6" = "4" ]; then
-    		SWAPSIZE=8192
+    		SWAPSIZE=8192M
     	elif [ "$input_6" = "5" ]; then
-    		SWAPSIZE=16384
+    		SWAPSIZE=16384M
     	fi
 }
 

@@ -23,7 +23,7 @@ HOSTNAME="theMashine"
 DESKTOP=cinnamon
 GRAFIKDRIVER=nvidia
 INSTALLMOD=btrfs
-SWAPSIZE=2048
+SWAPSIZE=2048M
 
 # includes
 source $working_dir/lib/input_cascade
