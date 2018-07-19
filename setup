@@ -20,7 +20,7 @@ USERPASSWORD=arch
 ROOTACCOUNT=yes
 ROOTPASSWORD=root
 HOSTNAME="theMashine"
-DESKTOP=xfce
+DESKTOP=cinnamon
 GRAFIKDRIVER=nvidia
 INSTALLMOD=normal
 SWAPSIZE=2048
@@ -203,6 +203,7 @@ function f_game_master()
 
   					if [ "$input" = "5" ]; then
     					f_start_setup
+    					input_cascade=20
   					fi
 					;;
 				20 )
@@ -235,9 +236,6 @@ function f_game_master()
 function f_start_setup() 
 	{
 		case $INSTALLMOD in
-			normal )
-				f_autopartition
-				f_normal_installation ;;
 			manual )
 				f_manual_partition
 				f_normal_installation ;;

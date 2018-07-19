@@ -230,20 +230,17 @@ function f_SetInstallmode()
 		echo "============================================================================"
 		echo "Please Select You Instalation mod by entering the coresponding number"
 		echo ""
-		echo "1. Normal"
+		echo "1. Btrfs"
 		echo "2. Root on ZFS"
-		echo "3. Btrfs"
 		echo "3. Manual"
-		
+				
 		read -rsn1 input_3
 
   		if [ "$input_3" = "1" ]; then
-    			INSTALLMOD=normal
-  			elif [ "$input_3" = "2" ]; then
-    			INSTALLMOD=zfs
-  			elif [ "$input_3" = "3" ]; then
-    			INSTALLMOD=btrfs
-    		elif [ "$input_3" = "4" ]; then
-    			INSTALLMOD=manual
+    		INSTALLMOD=btrfs
+  		elif [ "$input_3" = "2" ]; then
+    		INSTALLMOD=zfs
+  		elif [ "$input_3" = "3" ]; then
+    		INSTALLMOD=manual	
     	fi
 	}

@@ -1,28 +1,39 @@
 #!/bin/bash
 
+function f_wipe_harddrive()
+	{
+		wipefs -af 	/dev/$(</tmp/hdd_name)
+		sgdisk -Z 	/dev/$(</tmp/hdd_name)
+		sgdisk -g 	/dev/$(</tmp/hdd_name)
+		sgdisk -o 	/dev/$(</tmp/hdd_name)
+	}
 
-################################################################################
-######	SWAP File funktions	####################################################
-################################################################################
 
-function f_setup_swap() {
-	case $INSTALLMOD in
-		normal )
-			dd if=/dev/zero of=/mnt/SWAP bs=1M count=$SWAPSIZE status=progress
-			mkswap /mnt/SWAP
-			chmod 600 /mnt/SWAP
+function f_make_boot_part()
+	{
+		if [[ -d "/sys/firmware/efi/efivars" ]];
+			then
+				sgdisk -n 1:0:+256M -c 1:"EFI" 	-t 1:ef00 /dev/$(</tmp/hdd_name)
+				mkfs.fat -F32 /dev/$(</tmp/hdd_name)1
+			else
+				sgdisk -n 1:0:+5M 	-c 1:"BIOS" -t 1:ef02 /dev/$(</tmp/hdd_name)
+		fi
+	}
 
-			echo '# SWAP FILE' >> /mnt/etc/fstab
-			echo '/SWAP			none      	swap      	defaults  	0 0' >> /mnt/etc/fstab
+function f_make_root_part()
+	{
+		sgdisk -n 3:0:0 -c 3:"ROOT" -t 3:8300 /dev/$(</tmp/hdd_name)
+	}
 
-			;;
-		
-		btrfs )
-			mkswap /dev/$(</tmp/hdd_name)2
-	esac
-	
-	
-}
+function f_make_swap() 
+	{
+		sgdisk -n 2:0:+$SWAPSIZE M -c 2:"SWAP" -t 2:8200 /dev/$(</tmp/hdd_name)
+		mkswap /dev/$(</tmp/hdd_name)2
+	}
+
+
+
+
 
 ################################################################################
 ######	DYNAMIC MENU GENERATION funktions	####################################

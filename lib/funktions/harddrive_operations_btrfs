@@ -10,48 +10,17 @@ function f_Btrfs_harddrive_preparation(){
 	#===============================================================================
 	f_generate_harddrive_menu
 				
-	# SWAP size dialog
-	#===============================================================================
-	dialog \
-	--backtitle "PrimeArch Installer" \
-	--begin $BoxStartY $BoxStartX \
-	--title "SWAP" \
-	--inputbox '\nSWAP partition size (in MB)' 9 $BoxWhith \
-		2>/tmp/swap_size
-
-
-
-	wipefs -af 	/dev/$(</tmp/hdd_name)
-	sgdisk -Z 	/dev/$(</tmp/hdd_name)
-	sgdisk -g 	/dev/$(</tmp/hdd_name)
-	sgdisk -o 	/dev/$(</tmp/hdd_name)
-
-	if [[ -d "/sys/firmware/efi/efivars" ]];
-		then
-			sgdisk -n 1:0:+256M -c 1:"EFI" 	-t 1:ef00 /dev/$(</tmp/hdd_name)
-		else
-			sgdisk -n 1:0:+5M 	-c 1:"BIOS" -t 1:ef02 /dev/$(</tmp/hdd_name)
-	fi
-	sgdisk -n 2:0:+$(</tmp/swap_size)M -c 2:"SWAP" -t 2:8200 /dev/$(</tmp/hdd_name)
-	sgdisk -n 3:0:0 -c 3:"ROOT" -t 3:8300 /dev/$(</tmp/hdd_name)
-
-
-
+	f_wipe_harddrive
+	
+	f_make_boot_part
+	f_make_swap
+	f_make_root_part
+	
 
 	mkfs.btrfs -f /dev/$(</tmp/hdd_name)3
 	mkswap /dev/$(</tmp/hdd_name)2
 
-	if [[ -d "/sys/firmware/efi/efivars" ]];
-		then
-			mkfs.fat -F32 /dev/$(</tmp/hdd_name)1
-		else
-			:
-	fi
-
-
-
-
-
+	
 	mount /dev/$(</tmp/hdd_name)3 /mnt
 	cd /mnt
 	btrfs subvolume create ROOT

@@ -49,7 +49,7 @@ function f_btrfs_installation() {
 	#===============================================================================
 	f_set_time
 
-	case $(</tmp/language) in
+	case $LANGUAGE in
 		English )
 			f_set_english_language ;;
 		German )
@@ -65,14 +65,14 @@ function f_btrfs_installation() {
 
 	# Set hostname
 	#===============================================================================
-	mv -f -v /tmp/hostname /mnt/etc/hostname
+	echo "$HOSTNAME" > /mnt/etc/hostname
 	#===============================================================================
 
 
 
 	#Set ROOT
 	#===============================================================================
-	case $(</tmp/root_status) in
+	case $ROOTACCOUNT in
 		yes )
 			f_set_root_pw ;;
 		no )
@@ -98,7 +98,7 @@ function f_btrfs_installation() {
 
 	# Desktop installation
 	#===============================================================================
-	case $(</tmp/desktop) in
+	case $DESKTOP in
 		i3 )
 			f_install_desktop pakages_i3
 			f_install_i3_cosmetics ;;
@@ -124,7 +124,7 @@ function f_btrfs_installation() {
 
 	# Grafik driver installation
 	#===============================================================================
-	case $(</tmp/grafik_treiber) in
+	case $GRAFIKDRIVER in
 		Virtualbox )
 			pacstrap /mnt virtualbox-guest-dkms virtualbox-guest-utils ;;
 		
@@ -163,8 +163,8 @@ function f_btrfs_installation() {
 
 	# FIX USER HOME OWNERSHIP
 	#===============================================================================
-	arch-chroot /mnt /bin/bash -c "chown -R $(</tmp/user_name):users /home/$(</tmp/user_name)"
-	arch-chroot /mnt /bin/bash -c "chmod -R 0700 /home/$(</tmp/user_name)"
+	arch-chroot /mnt /bin/bash -c "chown -R $USERNAME:users /home/$USERNAME"
+	arch-chroot /mnt /bin/bash -c "chmod -R 0700 /home/$USERNAME"
 	#===============================================================================
 
 	
