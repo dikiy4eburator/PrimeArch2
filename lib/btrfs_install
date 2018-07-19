@@ -205,12 +205,13 @@ function f_btrfs_installation() {
 			arch-chroot /mnt /bin/bash -c "grub-install /dev/$(</tmp/hdd_name)"
 	fi
 
-	cp -f -v /mnt/boot/vmlinuz-linux					/mnt/boot/vmlinuz-linux-virgina
-	cp -f -v /mnt/boot/initramfs-linux.img				/mnt/boot/initramfs-linux-virgina.img
-	cp -f -v /mnt/boot/initramfs-linux-fallback.img		/mnt/boot/initramfs-linux-fallback-virgina.img
-
 	arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"
 	
 	arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
+
+	#cp -f -v /mnt/boot/vmlinuz-linux					/mnt/boot/vmlinuz-linux-virgina
+	#cp -f -v /mnt/boot/initramfs-linux.img				/mnt/boot/initramfs-linux-virgina.img
+	#cp -f -v /mnt/boot/initramfs-linux-fallback.img		/mnt/boot/initramfs-linux-fallback-virgina.img
+
 	#===============================================================================
 }
