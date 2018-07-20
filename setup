@@ -216,7 +216,7 @@ function f_game_master()
 			esac
   			
  
-  			read -rsn0.1 input
+  			read -rsn input
   			
   			if [ "$input" = "1" ]; then
     			input_cascade=$(( $input_cascade - 1 ))
