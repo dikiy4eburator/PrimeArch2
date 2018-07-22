@@ -14,9 +14,9 @@ function f_SetLanguage()
 
   		if [ "$input_4" = "1" ]; then
     			LANGUAGE=german
-  			elif [ "$input_4" = "2" ]; then
+  		elif [ "$input_4" = "2" ]; then
     			LANGUAGE=english
-  			elif [ "$input_4" = "3" ]; then
+  		elif [ "$input_4" = "3" ]; then
     			LANGUAGE=russian
   		fi
   	}

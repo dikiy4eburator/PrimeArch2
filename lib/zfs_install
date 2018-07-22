@@ -55,14 +55,14 @@ function f_zfs_installation() {
 	arch-chroot /mnt /bin/bash -c "pacman -Syy"
 
 	#---	BACKUP	-------
-	# arch-chroot /mnt /bin/bash -c "pacman --noconfirm -S spl-dkms"
-	# arch-chroot /mnt /bin/bash -c "pacman --noconfirm -S zfs-dkms"
+	arch-chroot /mnt /bin/bash -c "pacman --noconfirm -S spl-dkms"
+	arch-chroot /mnt /bin/bash -c "pacman --noconfirm -S zfs-dkms"
 
 	#------------------------------------------------------------------------------
-	cp -fvr /root/ZFS /mnt/
-	arch-chroot /mnt /bin/bash -c "pacman --noconfirm -R linux linux-headers"
-	arch-chroot /mnt /bin/bash -c "pacman --noconfirm -U /ZFS/*.tar.xz"
-	rm -R /mnt/ZFS
+	# cp -fvr /root/ZFS /mnt/
+	# arch-chroot /mnt /bin/bash -c "pacman --noconfirm -R linux linux-headers"
+	# arch-chroot /mnt /bin/bash -c "pacman --noconfirm -U /ZFS/*.tar.xz"
+	# rm -R /mnt/ZFS
 	#===============================================================================
 
 
@@ -71,7 +71,7 @@ function f_zfs_installation() {
 	#===============================================================================
 	f_set_time
 
-	case $(</tmp/language) in
+	case $LANGUAGE in
 		English )
 			f_set_english_language ;;
 		German )
@@ -94,7 +94,7 @@ function f_zfs_installation() {
 
 	#Set ROOT
 	#===============================================================================
-	case $(</tmp/root_status) in
+	case $ROOTACCOUNT in
 		yes )
 			f_set_root_pw ;;
 		no )
@@ -120,7 +120,7 @@ function f_zfs_installation() {
 
 	# Desktop installation
 	#===============================================================================
-	case $(</tmp/desktop) in
+	case $DESKTOP in
 		i3 )
 			f_install_desktop pakages_i3
 			f_install_i3_cosmetics ;;
@@ -146,7 +146,7 @@ function f_zfs_installation() {
 
 	# Grafik driver installation
 	#===============================================================================
-	case $(</tmp/grafik_treiber) in
+	case $GRAFIKDRIVER in
 		Virtualbox )
 			pacstrap /mnt virtualbox-guest-dkms virtualbox-guest-utils ;;
 		
@@ -171,10 +171,7 @@ function f_zfs_installation() {
 
 	# INSTALL YAOURT + COSMETICS
 	#===============================================================================
-	f_install_yaourt_cosmetiks
-	
-	mv -f -v $working_dir/lib/configs/lightdm-config/lightdm.conf /mnt/etc/lightdm/lightdm.conf
-	mv -f -v $working_dir/lib/configs/lightdm-config/slick-greeter.conf /mnt/etc/lightdm/slick-greeter.conf
+	# f_install_yaourt_cosmetiks
 	#===============================================================================
 
 
@@ -188,8 +185,8 @@ function f_zfs_installation() {
 
 	# FIX USER HOME OWNERSHIP
 	#===============================================================================
-	arch-chroot /mnt /bin/bash -c "chown -R $(</tmp/user_name):users /home/$(</tmp/user_name)"
-	arch-chroot /mnt /bin/bash -c "chmod -R 0700 /home/$(</tmp/user_name)"
+	arch-chroot /mnt /bin/bash -c "chown -R $USERNAME:users /home/$USERNAME"
+	arch-chroot /mnt /bin/bash -c "chmod -R 0700 /home/$USERNAME"
 	#===============================================================================
 
 
