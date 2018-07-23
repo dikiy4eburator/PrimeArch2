@@ -91,7 +91,7 @@ function f_btrfs_installation() {
 
 	# INSTALL yaourt
 	#===============================================================================
-	f_install_yaourt
+	# f_install_yaourt
 	#===============================================================================
 
 
@@ -149,8 +149,8 @@ function f_btrfs_installation() {
 
 	# INSTALL YAOURT + COSMETICS
 	#===============================================================================
-	f_install_yaourt_cosmetiks
-	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm grub-btrfs"
+	# f_install_yaourt_cosmetiks
+	# arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm grub-btrfs"
 	#===============================================================================
 
 
@@ -209,8 +209,8 @@ function f_btrfs_installation() {
 	
 	arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 
-	#cp -f -v /mnt/boot/vmlinuz-linux					/mnt/boot/vmlinuz-linux-virgina
-	#cp -f -v /mnt/boot/initramfs-linux.img				/mnt/boot/initramfs-linux-virgina.img
+	#cp -f -v /mnt/boot/vmlinuz-linux						/mnt/boot/vmlinuz-linux-virgina
+	#cp -f -v /mnt/boot/initramfs-linux.img					/mnt/boot/initramfs-linux-virgina.img
 	#cp -f -v /mnt/boot/initramfs-linux-fallback.img		/mnt/boot/initramfs-linux-fallback-virgina.img
 
 	#===============================================================================
