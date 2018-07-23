@@ -6,6 +6,7 @@ function f_set_partition_number()
 		nvme* )
 			PARTNUMBER="p"
 			;;
+	esac
 }
 
 function f_wipe_harddrive()
