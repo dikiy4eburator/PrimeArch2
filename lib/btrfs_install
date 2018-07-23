@@ -202,7 +202,7 @@ function f_btrfs_installation() {
 			arch-chroot /mnt /bin/bash -c "grub-install --efi-directory=/boot/efi --bootloader-id=Arch_$HOSTNAME"
 		else
 			# install grub legacy
-			arch-chroot /mnt /bin/bash -c "grub-install /dev/$(</tmp/hdd_name)"
+			arch-chroot /mnt /bin/bash -c "grub-install /dev/$HDDNAME"
 	fi
 
 	arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"

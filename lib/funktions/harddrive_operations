@@ -1,5 +1,13 @@
 #!/bin/bash
 
+function f_set_partition_number(){
+	case $HDDNAME in
+		nvme* )
+			PARTNUMBER
+	}
+
+}
+
 function f_wipe_harddrive()
 	{
 		wipefs -af 	/dev/"$HDDNAME"
@@ -24,6 +32,7 @@ function f_make_root_part()
 	{
 		sgdisk -n 3:0:0 -c 3:"ROOT" -t 3:8300 /dev/"$HDDNAME"
 	}
+
 
 function f_make_swap() 
 	{

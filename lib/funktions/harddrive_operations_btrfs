@@ -6,10 +6,6 @@
 
 function f_Btrfs_harddrive_preparation(){
 
-	# Generate HDD selection menu
-	#===============================================================================
-	f_generate_harddrive_menu
-				
 	f_wipe_harddrive
 	
 	f_make_boot_part
