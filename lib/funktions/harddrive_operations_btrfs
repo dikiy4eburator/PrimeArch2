@@ -17,11 +17,11 @@ function f_Btrfs_harddrive_preparation(){
 	f_make_root_part
 	
 
-	mkfs.btrfs -f /dev/$(</tmp/hdd_name)3
-	mkswap /dev/$(</tmp/hdd_name)2
+	mkfs.btrfs -f /dev/"$HDDNAME"3
+	mkswap /dev/"$HDDNAME"2
 
 	
-	mount /dev/$(</tmp/hdd_name)3 /mnt
+	mount /dev/"$HDDNAME"3 /mnt
 	cd /mnt
 	btrfs subvolume create ROOT
 	btrfs subvolume create home
@@ -35,12 +35,12 @@ function f_Btrfs_harddrive_preparation(){
 
 
 
-	mount -o rw,defaults,noatime,compress=lzo,subvol=ROOT /dev/$(</tmp/hdd_name)3 /mnt
+	mount -o rw,defaults,noatime,compress=lzo,subvol=ROOT /dev/"$HDDNAME"3 /mnt
 	
 	if [[ -d "/sys/firmware/efi/efivars" ]];
 		then
 			mkdir -p /mnt/boot/efi
-			mount /dev/$(</tmp/hdd_name)1 /mnt/boot/efi
+			mount /dev/"$HDDNAME"1 /mnt/boot/efi
 		else
 			:
 	fi
@@ -49,10 +49,10 @@ function f_Btrfs_harddrive_preparation(){
 	mkdir /mnt/.snapshots
 	mkdir -p /mnt/var/cache/pacman/pkg
 	mkdir /mnt/tmp
-	swapon /dev/$(</tmp/hdd_name)2
+	swapon /dev/"$HDDNAME"2
 	
-	mount -o rw,defaults,noatime,compress=lzo,subvol=home 		/dev/$(</tmp/hdd_name)3 /mnt/home
-	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots 	/dev/$(</tmp/hdd_name)3 /mnt/.snapshots
-	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg 		/dev/$(</tmp/hdd_name)3 /mnt/var/cache/pacman/pkg
-	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp 		/dev/$(</tmp/hdd_name)3 /mnt/tmp
+	mount -o rw,defaults,noatime,compress=lzo,subvol=home 		/dev/"$HDDNAME"3 /mnt/home
+	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots 	/dev/"$HDDNAME"3 /mnt/.snapshots
+	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg 		/dev/"$HDDNAME"3 /mnt/var/cache/pacman/pkg
+	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp 		/dev/"$HDDNAME"3 /mnt/tmp
 }

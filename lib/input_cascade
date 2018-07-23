@@ -118,7 +118,6 @@ function f_SetTimezone()
 			localtime   2 \
 			2>/tmp/time_format
 		#====================================================================================
-
 	}
 
 
@@ -247,4 +246,23 @@ function f_SetInstallmode()
   		elif [ "$input_3" = "3" ]; then
     		INSTALLMOD=manual	
     	fi
+	}
+
+
+function f_SetHarddrive()
+	{
+		# read devices
+		HDDLIST=$(lsblk -o NAME,SIZE,MODEL,TYPE | grep disk)
+		clear
+
+		echo "==========================================================================="
+		echo -e "selekt harddrive for the installation\n"
+
+		awk '{print NR": "$0}' <<< $HDDLIST
+		#awk '{print NR}' <<< $HDDLIST
+		echo -e "\n\n"
+
+		read -rsn1 HDDNR
+
+		HDDNAME=$(awk -v x="$HDDNR" 'NR == x''{print $1}' <<< $HDDLIST)
 	}
