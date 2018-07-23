@@ -12,14 +12,15 @@ BoxStartX=$(( ($consol_X - $BoxWhith)/2  ))
 BoxStartY=3
 
 working_dir=$(pwd)
-input_cascade=1
+input_cascade_index=1
+setup_process=true
 
 LANGUAGE=German
 USERNAME=user
 USERPASSWORD=user
 ROOTACCOUNT=no
 ROOTPASSWORD=root
-HOSTNAME="theMashine"
+HOSTNAME=theMashine
 DESKTOP=cinnamon
 GRAFIKDRIVER=nvidia
 INSTALLMOD=btrfs
@@ -48,24 +49,24 @@ source $working_dir/lib/funktions/install_pacages
 
 function f_game_master()
 	{
-		while true; do
+		while $setup_process; do
 			clear
 
-			if [ "$input_cascade" = "12" ]; then
-  				input_cascade=11
+			if [ "$input_cascade_index" = "12" ]; then
+  				input_cascade_index=11
   			fi
 
-  			if [ "$input_cascade" = "0" ]; then
-  				input_cascade=1
+  			if [ "$input_cascade_index" = "0" ]; then
+  				input_cascade_index=1
   			fi
 
-			case $input_cascade in
+			case $input_cascade_index in
 				1 )
 					echo "==========================================================================="
 					echo "Aktual Language: $LANGUAGE"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -77,7 +78,7 @@ function f_game_master()
 					echo "Aktual username: $USERNAME"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -89,7 +90,7 @@ function f_game_master()
 					echo "Aktual password: :) "
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -101,7 +102,7 @@ function f_game_master()
 					echo "Status ROOT account: $ROOTACCOUNT"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -113,7 +114,7 @@ function f_game_master()
 					echo "TIMEZONE: $(</tmp/time_region_out) | $(</tmp/time_subregion_out) | $(</tmp/time_format)"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -125,7 +126,7 @@ function f_game_master()
 					echo "Aktual hostname: $HOSTNAME"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -137,7 +138,7 @@ function f_game_master()
 					echo "Aktual Desktop: $DESKTOP"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -149,7 +150,7 @@ function f_game_master()
 					echo "Aktual Grafikdriver: $GRAFIKDRIVER"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -161,7 +162,7 @@ function f_game_master()
 					echo "Aktual installation mode: $INSTALLMOD"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -173,7 +174,7 @@ function f_game_master()
 					echo "Aktual SWAP size: $SWAPSIZE"
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (2) Next | (3) Edit | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "3" ]; then
@@ -196,12 +197,12 @@ function f_game_master()
 					echo -e "SWAP size:\t\t$SWAPSIZE MB" 
 					echo -e '\n\n'
 					echo "==========================================================================="
-  					echo "(1) Back | (5) Start Installation | (9) Ende | Page $input_cascade of 11"
+  					echo "(1) Back | (5) Start Installation | (9) Ende | Page $input_cascade_index of 11"
   					read -rsn1 input
 
   					if [ "$input" = "5" ]; then
     					f_start_setup
-    					input_cascade=20
+    					input_cascade_index=20
   					fi
 					;;
 				20 )
@@ -211,16 +212,16 @@ function f_game_master()
 					echo "==========================================================================="
 					read -p "(ENTER) End setup |"
 					
-					exit  ;;
+					setup_process=false ;;
 			esac
   			
  
   			read -rsn input
   			
   			if [ "$input" = "1" ]; then
-    			input_cascade=$(( $input_cascade - 1 ))
+    			input_cascade_index=$(( $input_cascade_index - 1 ))
   			elif [ "$input" = "2" ]; then
-    			input_cascade=$(( $input_cascade + 1 ))
+    			input_cascade_index=$(( $input_cascade_index + 1 ))
     		elif [ "$input" = "9" ]; then
     			exit
   			fi
