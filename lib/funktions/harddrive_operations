@@ -1,11 +1,10 @@
 #!/bin/bash
 
-function f_set_partition_number(){
+function f_set_partition_number()
+{
 	case $HDDNAME in
 		nvme* )
-			PARTNUMBER
-	}
-
+			PARTNUMBER="p"
 }
 
 function f_wipe_harddrive()
