@@ -143,4 +143,6 @@ function f_zfs_harddrive_preparation() {
 	done < /tmp/hdd_by_id
 	#===============================================================================
 
+	mkdir -p /mnt/etc
+	genfstab -L -p /mnt > /mnt/etc/fstab
 }

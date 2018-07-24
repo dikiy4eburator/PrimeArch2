@@ -140,7 +140,7 @@ function f_game_master() {
 			6 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
-				echo -e "Enter the hostname for this computer.\n\n"
+				echo -e "Enter a hostname for this computer.\n\n"
 				echo -e "Actual hostname: $HOSTNAME"
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"

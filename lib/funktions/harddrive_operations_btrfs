@@ -55,5 +55,5 @@ function f_Btrfs_harddrive_preparation(){
 	mkdir -p /mnt/etc
 	genfstab -L -p /mnt > /mnt/etc/fstab
 
-	echo "$(</mnt/etc/fstab)"
+	# echo "$(</mnt/etc/fstab)"
 }
