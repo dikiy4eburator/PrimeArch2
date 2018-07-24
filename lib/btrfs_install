@@ -30,14 +30,6 @@ function f_btrfs_installation() {
 
 
 
-
-	# Generate fstab
-	#===============================================================================
-	# genfstab -U -p /mnt > /mnt/etc/fstab
-	#===============================================================================
-
-
-
 	# COPY system config FILES
 	#===============================================================================
 	mv -f -v $working_dir/lib/configs/btrfs/mkinitcpio.conf	/mnt/etc/mkinitcpio.conf
