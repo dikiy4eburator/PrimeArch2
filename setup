@@ -68,8 +68,9 @@ function f_game_master() {
 		case $input_cascade_index in
 			1 )
 				echo "Page $input_cascade_index of $MAXPAGES"
-				echo "==========================================================================="
-				echo "Aktual Language: $LANGUAGE"
+				echo -e "===========================================================================\n"
+				echo -e "Select you language.\n"
+				echo "Actual Language: $LANGUAGE"
 				echo -e '\n\n'
 				echo "==========================================================================="
   				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
@@ -81,7 +82,8 @@ function f_game_master() {
 				;;
 			2 )
 				echo "Page $input_cascade_index of $MAXPAGES"
-				echo "==========================================================================="
+				echo -e "===========================================================================\n"
+				echo -e "Enter you User name.\n"
 				echo "Aktual username: $USERNAME"
 				echo -e '\n\n'
 				echo "==========================================================================="
@@ -94,7 +96,8 @@ function f_game_master() {
 				;;
 			3 )
 				echo "Page $input_cascade_index of $MAXPAGES"
-				echo "==========================================================================="
+				echo -e "===========================================================================\n"
+				echo -e "Enter a Password for $USERNAME.\nDefault Password is: user.\n"
 				echo "Aktual password: :) "
 				echo -e '\n\n'
 				echo "==========================================================================="
@@ -107,7 +110,8 @@ function f_game_master() {
   				;;
 			4 )
 				echo "Page $input_cascade_index of $MAXPAGES"
-				echo "==========================================================================="
+				echo -e "===========================================================================\n"
+				echo -e "Do you want to activate the ROOT account?\n"
 				echo "Status ROOT account: $ROOTACCOUNT"
 				echo -e '\n\n'
 				echo "==========================================================================="
@@ -120,8 +124,9 @@ function f_game_master() {
 				;;
 			5 )
 				echo "Page $input_cascade_index of $MAXPAGES"
-				echo "==========================================================================="
-				echo "TIMEZONE: $TIMEZONE | $TIMESUBZONE | $TIMEFORMAT"
+				echo -e "===========================================================================\n"
+				echo -e "Select you time zone.\n"
+				echo "Actual time zone: $TIMEZONE | $TIMESUBZONE | $TIMEFORMAT"
 				echo -e '\n\n'
 				echo "==========================================================================="
   				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
