@@ -26,10 +26,10 @@ TIMESUBZONE=Berlin
 TIMEFORMAT=utc
 HOSTNAME=theMashine
 DESKTOP=cinnamon
-GRAFIKDRIVER=nvidia
+GRAFIKDRIVER=virtualbox
 INSTALLMOD=btrfs
 SWAPSIZE=2048M
-HDDNAME="none"
+HDDNAME=none
 
 # includes
 source $working_dir/lib/input_cascade
