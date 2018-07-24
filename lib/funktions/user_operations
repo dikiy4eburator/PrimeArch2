@@ -10,11 +10,10 @@ function f_set_root_pw() {
 	# generate and add root pasword to the new shadow file
 	openssl passwd -1 -salt xyz  $ROOTPASSWORD > /tmp/root_pw
 	echo "root:$(</tmp/root_pw):17393::::::" >> /mnt/etc/new_shadow
+	rm /tmp/root_pw
 
 	# replace shadow with new shadow file
 	mv /mnt/etc/new_shadow /mnt/etc/shadow
-
-	rm /tmp/root_pw
 }
 #===============================================================================
 
@@ -48,11 +47,10 @@ function f_set_user_pw() {
 	# Set new User Password
 	openssl passwd -1 -salt xyz  $USERPASSWORD > /tmp/user_pw
 	echo "$USERNAME:$(</tmp/user_pw):17393:0:99999:7:::" >> /mnt/etc/new_shadow
+	rm /tmp/user_pw
 
 	# replace shadow with new shadow file
 	mv /mnt/etc/new_shadow /mnt/etc/shadow
-
-	rm /tmp/user_pw
 }
 #===============================================================================
 
@@ -63,8 +61,8 @@ function f_set_user_pw() {
 # Set Time
 #===============================================================================
 function f_set_time() {
-	arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$(</tmp/time_region_out)/$(</tmp/time_subregion_out) /etc/localtime"
-	arch-chroot /mnt /bin/bash -c "hwclock --systohc --$(</tmp/time_format)"
+	arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$TIMEZONE/$TIMESUBZONE /etc/localtime"
+	arch-chroot /mnt /bin/bash -c "hwclock --systohc --$TIMEFORMAT"
 }
 #===============================================================================
 

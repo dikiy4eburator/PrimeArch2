@@ -21,6 +21,9 @@ USERNAME=user
 USERPASSWORD=user
 ROOTACCOUNT=no
 ROOTPASSWORD=root
+TIMEZONE=Europe
+TIMESUBZONE=Berlin
+TIMEFORMAT=utc
 HOSTNAME=theMashine
 DESKTOP=cinnamon
 GRAFIKDRIVER=nvidia
@@ -49,229 +52,232 @@ source $working_dir/lib/funktions/install_pacages
 # //////////////////    START INSTALATION   ///////////////////
 # /////////////////////////////////////////////////////////////
 
-function f_game_master()
-	{
-		while $setup_process; do
-			clear
+function f_game_master() {
+	while $setup_process; do
+		
+		clear
 
-			if [ "$input_cascade_index" = "$( (( MAXPAGES + 1 )) )" ]; then
-  				input_cascade_index=$$MAXPAGES
-  			fi
+		if [ "$input_cascade_index" = "$( (( MAXPAGES + 1 )) )" ]; then
+  			input_cascade_index=$$MAXPAGES
+  		fi
 
-  			if [ "$input_cascade_index" = "0" ]; then
-  				input_cascade_index=1
-  			fi
+  		if [ "$input_cascade_index" = "0" ]; then
+  			input_cascade_index=1
+  		fi
 
-			case $input_cascade_index in
-				1 )
-					echo "Page $input_cascade_index of $MAXPAGES"
-					echo "==========================================================================="
-					echo "Aktual Language: $LANGUAGE"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+		case $input_cascade_index in
+			1 )
+				echo "Page $input_cascade_index of $MAXPAGES"
+				echo "==========================================================================="
+				echo "Aktual Language: $LANGUAGE"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_SetLanguage
-  					fi
-					;;
-				2 )
-					echo "Page $input_cascade_index of $MAXPAGES"
-					echo "==========================================================================="
-					echo "Aktual username: $USERNAME"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_SetLanguage
+  				fi
+				;;
+			2 )
+				echo "Page $input_cascade_index of $MAXPAGES"
+				echo "==========================================================================="
+				echo "Aktual username: $USERNAME"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_SetUserName
-  					fi
-					;;
-				3 )
-					echo "Page $input_cascade_index of $MAXPAGES"
-					echo "==========================================================================="
-					echo "Aktual password: :) "
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_SetUserName
+  				fi
+				;;
+			3 )
+				echo "Page $input_cascade_index of $MAXPAGES"
+				echo "==========================================================================="
+				echo "Aktual password: :) "
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_SetUserPassword
-  					fi
-  					;;
-				4 )
-					echo "Page $input_cascade_index of $MAXPAGES"
-					echo "==========================================================================="
-					echo "Status ROOT account: $ROOTACCOUNT"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_SetUserPassword
+  				fi
+  				;;
+			4 )
+				echo "Page $input_cascade_index of $MAXPAGES"
+				echo "==========================================================================="
+				echo "Status ROOT account: $ROOTACCOUNT"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_SetRootAccount
-  					fi
-					;;
-				5 )
-					echo "Page $input_cascade_index of $MAXPAGES"
-					echo "==========================================================================="
-					echo "TIMEZONE: $(</tmp/time_region_out) | $(</tmp/time_subregion_out) | $(</tmp/time_format)"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_SetRootAccount
+  				fi
+				;;
+			5 )
+				echo "Page $input_cascade_index of $MAXPAGES"
+				echo "==========================================================================="
+				echo "TIMEZONE: $TIMEZONE | $TIMESUBZONE | $TIMEFORMAT"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_SetTimezone
-  					fi
-					;;
-				6 )
-					echo "Page $input_cascade_index of $MAXPAGES"
-					echo "==========================================================================="
-					echo "Aktual hostname: $HOSTNAME"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_SetTimezone
+  				fi
+				;;
+			6 )
+				echo "Page $input_cascade_index of $MAXPAGES"
+				echo "==========================================================================="
+				echo "Aktual hostname: $HOSTNAME"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_SetHostname
-  					fi
-					;;
-				7 )
-					echo "Page $input_cascade_index of $MAXPAGES"
-					echo "==========================================================================="
-					echo "Aktual Desktop: $DESKTOP"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_SetHostname
+  				fi
+				;;
+			7 )
+				echo "Page $input_cascade_index of $MAXPAGES"
+				echo "==========================================================================="
+				echo "Aktual Desktop: $DESKTOP"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_SetDesktop
-  					fi
-					;;
-				8 )
-					echo "Page $input_cascade_index of $MAXPAGES"
-					echo "==========================================================================="
-					echo "Aktual Grafikdriver: $GRAFIKDRIVER"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_SetDesktop
+  				fi
+				;;
+			8 )
+				echo "Page $input_cascade_index of $MAXPAGES"
+				echo "==========================================================================="
+				echo "Aktual Grafikdriver: $GRAFIKDRIVER"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_SetGrefikdriver
-  					fi
-					;;
-				9 )
-									echo "Page $input_cascade_index of $MAXPAGES"					
-					echo "==========================================================================="
-					echo "Aktual installation mode: $INSTALLMOD"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_SetGrefikdriver
+  				fi
+				;;
+			9 )
+				echo "Page $input_cascade_index of $MAXPAGES"					
+				echo "==========================================================================="
+				echo "Aktual installation mode: $INSTALLMOD"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_SetInstallmode
-  					fi
-					;;
-				10 )
-									echo "Page $input_cascade_index of $MAXPAGES"					
-					echo "==========================================================================="
-					echo "Aktual harddrive: $HDDNAME"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_SetInstallmode
+  				fi
+				;;
+			10 )
+				echo "Page $input_cascade_index of $MAXPAGES"					
+				echo "==========================================================================="
+				echo "Aktual harddrive: $HDDNAME"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_SetHarddrive
-  					fi
-					;;
-				11 )
-					echo "Page $input_cascade_index of $MAXPAGES"
-					echo "==========================================================================="
-					echo "Aktual SWAP size: $SWAPSIZE"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_SetHarddrive
+  				fi
+				;;
+			11 )
+				echo "Page $input_cascade_index of $MAXPAGES"
+				echo "==========================================================================="
+				echo "Aktual SWAP size: $SWAPSIZE"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (2) Next | (e) Edit | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "e" ]; then
-    					f_set_swap_size
-  					fi
-					;;
-				12 )
-					echo "Page $input_cascade_index of $MAXPAGES"
-					echo "============================================================================"
-					echo "Summary:"
-					echo ""
-					echo -e "Languge:\t\t$LANGUAGE"
-					echo -e "User:\t\t\t$USERNAME"
-					echo -e "User password:\t\t$USERPASSWORD"
-					echo -e "Activate Root:\t\t$ROOTACCOUNT"
-					echo -e "Timezone:\t\t$(</tmp/time_region_out) | $(</tmp/time_subregion_out) | $(</tmp/time_format)"
-					echo -e "Hostname:\t\t$HOSTNAME"
-					echo -e "Desktop:\t\t$DESKTOP"
-					echo -e "Grefikdriver:\t\t$GRAFIKDRIVER"
-					echo -e "Installmode:\t\t$INSTALLMOD"
-					echo -e "SWAP size:\t\t$HDDNAME"
-					echo -e "SWAP size:\t\t$SWAPSIZE MB"
-					echo -e '\n\n'
-					echo "==========================================================================="
-  					echo "(1) Back | (5) Start Installation | (9) Ende |"
-  					read -rsn1 input
+  				if [ "$input" = "e" ]; then
+    				f_set_swap_size
+  				fi
+				;;
+			12 )
+				echo "Page $input_cascade_index of $MAXPAGES"
+				echo "============================================================================"
+				echo "Summary:"
+				echo ""
+				echo -e "Languge:\t\t$LANGUAGE"
+				echo -e "User:\t\t\t$USERNAME"
+				echo -e "User password:\t\t$USERPASSWORD"
+				echo -e "Activate Root:\t\t$ROOTACCOUNT"
+				echo -e "Timezone:\t\t$(</tmp/time_region_out) | $(</tmp/time_subregion_out) | $(</tmp/time_format)"
+				echo -e "Hostname:\t\t$HOSTNAME"
+				echo -e "Desktop:\t\t$DESKTOP"
+				echo -e "Grefikdriver:\t\t$GRAFIKDRIVER"
+				echo -e "Installmode:\t\t$INSTALLMOD"
+				echo -e "SWAP size:\t\t$HDDNAME"
+				echo -e "SWAP size:\t\t$SWAPSIZE MB"
+				echo -e '\n\n'
+				echo "==========================================================================="
+  				echo "(1) Back | (5) Start Installation | (9) Ende |"
+  				read -rsn1 input
 
-  					if [ "$input" = "5" ]; then
-    					f_start_setup
-    					input_cascade_index=20
-  					fi
-					;;
-				20 )
-					echo "==========================================================================="
-					echo -e "Setup is done.\n\nPlease restart the computer"
-					echo -e '\n'
-					echo "==========================================================================="
-					read -p "(ENTER) End setup |"
+  				if [ "$input" = "5" ]; then
+    				f_start_setup
+    				input_cascade_index=20
+  				fi
+				;;
+			20 )
+				echo "==========================================================================="
+				echo -e "Setup is done.\n\nPlease restart the computer"
+				echo -e '\n'
+				echo "==========================================================================="
+				read -p "(ENTER) End setup |"
 					
-					setup_process=false ;;
-			esac
+				exit
+				#setup_process=false 
+				;;
+		esac
   			
  
-  			read -rsn input
+  		read -rsn input
   			
-  			if [ "$input" = "1" ]; then
-    			input_cascade_index=$(( $input_cascade_index - 1 ))
-  			elif [ "$input" = "2" ]; then
-    			input_cascade_index=$(( $input_cascade_index + 1 ))
-    		elif [ "$input" = "9" ]; then
-    			exit
-  			fi
-  		done
-	}
+  		if [ "$input" = "1" ]; then
+    		input_cascade_index=$(( $input_cascade_index - 1 ))
+  		elif [ "$input" = "2" ]; then
+    		input_cascade_index=$(( $input_cascade_index + 1 ))
+    	elif [ "$input" = "9" ]; then
+    		exit
+  		fi
+  	done
+}
 	
 
 # START INSTALLATION
 #===============================================================================
-function f_start_setup() 
-	{
-		case $INSTALLMOD in
-			manual )
-				f_manual_partition
-				f_normal_installation ;;
-			zfs )
-				f_zfs_harddrive_preparation
-				f_zfs_installation ;;
-			btrfs )
-				f_Btrfs_harddrive_preparation
-				f_btrfs_installation ;;
-		esac
-	}
+function f_start_setup() {
+	case $INSTALLMOD in
+		manual )
+			f_manual_partition
+			f_normal_installation ;;
+		
+		zfs )
+			f_zfs_harddrive_preparation
+			f_zfs_installation ;;
+		
+		btrfs )
+			f_Btrfs_harddrive_preparation
+			f_btrfs_installation ;;
+	esac
+}
 #===============================================================================
 
 f_game_master

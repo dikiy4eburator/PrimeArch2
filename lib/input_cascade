@@ -95,9 +95,13 @@ function f_SetTimezone()
 			$( awk '{ print }' < /tmp/time_region_in ) \
 			2>/tmp/time_region_out
 
+		TIMEZONE=$(awk '{print}' < /tmp/time_region_out)
+		rm /tmp/time_region_out
+
+
 
 		# SET SUBTIMEZONE
-		ls -l /usr/share/zoneinfo/$(</tmp/time_region_out) | awk 'NR>=2{ print $9 " " ++s }' > /tmp/time_subregion_in
+		ls -l /usr/share/zoneinfo/$TIMEZONE | awk 'NR>=2{ print $9 " " ++s }' > /tmp/time_subregion_in
 
 		dialog \
 		--backtitle "PrimeArch Installer" \
@@ -106,6 +110,10 @@ function f_SetTimezone()
 		--menu "\nSelect your sub regeon" 20 $BoxWhith 20 \
 			$( awk '{ print }' < /tmp/time_subregion_in ) \
 			2>/tmp/time_subregion_out
+
+		TIMESUBZONE=$(awk '{print}' < /tmp/time_subregion_out)
+		rm /tmp/time_subregion_out
+
 
 
 		# SET TIMEFORMAT
@@ -117,6 +125,10 @@ function f_SetTimezone()
 			utc         1 \
 			localtime   2 \
 			2>/tmp/time_format
+
+		TIMEFORMAT=$(awk '{print}' 	< /tmp/time_format)
+		rm /tmp/time_format
+		
 		#====================================================================================
 	}
 
@@ -264,5 +276,5 @@ function f_SetHarddrive()
 
 		read -rsn1 HDDNR
 
-		HDDNAME=$(awk -v x="$HDDNR" 'NR == x''{print $1}' <<< $HDDLIST)
+		HDDNAME=$(awk '{print}' < /tmp/)
 	}
