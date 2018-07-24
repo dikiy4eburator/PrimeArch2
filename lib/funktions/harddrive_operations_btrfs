@@ -16,7 +16,7 @@ function f_Btrfs_harddrive_preparation(){
 	mkfs.btrfs -f /dev/"$HDDNAME"3
 	mkswap /dev/"$HDDNAME"2
 
-	
+
 	mount /dev/"$HDDNAME"3 /mnt
 	cd /mnt
 	btrfs subvolume create ROOT
