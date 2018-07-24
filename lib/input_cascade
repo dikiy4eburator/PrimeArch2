@@ -276,5 +276,5 @@ function f_SetHarddrive()
 
 		read -rsn1 HDDNR
 
-		HDDNAME=$(awk '{print}' < /tmp/)
+		HDDNAME=$(awk -v x="$HDDNR" 'NR == x''{print $1}' <<< $HDDLIST)
 	}

@@ -218,7 +218,7 @@ function f_game_master() {
 				echo -e "User:\t\t\t$USERNAME"
 				echo -e "User password:\t\t$USERPASSWORD"
 				echo -e "Activate Root:\t\t$ROOTACCOUNT"
-				echo -e "Timezone:\t\t$(</tmp/time_region_out) | $(</tmp/time_subregion_out) | $(</tmp/time_format)"
+				echo -e "Timezone:\t\t$TIMEZONE | $TIMESUBZONE | $TIMEFORMAT"
 				echo -e "Hostname:\t\t$HOSTNAME"
 				echo -e "Desktop:\t\t$DESKTOP"
 				echo -e "Grefikdriver:\t\t$GRAFIKDRIVER"
