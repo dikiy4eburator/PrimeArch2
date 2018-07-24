@@ -61,23 +61,16 @@ function f_SetRootAccount()
   		if [ "$input_5" = "1" ]; then
     			ROOTACCOUNT=no
   		elif [ "$input_5" = "2" ]; then
-    			ROOTACCOUNT=yes
-  		fi
 
-  		case $ROOTACCOUNT in
-  			yes )
 				clear
 		
 				echo 	"============================================================================"
-				echo 	"Please enter the root password"
-				echo -e "\n\n"
+				echo -e	"Please enter the root password\n\n"
 				echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
-				echo -n "Password: " ; read ROOTPASSWORD
-				;;
-			no )
-  				: ;;
-  		esac
-
+				echo -n "New password: " ; read ROOTPASSWORD
+				
+				ROOTACCOUNT=yes
+  		fi
 	}
 
 function f_SetTimezone()
@@ -133,17 +126,16 @@ function f_SetTimezone()
 	}
 
 
-function f_SetHostname()
-	{
-		clear
+function f_SetHostname() {
+	
+	clear
 		
-		echo 	"============================================================================"
-		echo 	"Please enter the Hostname."
-		echo -e "\n\n"
-		echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
-		echo -n "Hostname: " ; read HOSTNAME
+	echo 	"============================================================================"
+	echo -e	"Please enter the Hostname.\n\n"
+	echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
+	echo -n "Enter the new hostname: " ; read HOSTNAME
 		
-	}
+}
 
 
 function f_SetDesktop()
@@ -215,7 +207,7 @@ function f_set_swap_size()
 		clear
 
 		echo "==========================================================================="
-		echo "How mutch SWAP do you want"
+		echo -e "How mutch SWAP do you want\n"
 		echo -e "1.\t1024 MB"
 		echo -e "2.\t2048 MB"
 		echo -e "3.\t4096 MB"
@@ -243,8 +235,7 @@ function f_SetInstallmode()
 		clear
 		
 		echo "============================================================================"
-		echo "Please Select You Instalation mod by entering the coresponding number"
-		echo ""
+		echo "Please select the Instalation mod\n"
 		echo "1. Btrfs"
 		echo "2. Root on ZFS"
 		echo "3. Manual"
@@ -269,11 +260,8 @@ function f_SetHarddrive()
 
 		echo "==========================================================================="
 		echo -e "selekt harddrive for the installation\n"
-
 		awk '{print NR": "$0}' <<< $HDDLIST
-		#awk '{print NR}' <<< $HDDLIST
-		echo -e "\n\n"
-
+		
 		read -rsn1 HDDNR
 
 		HDDNAME=$(awk -v x="$HDDNR" 'NR == x''{print $1}' <<< $HDDLIST)
