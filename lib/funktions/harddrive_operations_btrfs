@@ -53,7 +53,7 @@ function f_Btrfs_harddrive_preparation(){
 	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp 		/dev/"$HDDNAME"3 /mnt/tmp
 
 	mkdir -p /mnt/etc
-	genfstab -U -p /mnt > /mnt/etc/fstab
+	genfstab -L -p /mnt > /mnt/etc/fstab
 
 	echo "$(</mnt/etc/fstab)"
 }
