@@ -13,7 +13,7 @@ function f_Btrfs_harddrive_preparation(){
 	f_make_root_part
 	
 
-	mkfs.btrfs -f /dev/"$HDDNAME"3
+	mkfs.btrfs -f -L ROOT /dev/"$HDDNAME"3
 	mkswap -L SWAP /dev/"$HDDNAME"2
 
 
