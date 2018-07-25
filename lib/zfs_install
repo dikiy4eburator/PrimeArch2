@@ -2,6 +2,8 @@
 
 function f_zfs_installation() {
 
+	exit
+
 	# UPDATE MIRRORLIST
 	#===============================================================================
 	echo -e '\nUpdating Mirrorlist\n\nthis could take some time\nPlease do not close the terminal\n'
