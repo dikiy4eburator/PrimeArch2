@@ -8,9 +8,9 @@ function f_Btrfs_harddrive_preparation() {
 
 	f_wipe_harddrive
 	
-	f_make_boot_part $HDDNAME
-	f_make_swap $HDDNAME
-	f_make_root_part $HDDNAME
+	f_make_boot_part
+	f_make_swap
+	f_make_root_part
 
 	
 	
