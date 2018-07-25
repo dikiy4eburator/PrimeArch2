@@ -4,7 +4,15 @@ function f_normal_installation() {
 	
 	# UPDATE MIRRORLIST
 	#===============================================================================
-	echo -e '\nUpdating Mirrorlist\n\nthis could take some time\nPlease do not close the terminal\n'
+	clear
+	echo -e "==========================================================="
+	echo -e "	\nUpdating Mirrorlist
+				\n
+				Please do not close the terminal
+				this could take some time\n
+			"
+	echo -e "==========================================================="
+	
 	reflector --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 	#===============================================================================
 
