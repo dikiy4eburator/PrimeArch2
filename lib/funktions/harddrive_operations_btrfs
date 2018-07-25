@@ -38,7 +38,7 @@ function f_Btrfs_harddrive_preparation() {
 	
 	if [[ -d "/sys/firmware/efi/efivars" ]];
 		then
-			mkfs.fat -F32 -L EFI /dev/"$HDDNAME_PLUS"1
+			mkfs.fat -F32 -n EFI /dev/"$HDDNAME_PLUS"1
 			mkdir -p /mnt/boot/efi
 			mount /dev/"$HDDNAME_PLUS"1 /mnt/boot/efi
 	fi
