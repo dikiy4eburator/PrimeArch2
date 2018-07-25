@@ -237,8 +237,8 @@ function f_SetInstallmode()
 		echo "============================================================================"
 		echo "Please select the Instalation mod\n"
 		echo "1. Btrfs"
-		echo "2. Root on ZFS"
-		echo "3. Manual"
+		echo "2. Root on ZFS !!! NOT TESTET !!!"
+		echo "3. Manual !!! DISABLED !!!"
 				
 		read -rsn1 input_3
 
@@ -247,7 +247,7 @@ function f_SetInstallmode()
   		elif [ "$input_3" = "2" ]; then
     		INSTALLMOD=zfs
   		elif [ "$input_3" = "3" ]; then
-    		INSTALLMOD=manual	
+    		INSTALLMOD=DISABLED	
     	fi
 	}
 

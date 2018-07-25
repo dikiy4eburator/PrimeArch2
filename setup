@@ -279,7 +279,7 @@ function f_start_setup() {
 	case $INSTALLMOD in
 		manual )
 			f_manual_partition
-			f_normal_installation ;;
+			f_btrfs_installation ;;
 		
 		zfs )
 			f_zfs_harddrive_preparation

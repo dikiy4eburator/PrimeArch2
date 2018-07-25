@@ -84,8 +84,7 @@ function f_mount_boot() {
 	f_generate_partition_menu BOOT
 	
 	mkfs.fat -F32 /dev/$(</tmp/part_name)
-	mkdir /mnt/boot
-	mkdir /mnt/boot/efi
+	mkdir -p /mnt/boot/efi
 	mount /dev/$(</tmp/part_name) /mnt/boot/efi
 	echo 'ok' >> /tmp/boot_mount
 }
