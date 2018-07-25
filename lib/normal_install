@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function f_btrfs_installation() {
+function f_normal_installation() {
 	
 	# UPDATE MIRRORLIST
 	#===============================================================================

@@ -27,44 +27,60 @@ TIMEFORMAT=utc
 HOSTNAME=theMashine
 DESKTOP=cinnamon
 GRAFIKDRIVER=virtualbox
-INSTALLMOD=btrfs
+INSTALLMOD=Auto
 SWAPSIZE=2048M
 HDDNAME=none
 
-# includes
-source $working_dir/lib/input_cascade
+#===============================================================================
 
-source $working_dir/lib/btrfs_install
-source $working_dir/lib/zfs_install
+
+
+
+
+
+
+
+
+
+# ////////////////////////////////////////////////////////////
+# //////////////////    INCLUDES			    //////////////
+# ////////////////////////////////////////////////////////////
+
+source $working_dir/lib/input_cascade
+source $working_dir/lib/normal_install
+
 
 source $working_dir/lib/funktions/harddrive_operations
 source $working_dir/lib/funktions/harddrive_operations_normal_manual
 source $working_dir/lib/funktions/harddrive_operations_btrfs
-source $working_dir/lib/funktions/harddrive_operations_zfs
 
 source $working_dir/lib/funktions/user_operations
 source $working_dir/lib/funktions/install_pacages
 
 
+# source $working_dir/lib/zfs_install
+# source $working_dir/lib/funktions/harddrive_operations_zfs
+#===============================================================================
 
 
-# /////////////////////////////////////////////////////////////
-# //////////////////    START INSTALATION   ///////////////////
-# /////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+# ////////////////////////////////////////////////////////////
+# //////////////////    INPUT CASKADE	   ///////////////////
+# ////////////////////////////////////////////////////////////
 
 function f_game_master() {
-	while $setup_process; do
+
+	while $setup_process ; do
 		
 		clear
-
-		if [ "$input_cascade_index" = "$( (( MAXPAGES + 1 )) )" ]; then
-  			input_cascade_index=$$MAXPAGES
-  		fi
-
-  		if [ "$input_cascade_index" = "0" ]; then
-  			input_cascade_index=1
-  		fi
-
+		
 		case $input_cascade_index in
 			1 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
@@ -74,7 +90,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_SetLanguage
@@ -88,7 +104,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_SetUserName
@@ -103,7 +119,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_SetUserPassword
@@ -117,7 +133,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_SetRootAccount
@@ -131,7 +147,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_SetTimezone
@@ -145,7 +161,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_SetHostname
@@ -159,7 +175,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_SetDesktop
@@ -173,7 +189,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_SetGrefikdriver
@@ -187,7 +203,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_SetInstallmode
@@ -201,7 +217,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_SetHarddrive
@@ -215,7 +231,7 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
     				f_set_swap_size
@@ -223,9 +239,9 @@ function f_game_master() {
 				;;
 			12 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
-				echo "============================================================================"
-				echo "Summary:"
-				echo ""
+				echo -e "==========================================================="
+				echo -e "Summary:"
+				echo -e ""
 				echo -e "Languge:\t\t$LANGUAGE"
 				echo -e "User:\t\t\t$USERNAME"
 				echo -e "User password:\t\t$USERPASSWORD"
@@ -238,30 +254,21 @@ function f_game_master() {
 				echo -e "Harddrive:\t\t$HDDNAME"
 				echo -e "SWAP size:\t\t$SWAPSIZE MB\n"
 				echo -e "==========================================================="
-  				echo "(1) Back | (5) Start Installation | (9) Ende |"
+  				echo -e "(1) Back |\t| (5) Start Installation |\t| (9) Ende |"
   				
-				read -rsn1 input
+				read -N 1 -rs input
 
   				if [ "$input" = "5" ]; then
     				f_start_setup
     				input_cascade_index=20
   				fi
 				;;
-			20 )
-				echo -e "==========================================================="
-				echo -e "Setup is done.\n\nPlease restart the computer"
-				echo -e '\n'
-				echo -e "==========================================================="
-				read -p "(ENTER) End setup |"
-					
-				exit
-				#setup_process=false 
-				;;
-		esac
-  			
- 
+			esac
+  		 
   		read -rsn input
-  			
+
+		  
+		  	
   		if [ "$input" = "1" ]; then
     		input_cascade_index=$(( $input_cascade_index - 1 ))
   		elif [ "$input" = "2" ]; then
@@ -269,27 +276,65 @@ function f_game_master() {
     	elif [ "$input" = "9" ]; then
     		exit
   		fi
+
+		#===== Stay in Range 1 -> MAXPAGES================================================
+
+		if [ $input_cascade_index == $(( $MAXPAGES + 1 )) ; then
+  			input_cascade_index=$MAXPAGES
+  		fi
+
+  		if [ "$input_cascade_index" = "0" ]; then
+  			input_cascade_index=1
+  		fi
   	done
 }
-	
+#===============================================================================
+
+
+
+
+
+
+
+
+
 
 # START INSTALLATION
 #===============================================================================
 function f_start_setup() {
+
 	case $INSTALLMOD in
+
+		Auto )
+			f_Btrfs_harddrive_preparation
+			f_normal_installation ;;
+
 		manual )
 			f_manual_partition
-			f_btrfs_installation ;;
+			f_normal_installation ;;
 		
 		zfs )
 			f_zfs_harddrive_preparation
 			f_zfs_installation ;;
 		
-		btrfs )
-			f_Btrfs_harddrive_preparation
-			f_btrfs_installation ;;
+		
 	esac
 }
 #===============================================================================
 
+
+
+
+
+
+
+
+
+
 f_game_master
+echo -e "==============================================================="
+echo -e "Press ENTER to finish"
+echo -e "==============================================================="
+echo -e "\t\t\t\t\t\t| (ENTER) End |"
+
+read -p ""
