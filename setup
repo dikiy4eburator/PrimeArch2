@@ -79,6 +79,18 @@ function f_game_master() {
 
 	while $setup_process ; do
 		
+		#===== Stay in Range 1 -> MAXPAGES================================================
+
+		if [ "$input_cascade_index" = "$(( $MAXPAGES + 1 ))" ; then
+  			input_cascade_index=$MAXPAGES
+  		fi
+
+  		if [ "$input_cascade_index" = "0" ]; then
+  			input_cascade_index=1
+  		fi
+		#=================================================================================
+
+
 		clear
 		
 		case $input_cascade_index in
@@ -260,7 +272,7 @@ function f_game_master() {
 
   				if [ "$input" = "5" ]; then
     				f_start_setup
-    				input_cascade_index=20
+    				break
   				fi
 				;;
 			esac
@@ -276,16 +288,7 @@ function f_game_master() {
     	elif [ "$input" = "9" ]; then
     		exit
   		fi
-
-		#===== Stay in Range 1 -> MAXPAGES================================================
-
-		if [ $input_cascade_index == $(( $MAXPAGES + 1 )) ; then
-  			input_cascade_index=$MAXPAGES
-  		fi
-
-  		if [ "$input_cascade_index" = "0" ]; then
-  			input_cascade_index=1
-  		fi
+		
   	done
 }
 #===============================================================================
@@ -332,6 +335,8 @@ function f_start_setup() {
 
 
 f_game_master
+
+
 echo -e "==============================================================="
 echo -e "Press ENTER to finish"
 echo -e "==============================================================="
