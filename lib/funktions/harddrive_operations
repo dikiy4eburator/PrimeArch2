@@ -1,42 +1,46 @@
 #!/bin/bash
 
-function f_set_partition_number()
-{
+function f_set_harddrive_name() {
 	case $HDDNAME in
-		nvme* )
-			PARTNUMBER="p"
-			;;
+	nvme* )
+		HDDNAME_PLUS="$HDDNAME"p
+		;;
+	sd* )
+		HDDNAME_PLUS="$HDDNAME"
+		;;
 	esac
 }
 
-function f_wipe_harddrive()
-	{
-		wipefs -af 	/dev/"$HDDNAME"
-		sgdisk -Z 	/dev/"$HDDNAME"
-		sgdisk -g 	/dev/"$HDDNAME"
-		sgdisk -o 	/dev/"$HDDNAME"
-	}
 
 
-function f_make_boot_part()
-	{
-		if [[ -d "/sys/firmware/efi/efivars" ]];
-			then
-				sgdisk -n 1:0:+256M -c 1:"EFI" 	-t 1:ef00 /dev/"$HDDNAME"
-				mkfs.fat -F32 /dev/"$HDDNAME"1
-			else
-				sgdisk -n 1:0:+5M 	-c 1:"BIOS" -t 1:ef02 /dev/"$HDDNAME"
-		fi
-	}
-
-function f_make_root_part()
-	{
-		sgdisk -n 3:0:0 -c 3:"ROOT" -t 3:8300 /dev/"$HDDNAME"
-	}
+function f_wipe_harddrive()	{
+	wipefs -af 	/dev/$1
+	sgdisk -Z 	/dev/$1
+	sgdisk -g 	/dev/$1
+	sgdisk -o 	/dev/$1
+}
 
 
-function f_make_swap() 	{
-		sgdisk -n 2:0:+$SWAPSIZE -c 2:"SWAP" -t 2:8200 /dev/"$HDDNAME"
+
+function f_make_boot_part()	{
+	if [[ -d "/sys/firmware/efi/efivars" ]];
+		then
+			sgdisk -n 1:0:+256M -c 1:"EFI" 	-t 1:ef00 /dev/$1
+		else
+			sgdisk -n 1:0:+5M 	-c 1:"BIOS" -t 1:ef02 /dev/$1
+	fi
+}
+
+
+
+function f_make_root_part()	{
+	sgdisk -n 3:0:0 -c 3:"ROOT" -t 3:8300 /dev/$1
+}
+
+
+
+function f_make_swap() {
+	sgdisk -n 2:0:+$SWAPSIZE -c 2:"SWAP" -t 2:8200 /dev/$1
 }
 
 

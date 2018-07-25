@@ -1,23 +1,26 @@
 #!/bin/bash
 
 ################################################################################
-######	Btrfs partition funktions	################################################
+######	Btrfs partition funktions	############################################
 ################################################################################
 
-function f_Btrfs_harddrive_preparation(){
+function f_Btrfs_harddrive_preparation() {
 
 	f_wipe_harddrive
 	
-	f_make_boot_part
-	f_make_swap
-	f_make_root_part
+	f_make_boot_part $HDDNAME
+	f_make_swap $HDDNAME
+	f_make_root_part $HDDNAME
+
 	
+	
+	f_set_harddrive_name
+	
+	mkfs.btrfs -f -L ROOT /dev/"$HDDNAME_PLUS"3
+	mkswap -L SWAP /dev/"$HDDNAME_PLUS"2
 
-	mkfs.btrfs -f -L ROOT /dev/"$HDDNAME"3
-	mkswap -L SWAP /dev/"$HDDNAME"2
 
-
-	mount /dev/"$HDDNAME"3 /mnt
+	mount /dev/"$HDDNAME_PLUS"3 /mnt
 	cd /mnt
 	btrfs subvolume create ROOT
 	btrfs subvolume create home
@@ -31,29 +34,26 @@ function f_Btrfs_harddrive_preparation(){
 
 
 
-	mount -o rw,defaults,noatime,compress=lzo,subvol=ROOT /dev/"$HDDNAME"3 /mnt
+	mount -o rw,defaults,noatime,compress=lzo,subvol=ROOT /dev/"$HDDNAME_PLUS"3 /mnt
 	
 	if [[ -d "/sys/firmware/efi/efivars" ]];
 		then
+			mkfs.fat -F32 -L EFI /dev/"$HDDNAME_PLUS"1
 			mkdir -p /mnt/boot/efi
-			mount /dev/"$HDDNAME"1 /mnt/boot/efi
-		else
-			:
+			mount /dev/"$HDDNAME_PLUS"1 /mnt/boot/efi
 	fi
 
 	mkdir /mnt/home
 	mkdir /mnt/.snapshots
 	mkdir -p /mnt/var/cache/pacman/pkg
 	mkdir /mnt/tmp
-	swapon /dev/"$HDDNAME"2
+	swapon /dev/"$HDDNAME_PLUS"2
 	
-	mount -o rw,defaults,noatime,compress=lzo,subvol=home 		/dev/"$HDDNAME"3 /mnt/home
-	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots 	/dev/"$HDDNAME"3 /mnt/.snapshots
-	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg 		/dev/"$HDDNAME"3 /mnt/var/cache/pacman/pkg
-	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp 		/dev/"$HDDNAME"3 /mnt/tmp
+	mount -o rw,defaults,noatime,compress=lzo,subvol=home 		/dev/"$HDDNAME_PLUS"3 /mnt/home
+	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots 	/dev/"$HDDNAME_PLUS"3 /mnt/.snapshots
+	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg 		/dev/"$HDDNAME_PLUS"3 /mnt/var/cache/pacman/pkg
+	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp 		/dev/"$HDDNAME_PLUS"3 /mnt/tmp
 
 	mkdir -p /mnt/etc
 	genfstab -L -p /mnt > /mnt/etc/fstab
-
-	# echo "$(</mnt/etc/fstab)"
 }
