@@ -163,8 +163,10 @@ function f_show_info_for_partition() {
 	# Show Partitioning info depending on boot mode
 	if [[ -d "/sys/firmware/efi/efivars" ]];
 		then
+			clear
 			echo -e "==========================================================="
-			echo -e "Please make shure you make folowing partitions:
+			echo -e "
+			Please make shure you make folowing partitions:
 			1. EFI ca. 100-256 Mb ( code: ef00 )
 			2. SWAP At yor shoise ( code: 8200 )
 	
@@ -175,11 +177,13 @@ function f_show_info_for_partition() {
 			otherwise you can give the rest of the memory
 			to the ROOT partition"
 
-			read -p "Press ENTER to continue"
+			read -p "Press ENTER to to start cgdisk"
 
 		else
+			clear
 			echo -e "==========================================================="
-			echo -e "Please make shure you make folowing partitions:
+			echo -e "
+			Please make shure you make folowing partitions:
 			1. BOOT ca. 5 Mb ( code: ef02)
 			2. SWAP At yor shoise ( code: 8200 )
 
@@ -190,6 +194,6 @@ function f_show_info_for_partition() {
 			otherwise you can give the rest of the memory
 			to the ROOT partition."
 
-			read -p "Press ENTER to continue"
+			read -p "Press ENTER to to start cgdisk"
 	fi
 }
