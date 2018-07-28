@@ -245,7 +245,7 @@ function f_SetInstallmode()
   		if [ "$input_3" = "1" ]; then
     		INSTALLMOD=Auto
   		elif [ "$input_3" = "2" ]; then
-    		INSTALLMOD=DISABLED
+    		INSTALLMOD=manual
   		elif [ "$input_3" = "3" ]; then
     		INSTALLMOD=DISABLED	
     	fi
