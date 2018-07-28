@@ -24,7 +24,7 @@ function f_Btrfs_harddrive_preparation() {
 	cd /mnt
 	btrfs subvolume create ROOT
 	btrfs subvolume create home
-	btrfs subvolume create snapshots
+	# btrfs subvolume create snapshots
 	btrfs subvolume create pkg
 	btrfs subvolume create var
 	btrfs subvolume create tmp
@@ -44,13 +44,13 @@ function f_Btrfs_harddrive_preparation() {
 	fi
 
 	mkdir /mnt/home
-	mkdir /mnt/.snapshots
+	# mkdir /mnt/.snapshots
 	mkdir -p /mnt/var/cache/pacman/pkg
 	mkdir /mnt/tmp
 	swapon /dev/"$HDDNAME_PLUS"2
 	
 	mount -o rw,defaults,noatime,compress=lzo,subvol=home 		/dev/"$HDDNAME_PLUS"3 /mnt/home
-	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots 	/dev/"$HDDNAME_PLUS"3 /mnt/.snapshots
+	# mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots 	/dev/"$HDDNAME_PLUS"3 /mnt/.snapshots
 	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg 		/dev/"$HDDNAME_PLUS"3 /mnt/var/cache/pacman/pkg
 	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp 		/dev/"$HDDNAME_PLUS"3 /mnt/tmp
 

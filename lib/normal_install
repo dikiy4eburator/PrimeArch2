@@ -204,6 +204,9 @@ function f_normal_installation() {
 	arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 	#===============================================================================
 
+	arch-chroot /mnt /bin/bash -c "sudo -u root snapper create-config /"
+	arch-chroot /mnt /bin/bash -c "sudo -u root snapper create -d virgina /"
+
 	#arch-chroot /mnt /bin/bash -c "mkinitcpio -p linux"
 	#arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"
 	
