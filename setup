@@ -108,6 +108,7 @@ function f_game_master() {
     				f_SetLanguage
   				fi
 				;;
+
 			2 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
@@ -122,6 +123,7 @@ function f_game_master() {
     				f_SetUserName
   				fi
 				;;
+
 			3 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
@@ -137,6 +139,7 @@ function f_game_master() {
     				f_SetUserPassword
   				fi
   				;;
+
 			4 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
@@ -151,6 +154,7 @@ function f_game_master() {
     				f_SetRootAccount
   				fi
 				;;
+
 			5 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
@@ -165,6 +169,7 @@ function f_game_master() {
     				f_SetTimezone
   				fi
 				;;
+
 			6 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
@@ -179,6 +184,7 @@ function f_game_master() {
     				f_SetHostname
   				fi
 				;;
+
 			7 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
@@ -193,6 +199,7 @@ function f_game_master() {
     				f_SetDesktop
   				fi
 				;;
+
 			8 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
@@ -207,6 +214,7 @@ function f_game_master() {
     				f_SetGrefikdriver
   				fi
 				;;
+
 			9 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"					
 				echo -e "==========================================================="
@@ -221,20 +229,26 @@ function f_game_master() {
     				f_SetInstallmode
   				fi
 				;;
-			10 )
-				echo -e "Page $input_cascade_index of $MAXPAGES"					
-				echo -e "==========================================================="
-				echo -e "Select a harddrive for the installation\n\n"
-				echo -e "Aktual harddrive: $HDDNAME"
-				echo -e "==========================================================="
-  				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
-  				
-				read -N 1 -rs input
 
-  				if [ "$input" = "e" ]; then
-    				f_generate_harddrive_menu
+			10 )
+				if [ "$INSTALLMOD" = "manual" ]; then
+    				:
+    			else
+    				echo -e "Page $input_cascade_index of $MAXPAGES"					
+					echo -e "==========================================================="
+					echo -e "Select a harddrive for the installation\n\n"
+					echo -e "Aktual harddrive: $HDDNAME"
+					echo -e "==========================================================="
+  					echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
+  				
+					read -N 1 -rs input
+
+  					if [ "$input" = "e" ]; then
+    					f_generate_harddrive_menu
+  					fi
   				fi
 				;;
+
 			11 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
@@ -249,6 +263,7 @@ function f_game_master() {
     				f_set_swap_size
   				fi
 				;;
+				
 			12 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
@@ -275,6 +290,7 @@ function f_game_master() {
     				break
   				fi
 				;;
+				
 			esac
   		 
   		read -rsn input
