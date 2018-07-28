@@ -135,7 +135,7 @@ function f_normal_installation() {
 
 
 
-	# INSTALL yaourt
+	# INSTALL trizen
 	#===============================================================================
 	f_install_yaourt
 	#===============================================================================
@@ -145,7 +145,7 @@ function f_normal_installation() {
 	# INSTALL YAOURT COSMETICS
 	#===============================================================================
 	f_install_yaourt_cosmetiks
-	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm grub-btrfs"
+	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME trizen -S --noconfirm grub-btrfs"
 	#===============================================================================
 
 

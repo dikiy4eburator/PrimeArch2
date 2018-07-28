@@ -49,10 +49,12 @@ function f_install_i3_cosmetics() {
 
 function f_install_yaourt() {
 
-	mv $working_dir/lib/funktions/yaourt.sh /mnt/home/$USERNAME/yaourt.sh
-	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME sh /home/$USERNAME/yaourt.sh"
-	rm /mnt/home/$USERNAME/yaourt.sh
+	mv $working_dir/lib/funktions/trizen.sh /mnt/home/$USERNAME/trizen.sh
+	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME sh /home/$USERNAME/trizen.sh"
+	rm /mnt/home/$USERNAME/trizen.sh
 }
+
+
 
 function f_install_yaourt_cosmetiks() {
 
@@ -62,8 +64,8 @@ function f_install_yaourt_cosmetiks() {
 				then
 					:
 				else
-					arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm $line"
+					arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME trizen -S --noconfirm $line"
 			fi
-	done < $working_dir/lib/pakages/pakages_yaourt
+	done < $working_dir/lib/pakages/pakages_aur
 }
 #===============================================================================
