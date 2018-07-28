@@ -237,16 +237,16 @@ function f_SetInstallmode()
 		echo "============================================================================"
 		echo "Please select the Instalation mod\n"
 		echo "1. Auto"
-		echo "2. Manual !!! DISABLED !!!"
+		echo "2. Manual"
 		echo "3. Root on ZFS !!! DISABLED !!!"
 				
-		read -rsn1 input_3
+		read -rsn1 input_instal_mod
 
-  		if [ "$input_3" = "1" ]; then
+  		if [ "$input_instal_mod" = "1" ]; then
     		INSTALLMOD=Auto
-  		elif [ "$input_3" = "2" ]; then
+  		elif [ "$input_instal_mod" = "2" ]; then
     		INSTALLMOD=manual
-  		elif [ "$input_3" = "3" ]; then
+  		elif [ "$input_instal_mod" = "3" ]; then
     		INSTALLMOD=DISABLED	
     	fi
 	}
