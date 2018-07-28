@@ -189,11 +189,15 @@ function f_normal_installation() {
 	
 
 
-	arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"
+	
+	arch-chroot /mnt /bin/bash -c "mkinitcpio -p linux"
 	
 	mkdir -p /mnt/boot/virgina
-	cp -f -v /mnt/boot/vmlinuz-linux						/mnt/boot/virgina/vmlinuz-linux-virgina
-	cp -f -v /mnt/boot/initramfs-linux.img					/mnt/boot/virgina/initramfs-linux-virgina.img
+	
+	cp -f -v /mnt/boot/vmlinuz-linux			/mnt/boot/virgina/vmlinuz-linux
+	cp -f -v /mnt/boot/initramfs-linux.img		/mnt/boot/virgina/initramfs-linux.img
+
+	arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"
 	
 
 
@@ -214,16 +218,18 @@ function f_normal_installation() {
 	echo "set default=0" 																> /mnt/boot/grub/grub.cfg
 	echo "set timeout=5" 																>> /mnt/boot/grub/grub.cfg
 	echo 																				>> /mnt/boot/grub/grub.cfg
-	echo "menuentry " "Arch Linux" "{" 													>> /mnt/boot/grub/grub.cfg
+	echo "menuentry 'Arch Linux' " 														>> /mnt/boot/grub/grub.cfg
+	echo "{" 																			>> /mnt/boot/grub/grub.cfg
 	echo "	insmod all_video" 															>> /mnt/boot/grub/grub.cfg
 	echo "	insmod btrfs" 																>> /mnt/boot/grub/grub.cfg
 	echo 																				>> /mnt/boot/grub/grub.cfg
 	echo "	linux	/ROOT/boot/vmlinuz-linux root=LABEL=ROOT rw rootflags=subvol=ROOT" 	>> /mnt/boot/grub/grub.cfg
 	echo "	initrd	/ROOT/boot/initramfs-linux.img" 									>> /mnt/boot/grub/grub.cfg
-	echo																				>> /mnt/boot/grub/grub.cfg
+	echo "}"																			>> /mnt/boot/grub/grub.cfg
 	echo "========================================================================="	>> /mnt/boot/grub/grub.cfg
 	echo																										>> /mnt/boot/grub/grub.cfg
-	echo "menuentry " "Arch Linux Virgina" "{" 																	>> /mnt/boot/grub/grub.cfg
+	echo "menuentry 'Arch Linux Virgina' " 																		>> /mnt/boot/grub/grub.cfg
+	echo "{" 																									>> /mnt/boot/grub/grub.cfg
 	echo "	insmod all_video" 																					>> /mnt/boot/grub/grub.cfg
 	echo "	insmod btrfs" 																						>> /mnt/boot/grub/grub.cfg
 	echo  																										>> /mnt/boot/grub/grub.cfg
