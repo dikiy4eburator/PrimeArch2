@@ -49,16 +49,15 @@ function f_manual_partition() {
 			esac
 
 			# Mount BOOT
-			if [[ -d "/sys/firmware/efi/efivars" ]];
-				then
-					case $BOOT_MOUNTED in
-						ok )
-							;;
-						* )
-							f_mount_boot ;;
-					esac
-				else
-					:
+			if [[ -d "/sys/firmware/efi/efivars" ]] ; then
+				case $BOOT_MOUNTED in
+					ok )
+						;;
+					* )
+						f_mount_boot ;;
+				esac
+			else
+				:
 			fi
 
 			# Mount HOME
@@ -111,7 +110,7 @@ function f_manual_partition() {
 function f_mount_boot() {
 	f_generate_partition_menu BOOT
 	
-	mkfs.fat -F32 /dev/$PARTNAME
+	mkfs.fat -F32 -n EFI /dev/$PARTNAME
 	mkdir -p /mnt/boot/efi
 	mount /dev/$PARTNAME /mnt/boot/efi
 	BOOT_MOUNTED="ok"
@@ -122,7 +121,7 @@ function f_mount_boot() {
 function f_mount_root() {
 	f_generate_partition_menu ROOT
 	
-	mkfs.ext4 /dev/$PARTNAME
+	mkfs.ext4 -L ROOT /dev/$PARTNAME
 	mount -t ext4 -o defaults,noatime,discard /dev/$PARTNAME /mnt
 	ROOT_MOUNTED="ok"
 }
@@ -142,7 +141,7 @@ function f_mount_home() {
 	
 	if [[ "$input_format_home" = "1" ]];
 		then
-			mkfs.ext4 /dev/$PARTNAME
+			mkfs.ext4 -L HOME /dev/$PARTNAME
 		else
 			break
 	fi
@@ -157,7 +156,7 @@ function f_mount_home() {
 function f_mount_swap() {
 	f_generate_partition_menu SWAP
 
-	swapon /dev/$PARTNAME
+	swapon -L SWAP /dev/$PARTNAME
 
 	SWAP_MOUNTED="ok"
 }
