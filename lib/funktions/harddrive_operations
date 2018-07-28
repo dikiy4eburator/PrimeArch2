@@ -54,16 +54,16 @@ function f_make_swap() {
 function f_generate_harddrive_menu() {
 
 	# read devices
-		HDDLIST=$(lsblk -o NAME,SIZE,MODEL,TYPE | grep disk)
-		clear
-
-		echo "==========================================================================="
-		echo -e "selekt harddrive for the installation\n"
-		awk '{print NR": "$0}' <<< $HDDLIST
+	HDDLIST=$(lsblk -o NAME,SIZE,MODEL,TYPE | grep disk)
+	
+	clear
+	echo "==========================================================================="
+	echo -e "selekt harddrive for the installation\n"
+	awk '{print NR": "$0}' <<< $HDDLIST
 		
-		read -rsn1 HDDNR
+	read -rsn1 HDDNR
 
-		HDDNAME=$(awk -v x="$HDDNR" 'NR == x''{print $1}' <<< $HDDLIST)
+	HDDNAME=$(awk -v x="$HDDNR" 'NR == x''{print $1}' <<< $HDDLIST)
 }
 
 
@@ -72,8 +72,8 @@ function f_generate_partition_menu() {
 
 	#Prepare Partitionlist
 	PARTLIST=$(lsblk -l -o NAME,SIZE,MODEL,TYPE | grep part)
+	
 	clear
-
 	echo "==========================================================================="
 	echo -e "selekt Partition for $1\n"
 	awk '{print NR": "$0}' <<< $PARTLIST

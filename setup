@@ -27,9 +27,17 @@ TIMEFORMAT=utc
 HOSTNAME=theMashine
 DESKTOP=cinnamon
 GRAFIKDRIVER=virtualbox
+
 INSTALLMOD=Auto
 SWAPSIZE=2048M
 HDDNAME=none
+
+# variables for manual munting only
+PARTNAME=none
+ROOT_MOUNTED="not mounted"
+BOOT_MOUNTED="not mounted"
+HOME_MOUNTED="not mounted"
+SWAP_MOUNTED="not mounted"
 
 #===============================================================================
 
@@ -263,7 +271,7 @@ function f_game_master() {
     				f_set_swap_size
   				fi
 				;;
-				
+
 			12 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
@@ -290,7 +298,7 @@ function f_game_master() {
     				break
   				fi
 				;;
-				
+
 			esac
   		 
   		read -rsn input
