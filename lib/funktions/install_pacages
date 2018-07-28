@@ -47,7 +47,7 @@ function f_install_i3_cosmetics() {
 # YAOURT FUNKTIONS
 #===============================================================================
 
-function f_install_yaourt() {
+function f_install_trizen() {
 
 	mv $working_dir/lib/funktions/trizen.sh /mnt/home/$USERNAME/trizen.sh
 	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME sh /home/$USERNAME/trizen.sh"
@@ -56,7 +56,7 @@ function f_install_yaourt() {
 
 
 
-function f_install_yaourt_cosmetiks() {
+function f_install_aur_cosmetiks() {
 
 	while read line
 		do
