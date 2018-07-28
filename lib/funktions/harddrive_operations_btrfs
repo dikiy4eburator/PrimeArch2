@@ -17,7 +17,7 @@ function f_Btrfs_harddrive_preparation() {
 	f_set_harddrive_name
 	
 	mkfs.btrfs -f -L ROOT /dev/"$HDDNAME_PLUS"3
-	
+	mkswap -L SWAP /dev/"$HDDNAME_PLUS"2
 
 
 	mount /dev/"$HDDNAME_PLUS"3 /mnt
@@ -46,7 +46,8 @@ function f_Btrfs_harddrive_preparation() {
 	mkdir /mnt/.snapshots
 	mkdir -p /mnt/var/cache/pacman/pkg
 	mkdir /mnt/tmp
-		
+	swapon /dev/"$HDDNAME_PLUS"2
+	
 	mount -o rw,defaults,noatime,compress=lzo,subvol=home 		/dev/"$HDDNAME_PLUS"3 /mnt/home
 	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots 	/dev/"$HDDNAME_PLUS"3 /mnt/.snapshots
 	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg 		/dev/"$HDDNAME_PLUS"3 /mnt/var/cache/pacman/pkg
