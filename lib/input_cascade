@@ -10,13 +10,13 @@ function f_SetLanguage()
 		echo "2. English"
 		echo "3. Russian"
 		
-  		read -rsn1 input_4
+  		read -rsn1 input_language
 
-  		if [ "$input_4" = "1" ]; then
+  		if [ "$input_language" = "1" ]; then
     			LANGUAGE=german
-  		elif [ "$input_4" = "2" ]; then
+  		elif [ "$input_language" = "2" ]; then
     			LANGUAGE=english
-  		elif [ "$input_4" = "3" ]; then
+  		elif [ "$input_language" = "3" ]; then
     			LANGUAGE=russian
   		fi
   	}
@@ -56,11 +56,11 @@ function f_SetRootAccount()
 		echo "1. no"
 		echo "2. yes"
 
-		read -rsn1 input_5
+		read -rsn1 input_root
 
-  		if [ "$input_5" = "1" ]; then
+  		if [ "$input_root" = "1" ]; then
     			ROOTACCOUNT=no
-  		elif [ "$input_5" = "2" ]; then
+  		elif [ "$input_root" = "2" ]; then
 
 				clear
 		
@@ -152,19 +152,19 @@ function f_SetDesktop()
 		echo "5. Mate"
 		echo "6. No Desktop"
 		
-		read -rsn1 input_1
+		read -rsn1 input_desktop
 
-  		if [ "$input_1" = "1" ]; then
+  		if [ "$input_desktop" = "1" ]; then
     		DESKTOP=i3
-  		elif [ "$input_1" = "2" ]; then
+  		elif [ "$input_desktop" = "2" ]; then
     		DESKTOP=cinnamon
-  		elif [ "$input_1" = "3" ]; then
+  		elif [ "$input_desktop" = "3" ]; then
     		DESKTOP=gnome
-    	elif [ "$input_1" = "4" ]; then
+    	elif [ "$input_desktop" = "4" ]; then
     		DESKTOP=xfce
-    	elif [ "$input_1" = "5" ]; then
+    	elif [ "$input_desktop" = "5" ]; then
     		DESKTOP=mate
-    	elif [ "$input_1" = "6" ]; then
+    	elif [ "$input_desktop" = "6" ]; then
     		DESKTOP=nodesktop
   		fi
 	}
@@ -184,19 +184,19 @@ function f_SetGrefikdriver()
 		echo "5. Intel"
 		echo "6. No Grafik"
 			
-		read -rsn1 input_2
+		read -rsn1 input_grafik
 
-  		if [ "$input_2" = "1" ]; then
+  		if [ "$input_grafik" = "1" ]; then
     		GRAFIKDRIVER=virtualbox
-  		elif [ "$input_2" = "2" ]; then
+  		elif [ "$input_grafik" = "2" ]; then
     		GRAFIKDRIVER=nvidia
-  		elif [ "$input_2" = "3" ]; then
+  		elif [ "$input_grafik" = "3" ]; then
     		GRAFIKDRIVER=nouveau
-    	elif [ "$input_2" = "4" ]; then
+    	elif [ "$input_grafik" = "4" ]; then
     		GRAFIKDRIVER=ati
-    	elif [ "$input_2" = "5" ]; then
+    	elif [ "$input_grafik" = "5" ]; then
     		GRAFIKDRIVER=intel
-    	elif [ "$input_2" = "6" ]; then
+    	elif [ "$input_grafik" = "6" ]; then
     		GRAFIKDRIVER=nografik
   		fi
 	}
@@ -208,24 +208,27 @@ function f_set_swap_size()
 
 		echo "==========================================================================="
 		echo -e "How mutch SWAP do you want\n"
+		echo -e "0. NO SWAP"
 		echo -e "1.\t1024 MB"
 		echo -e "2.\t2048 MB"
 		echo -e "3.\t4096 MB"
 		echo -e "4.\t8192 MB"
 		echo -e "5.\t16384 MB"
 		
-  		read -rsn1 input_6
+  		read -rsn1 input_swap
 
-  		if [ "$input_6" = "1" ]; then
+  		if [ "$input_swap" = "1" ]; then
     		SWAPSIZE=1024M
-  		elif [ "$input_6" = "2" ]; then
+  		elif [ "$input_swap" = "2" ]; then
     		SWAPSIZE=2048M
-  		elif [ "$input_6" = "3" ]; then
+  		elif [ "$input_swap" = "3" ]; then
     		SWAPSIZE=4096M
-    	elif [ "$input_6" = "4" ]; then
+    	elif [ "$input_swap" = "4" ]; then
     		SWAPSIZE=8192M
-    	elif [ "$input_6" = "5" ]; then
+    	elif [ "$input_swap" = "5" ]; then
     		SWAPSIZE=16384M
+    	elif [ "$input_swap" = "0" ]; then
+    		SWAPSIZE=0M
     	fi
 }
 

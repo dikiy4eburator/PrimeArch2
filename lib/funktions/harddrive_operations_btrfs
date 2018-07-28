@@ -17,20 +17,19 @@ function f_Btrfs_harddrive_preparation() {
 	f_set_harddrive_name
 	
 	mkfs.btrfs -f -L ROOT /dev/"$HDDNAME_PLUS"3
-	mkswap -L SWAP /dev/"$HDDNAME_PLUS"2
+	
 
 
 	mount /dev/"$HDDNAME_PLUS"3 /mnt
 	cd /mnt
 	btrfs subvolume create ROOT
 	btrfs subvolume create home
-	# btrfs subvolume create snapshots
+	btrfs subvolume create snapshots
 	btrfs subvolume create pkg
 	btrfs subvolume create var
 	btrfs subvolume create tmp
 	cd ..
 	umount /mnt
-
 
 
 
@@ -44,13 +43,12 @@ function f_Btrfs_harddrive_preparation() {
 	fi
 
 	mkdir /mnt/home
-	# mkdir /mnt/.snapshots
+	mkdir /mnt/.snapshots
 	mkdir -p /mnt/var/cache/pacman/pkg
 	mkdir /mnt/tmp
-	swapon /dev/"$HDDNAME_PLUS"2
-	
+		
 	mount -o rw,defaults,noatime,compress=lzo,subvol=home 		/dev/"$HDDNAME_PLUS"3 /mnt/home
-	# mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots 	/dev/"$HDDNAME_PLUS"3 /mnt/.snapshots
+	mount -o rw,defaults,noatime,compress=lzo,subvol=snapshots 	/dev/"$HDDNAME_PLUS"3 /mnt/.snapshots
 	mount -o rw,defaults,noatime,compress=lzo,subvol=pkg 		/dev/"$HDDNAME_PLUS"3 /mnt/var/cache/pacman/pkg
 	mount -o rw,defaults,noatime,compress=lzo,subvol=tmp 		/dev/"$HDDNAME_PLUS"3 /mnt/tmp
 

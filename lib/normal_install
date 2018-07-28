@@ -16,7 +16,6 @@ function f_normal_installation() {
 	# Install base pacages
 	#===============================================================================
 	f_pakage_install pakages_base
-	f_pakage_install pakages_base_btrfs
 	f_pakage_install pakages_base_network
 	f_pakage_install pakages_base_video
 	f_pakage_install pakages_base_audio
@@ -138,15 +137,15 @@ function f_normal_installation() {
 
 	# INSTALL yaourt
 	#===============================================================================
-	# f_install_yaourt
+	f_install_yaourt
 	#===============================================================================
 
 
 
 	# INSTALL YAOURT COSMETICS
 	#===============================================================================
-	# f_install_yaourt_cosmetiks
-	# arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm grub-btrfs"
+	f_install_yaourt_cosmetiks
+	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm grub-btrfs"
 	#===============================================================================
 
 
@@ -204,14 +203,8 @@ function f_normal_installation() {
 	arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 	#===============================================================================
 
-	arch-chroot /mnt /bin/bash -c "sudo -u root snapper -c root create-config /"
-	arch-chroot /mnt /bin/bash -c "sudo -u root snapper -c home create-config /home"
 	
-	arch-chroot /mnt /bin/bash -c "sudo -u root snapper -c root create -d virgina /"
-	arch-chroot /mnt /bin/bash -c "sudo -u root snapper -c home create -d virgina /"
-
-	#arch-chroot /mnt /bin/bash -c "mkinitcpio -p linux"
-	#arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"
+	arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"
 	
 	#cp -f -v /mnt/boot/vmlinuz-linux						/mnt/boot/vmlinuz-linux-virgina
 	#cp -f -v /mnt/boot/initramfs-linux.img					/mnt/boot/initramfs-linux-virgina.img

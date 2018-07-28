@@ -1,3 +1,5 @@
-gnome
+gnome-desktop
+gnome-session
+gnome-shell
 gnome-extra
 gnome-tweak-tool

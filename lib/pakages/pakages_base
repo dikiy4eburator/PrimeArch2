@@ -15,4 +15,5 @@ dkms
 git
 reflector
 flatpak
+snapper
 gnome-software

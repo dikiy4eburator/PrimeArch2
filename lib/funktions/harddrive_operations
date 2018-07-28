@@ -40,7 +40,14 @@ function f_make_root_part()	{
 
 
 function f_make_swap() {
-	sgdisk -n 2:0:+$SWAPSIZE -c 2:"SWAP" -t 2:8200 /dev/$HDDNAME
+
+	if [ "$SWAPSIZE" = "0M" ]; then
+		:
+	else
+		sgdisk -n 2:0:+$SWAPSIZE -c 2:"SWAP" -t 2:8200 /dev/$HDDNAME
+		mkswap -L SWAP /dev/"$HDDNAME_PLUS"2
+		swapon /dev/"$HDDNAME_PLUS"2
+	fi
 }
 
 
