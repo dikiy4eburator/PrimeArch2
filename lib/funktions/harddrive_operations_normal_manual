@@ -101,6 +101,9 @@ function f_manual_partition() {
 			f_manual_partition ;;
 
 		3 )
+			mkdir -p /mnt/etc
+			genfstab -L -p /mnt > /mnt/etc/fstab
+			
 			;;
 	esac
 }
