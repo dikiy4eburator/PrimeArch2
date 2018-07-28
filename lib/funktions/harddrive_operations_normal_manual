@@ -11,11 +11,10 @@ function f_manual_partition() {
 	
 	echo -e "==========================================================="
 	echo -e "1. Partition a harddrive"
-	echo -e "2. Mount partitions"
-	echo -e "\t\t\t ROOT: $ROOT_MOUNTED"
-	echo -e "\t\t\t BOOT: $BOOT_MOUNTED"
-	echo -e "\t\t\t HOME: $HOME_MOUNTED"
-	echo -e "\t\t\t SWAP: $SWAP_MOUNTED"
+	echo -e "2. Mount partitions\tROOT: $ROOT_MOUNTED"
+	echo -e "\t\t\tBOOT: $BOOT_MOUNTED"
+	echo -e "\t\t\tHOME: $HOME_MOUNTED"
+	echo -e "\t\t\tSWAP: $SWAP_MOUNTED"
 	echo -e "3. Start setup"
 	echo -e "==========================================================="
   	echo -e "\t\t\t\t\t\t| (9) End |"
@@ -66,7 +65,12 @@ function f_manual_partition() {
 			case $HOME_MOUNTED in
 				ok )
 					;;
+
+				no_need )
+					;;
+
 				* )
+					clear
 					echo -e "==========================================================="
 					echo -e "Do you want to mount an extra HOME partition?\n"
 					echo -e "1. Yes"
@@ -78,7 +82,7 @@ function f_manual_partition() {
 						then
 							f_mount_home
 						else
-							HOME_MOUNTED="ok"
+							HOME_MOUNTED="no_need"
 							:
 					fi
 			esac
@@ -128,6 +132,7 @@ function f_mount_root() {
 function f_mount_home() {
 	f_generate_partition_menu HOME
 
+	clear
 	echo -e "==========================================================="
 	echo -e "Do you want to format the HOME partition?\n"
 	echo -e "1. Yes"
