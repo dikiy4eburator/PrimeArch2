@@ -213,7 +213,7 @@ function f_normal_installation() {
 
 	echo "set default=0" 																> /mnt/boot/grub/grub.cfg
 	echo "set timeout=5" 																>> /mnt/boot/grub/grub.cfg
-	echo 																				>> /mnt//boot/grub/grub.cfg
+	echo 																				>> /mnt/boot/grub/grub.cfg
 	echo "menuentry " "Arch Linux" "{" 													>> /mnt/boot/grub/grub.cfg
 	echo "	insmod all_video" 															>> /mnt/boot/grub/grub.cfg
 	echo "	insmod btrfs" 																>> /mnt/boot/grub/grub.cfg
