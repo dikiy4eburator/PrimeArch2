@@ -258,17 +258,21 @@ function f_game_master() {
 				;;
 
 			11 )
-				echo -e "Page $input_cascade_index of $MAXPAGES"
-				echo -e "==========================================================="
-				echo -e "Select the size of the SWAP.\n\n"
-				echo -e "Aktual SWAP size: $SWAPSIZE"
-				echo -e "==========================================================="
-  				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
+				if [ "$INSTALLMOD" = "manual" ]; then
+    				:
+    			else
+    				echo -e "Page $input_cascade_index of $MAXPAGES"
+					echo -e "==========================================================="
+					echo -e "Select the size of the SWAP.\n\n"
+					echo -e "Aktual SWAP size: $SWAPSIZE"
+					echo -e "==========================================================="
+  					echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input
+					read -N 1 -rs input
 
-  				if [ "$input" = "e" ]; then
-    				f_set_swap_size
+  					if [ "$input" = "e" ]; then
+    					f_set_swap_size
+  					fi
   				fi
 				;;
 
@@ -286,8 +290,14 @@ function f_game_master() {
 				echo -e "Desktop:\t\t$DESKTOP"
 				echo -e "Grefikdriver:\t\t$GRAFIKDRIVER"
 				echo -e "Installmode:\t\t$INSTALLMOD"
-				echo -e "Harddrive:\t\t$HDDNAME"
-				echo -e "SWAP size:\t\t$SWAPSIZE MB\n"
+				
+				if [ "$INSTALLMOD" = "manual" ]; then
+    				:
+    			else
+					echo -e "Harddrive:\t\t$HDDNAME"
+					echo -e "SWAP size:\t\t$SWAPSIZE MB\n"
+				fi
+				
 				echo -e "==========================================================="
   				echo -e "(1) Back |\t| (5) Start Installation |\t| (9) Ende |"
   				
