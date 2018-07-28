@@ -232,7 +232,7 @@ function f_game_master() {
 				read -N 1 -rs input
 
   				if [ "$input" = "e" ]; then
-    				f_SetHarddrive
+    				f_generate_harddrive_menu
   				fi
 				;;
 			11 )

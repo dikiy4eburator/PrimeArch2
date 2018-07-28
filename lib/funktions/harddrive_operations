@@ -53,16 +53,17 @@ function f_make_swap() {
 
 function f_generate_harddrive_menu() {
 
-	#Prepare Disklist
-	lsblk -o NAME,SIZE,MODEL,TYPE | grep disk > /tmp/hdlist
+	# read devices
+		HDDLIST=$(lsblk -o NAME,SIZE,MODEL,TYPE | grep disk)
+		clear
 
-	dialog \
-	--backtitle "PrimeArch" \
-	--begin $BoxStartY $BoxStartX \
-	--title "HDD Auswahl" \
-	--menu "Shoose the harddrive for the installation" 15 $BoxWhith 7 \
-		$(awk ' { print $HDDNAME"\t"$2 } ' < /tmp/hdlist) \
-		2>/tmp/hdd_name
+		echo "==========================================================================="
+		echo -e "selekt harddrive for the installation\n"
+		awk '{print NR": "$0}' <<< $HDDLIST
+		
+		read -rsn1 HDDNR
+
+		HDDNAME=$(awk -v x="$HDDNR" 'NR == x''{print $1}' <<< $HDDLIST)
 }
 
 
@@ -70,14 +71,27 @@ function f_generate_harddrive_menu() {
 function f_generate_partition_menu() {
 
 	#Prepare Partitionlist
-	lsblk -l -o NAME,SIZE,MODEL,TYPE | grep part > /tmp/partlist
+	PARTLIST=$(lsblk -l -o NAME,SIZE,MODEL,TYPE | grep part)
+	clear
 
-	dialog \
-	--backtitle "PrimeArch" \
-	--begin $BoxStartY $BoxStartX \
-	--title "Shoose the partition" \
-	--menu "Shoose the partition for "$HDDNAME 15 $BoxWhith 7 \
-		$(awk ' { print $HDDNAME"\t"$2 } ' < /tmp/partlist) \
-		2>/tmp/part_name
+	echo "==========================================================================="
+	echo -e "selekt Partition for $1\n"
+	awk '{print NR": "$0}' <<< $PARTLIST
+
+	read -rsn1 PARTNR
+
+	PARTNAME=$(awk -v x="$PARTNR" 'NR == x''{print $1}' <<< $PARTLIST)
 }
 #===============================================================================
+
+
+
+
+
+	#dialog \
+	#--backtitle "PrimeArch" \
+	#--begin $BoxStartY $BoxStartX \
+	#--title "Shoose the partition" \
+	#--menu "Shoose the partition for "$HDDNAME 15 $BoxWhith 7 \
+		#$(awk ' { print $HDDNAME"\t"$2 } ' < /tmp/partlist) \
+		#2>/tmp/part_name
