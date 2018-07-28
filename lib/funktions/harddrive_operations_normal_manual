@@ -84,8 +84,16 @@ function f_manual_partition() {
 			esac
 
 			# Mount SWAP
-			SWAP_MOUNTED="ok"
+			case $ROOT_MOUNTED in
+				ok )
+					;;
+				* )
+					f_mount_swap ;;
+			esac
 
+			
+			
+			
 			# Back to main menu
 			f_manual_partition ;;
 
@@ -137,6 +145,16 @@ function f_mount_home() {
 	mkdir /mnt/home
 	mount -t ext4 -o defaults,noatime,discard /dev/$PARTNAME /mnt/home
 	HOME_MOUNTED="ok"
+}
+
+
+
+function f_mount_swap() {
+	f_generate_partition_menu SWAP
+
+	swapon /dev/$PARTNAME
+
+	SWAP_MOUNTED="ok"
 }
 
 
