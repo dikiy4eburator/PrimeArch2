@@ -78,13 +78,13 @@ function f_manual_partition() {
 						then
 							f_mount_home
 						else
-							BOOT_MOUNTED="ok"
-							break
+							HOME_MOUNTED="ok"
+							:
 					fi
 			esac
 
 			# Mount SWAP
-			case $ROOT_MOUNTED in
+			case $SWAP_MOUNTED in
 				ok )
 					;;
 				* )
