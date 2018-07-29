@@ -106,7 +106,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input_cascade
+				read -rsn input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -121,7 +121,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input_cascade
+				read -rsn input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -137,7 +137,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input_cascade
+				read -rsn input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -152,7 +152,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input_cascade
+				read -rsn input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -167,7 +167,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input_cascade
+				read -rsn input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -182,7 +182,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input_cascade
+				read -rsn input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -197,7 +197,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input_cascade
+				read -rsn input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -212,7 +212,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input_cascade
+				read -rsn input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -227,7 +227,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input_cascade
+				read -rsn input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -246,7 +246,7 @@ function f_input_cascade() {
 						echo -e "==========================================================="
   						echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-						read -N 1 -rs input_cascade
+						read -rsn input_cascade
 
   						if [ "$input_cascade" = "e" ];
   							then
@@ -266,7 +266,7 @@ function f_input_cascade() {
 						echo -e "==========================================================="
   						echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-						read -N 1 -rs input_cascade
+						read -rsn input_cascade
 
   						if [ "$input_cascade" = "e" ];
   							then
@@ -300,7 +300,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back |\t| (5) Start Installation |\t| (9) Ende |"
   				
-				read -N 1 -rs input_cascade
+				read -rsn input_cascade
 
   				if [ "$input_cascade" = "5" ];
   					then
