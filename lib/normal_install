@@ -189,7 +189,7 @@ function f_normal_installation() {
 	
 
 
-	
+
 	arch-chroot /mnt /bin/bash -c "mkinitcpio -p linux"
 	
 	mkdir -p /mnt/boot/virgina
@@ -212,29 +212,8 @@ function f_normal_installation() {
 			arch-chroot /mnt /bin/bash -c "grub-install /dev/$HDDNAME"
 	fi
 
-	# arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
+	mv -f -v $working_dir/lib/configs/btrfs/grub.cfg	/mnt/boot/grub/grub.cfg
 	
-
-	echo "set default=0" 																> /mnt/boot/grub/grub.cfg
-	echo "set timeout=5" 																>> /mnt/boot/grub/grub.cfg
-	echo 																				>> /mnt/boot/grub/grub.cfg
-	echo "menuentry 'Arch Linux' " 														>> /mnt/boot/grub/grub.cfg
-	echo "{" 																			>> /mnt/boot/grub/grub.cfg
-	echo "	insmod all_video" 															>> /mnt/boot/grub/grub.cfg
-	echo "	insmod btrfs" 																>> /mnt/boot/grub/grub.cfg
-	echo 																				>> /mnt/boot/grub/grub.cfg
-	echo "	linux	/ROOT/boot/vmlinuz-linux root=LABEL=ROOT rw rootflags=subvol=ROOT" 	>> /mnt/boot/grub/grub.cfg
-	echo "	initrd	/ROOT/boot/initramfs-linux.img" 									>> /mnt/boot/grub/grub.cfg
-	echo "}"																			>> /mnt/boot/grub/grub.cfg
-	echo "========================================================================="	>> /mnt/boot/grub/grub.cfg
-	echo																										>> /mnt/boot/grub/grub.cfg
-	echo "menuentry 'Arch Linux Virgina' " 																		>> /mnt/boot/grub/grub.cfg
-	echo "{" 																									>> /mnt/boot/grub/grub.cfg
-	echo "	insmod all_video" 																					>> /mnt/boot/grub/grub.cfg
-	echo "	insmod btrfs" 																						>> /mnt/boot/grub/grub.cfg
-	echo  																										>> /mnt/boot/grub/grub.cfg
-	echo "	linux	/ROOT/boot/virgina/vmlinuz-linux root=LABEL=ROOT rw rootflags=subvol=snapshots/virgina" 	>> /mnt/boot/grub/grub.cfg
-	echo "	initrd	/ROOT/boot/virgina/initramfs-linux.img" 													>> /mnt/boot/grub/grub.cfg
-	echo "}" 																									>> /mnt/boot/grub/grub.cfg
+	# arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 	#===============================================================================
 }
