@@ -68,9 +68,10 @@ function f_normal_installation() {
 	#Set ROOT
 	#===============================================================================
 	case $ROOTACCOUNT in
-		yes )
+		enabled )
 			f_set_root_pw ;;
-		no )
+			
+		disabled )
 			arch-chroot /mnt /bin/bash -c "passwd -l root" ;;
 	esac
 	#===============================================================================

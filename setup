@@ -18,7 +18,7 @@ MAXPAGES=12
 LANGUAGE=German
 USERNAME=user
 USERPASSWORD=user
-ROOTACCOUNT=no
+ROOTACCOUNT=disabled
 ROOTPASSWORD=root
 TIMEZONE=Europe
 TIMESUBZONE=Berlin
@@ -82,19 +82,6 @@ function f_input_cascade() {
 
 	while $setup_process ; do
 		
-		#===== Stay in Range 1 -> MAXPAGES================================================
-
-		if [ "$input_cascade_index" = $(( $MAXPAGES + 1 )) ] ;
-			then
-  				input_cascade_index=$MAXPAGES
-  		
-  		elif [ "$input_cascade_index" = "0" ]; 
-  			then
-  				input_cascade_index=1
-  		fi
-		#=================================================================================
-
-
 		clear
 		
 		case $input_cascade_index in
@@ -106,7 +93,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn input_cascade
+				read -rsn1 input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -121,7 +108,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn input_cascade
+				read -rsn1 input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -131,13 +118,13 @@ function f_input_cascade() {
 			3 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
 				echo -e "==========================================================="
-				echo -e "Enter a Password for $USERNAME."
-				echo -e "Default Password is: user\n\n"
+				echo -e "Enter a Password for $USERNAME.\n"
+				echo -e "Default Password is: user"
 				echo -e "Aktual password: :) "
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn input_cascade
+				read -rsn1 input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -152,7 +139,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn input_cascade
+				read -rsn1 input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -167,7 +154,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn input_cascade
+				read -rsn1 input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -182,7 +169,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn input_cascade
+				read -rsn1 input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -197,7 +184,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn input_cascade
+				read -rsn1 input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -212,7 +199,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn input_cascade
+				read -rsn1 input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -227,7 +214,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -rsn input_cascade
+				read -rsn1 input_cascade
 
   				if [ "$input_cascade" = "e" ];
   					then
@@ -246,7 +233,7 @@ function f_input_cascade() {
 						echo -e "==========================================================="
   						echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-						read -rsn input_cascade
+						read -rsn1 input_cascade
 
   						if [ "$input_cascade" = "e" ];
   							then
@@ -266,7 +253,7 @@ function f_input_cascade() {
 						echo -e "==========================================================="
   						echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-						read -rsn input_cascade
+						read -rsn1 input_cascade
 
   						if [ "$input_cascade" = "e" ];
   							then
@@ -300,7 +287,7 @@ function f_input_cascade() {
 				echo -e "==========================================================="
   				echo -e "(1) Back |\t| (5) Start Installation |\t| (9) Ende |"
   				
-				read -rsn input_cascade
+				read -rsn1 input_cascade
 
   				if [ "$input_cascade" = "5" ];
   					then
@@ -324,6 +311,22 @@ function f_input_cascade() {
     		then
     			setup_process=false
   		fi
+
+
+		#===== Stay in Range 1 -> MAXPAGES================================================
+
+		if [ "$input_cascade_index" = $(( $MAXPAGES + 1 )) ] ;
+			then
+  				input_cascade_index=$MAXPAGES
+  		
+  		elif [ "$input_cascade_index" = "0" ]; 
+  			then
+  				input_cascade_index=1
+  		fi
+		#=================================================================================
+
+
+		
 		
   	done
 }

@@ -63,7 +63,7 @@ function f_SetRootAccount() {
 
   	if [ "$input_root" = "1" ];
   		then
-    		ROOTACCOUNT=no
+    		ROOTACCOUNT=disabled
   		
   	elif [ "$input_root" = "2" ];
   		then
@@ -73,7 +73,7 @@ function f_SetRootAccount() {
 			echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
 			echo -n "New password: " ; read ROOTPASSWORD
 				
-			ROOTACCOUNT=yes
+			ROOTACCOUNT=enabled
   	fi
 }
 
