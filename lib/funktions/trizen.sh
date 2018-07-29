@@ -4,6 +4,6 @@ cd /tmp
 
 git clone https://aur.archlinux.org/trizen.git
 cd trizen
-makepkg -si
+makepkg --noconfirm -si
 
 exit

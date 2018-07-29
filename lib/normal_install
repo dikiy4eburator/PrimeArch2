@@ -135,16 +135,20 @@ function f_normal_installation() {
 
 
 
-	# INSTALL trizen
+	# FIX USER HOME OWNERSHIP
 	#===============================================================================
-	f_install_trizen
+	arch-chroot /mnt /bin/bash -c "chown -R $USERNAME:users /home/$USERNAME"
+	arch-chroot /mnt /bin/bash -c "chmod -R 0700 /home/$USERNAME"
 	#===============================================================================
 
 
 
 	# INSTALL YAOURT COSMETICS
 	#===============================================================================
+	
+	f_install_trizen
 	f_install_aur_cosmetiks
+	
 	#arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME trizen -S --noconfirm grub-btrfs"
 	#===============================================================================
 
@@ -153,14 +157,6 @@ function f_normal_installation() {
 	# GO BACK TO  PASSWORD MODE
 	#===============================================================================
 	mv -f -v /mnt/etc/sudoers.back /mnt/etc/sudoers
-	#===============================================================================
-
-
-
-	# FIX USER HOME OWNERSHIP
-	#===============================================================================
-	arch-chroot /mnt /bin/bash -c "chown -R $USERNAME:users /home/$USERNAME"
-	arch-chroot /mnt /bin/bash -c "chmod -R 0700 /home/$USERNAME"
 	#===============================================================================
 
 	
