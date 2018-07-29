@@ -84,7 +84,7 @@ function f_input_cascade() {
 		
 		#===== Stay in Range 1 -> MAXPAGES================================================
 
-		if [ "$input_cascade_index" = "$(( $MAXPAGES + 1 ))" ;
+		if [ "$input_cascade_index" = $(( $MAXPAGES + 1 )) ] ;
 			then
   				input_cascade_index=$MAXPAGES
   		
@@ -310,7 +310,7 @@ function f_input_cascade() {
 
 			esac
   		 
-  		read -rsn1 input_cascade
+  		read -rsn input_cascade
 		  	
   		if [ "$input_cascade" = "1" ];
   			then
@@ -363,9 +363,11 @@ function f_start_setup() {
 
 
 
-
+# " MAIN "
 f_input_cascade
 
+
+# END SETUP
 clear
 echo -e "==============================================================="
 echo -e "PrimeArch was installed\n\n"
