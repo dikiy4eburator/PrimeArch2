@@ -26,7 +26,7 @@ function f_install_i3_cosmetics() {
 
 	rm -R /mnt/home/$USERNAME/.config/i3
 	git clone https://github.com/dikiy4eburator/i3-config.git /mnt/home/$USERNAME/.config/i3
-	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm polybar-git"
+	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME trizen --noconfirm -S polybar-git"
 }
 #===============================================================================
 

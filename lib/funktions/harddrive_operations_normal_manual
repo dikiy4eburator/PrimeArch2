@@ -21,8 +21,9 @@ function f_manual_partition() {
   				
 	read -rsn1 input_man_hdd
 
-  	if [ "$input_man_hdd" = "9" ]; then
-	   	exit
+  	if [ "$input_man_hdd" = "9" ];
+  		then
+	   		exit
   	fi
 
 
@@ -49,15 +50,16 @@ function f_manual_partition() {
 			esac
 
 			# Mount BOOT
-			if [[ -d "/sys/firmware/efi/efivars" ]] ; then
-				case $BOOT_MOUNTED in
-					ok )
-						;;
-					* )
-						f_mount_boot ;;
-				esac
-			else
-				:
+			if [[ -d "/sys/firmware/efi/efivars" ]] ;
+				then
+					case $BOOT_MOUNTED in
+						ok )
+							;;
+						* )
+							f_mount_boot ;;
+					esac
+				else
+					:
 			fi
 
 			# Mount HOME
