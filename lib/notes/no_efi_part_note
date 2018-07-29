@@ -1,0 +1,11 @@
+Please make shure you make folowing partitions:
+
+1. BOOT ca. 5 Mb ( code: ef02)
+2. SWAP At yor shoise ( code: 8200 )
+
+if you want an extra HOME partition
+2. ROOT ca. 20-40 Gb ( code: 8300 )
+3. HOME rest of the harddrive ( code: 8300 )
+
+otherwise you can give the rest of the memory
+to the ROOT partition.

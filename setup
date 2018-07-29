@@ -63,6 +63,7 @@ source $working_dir/lib/funktions/harddrive_operations_normal_manual
 source $working_dir/lib/funktions/harddrive_operations_btrfs
 
 source $working_dir/lib/funktions/user_operations
+source $working_dir/lib/funktions/languge_operations
 source $working_dir/lib/funktions/install_pacages
 
 
@@ -110,9 +111,9 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input
+				read -N 1 -rs input_cascade
 
-  				if [ "$input" = "e" ]; then
+  				if [ "$input_cascade" = "e" ]; then
     				f_SetLanguage
   				fi
 				;;
@@ -125,9 +126,9 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input
+				read -N 1 -rs input_cascade
 
-  				if [ "$input" = "e" ]; then
+  				if [ "$input_cascade" = "e" ]; then
     				f_SetUserName
   				fi
 				;;
@@ -141,9 +142,9 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input
+				read -N 1 -rs input_cascade
 
-  				if [ "$input" = "e" ]; then
+  				if [ "$input_cascade" = "e" ]; then
     				f_SetUserPassword
   				fi
   				;;
@@ -156,9 +157,9 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input
+				read -N 1 -rs input_cascade
 
-  				if [ "$input" = "e" ]; then
+  				if [ "$input_cascade" = "e" ]; then
     				f_SetRootAccount
   				fi
 				;;
@@ -171,9 +172,9 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input
+				read -N 1 -rs input_cascade
 
-  				if [ "$input" = "e" ]; then
+  				if [ "$input_cascade" = "e" ]; then
     				f_SetTimezone
   				fi
 				;;
@@ -186,9 +187,9 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input
+				read -N 1 -rs input_cascade
 
-  				if [ "$input" = "e" ]; then
+  				if [ "$input_cascade" = "e" ]; then
     				f_SetHostname
   				fi
 				;;
@@ -201,9 +202,9 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input
+				read -N 1 -rs input_cascade
 
-  				if [ "$input" = "e" ]; then
+  				if [ "$input_cascade" = "e" ]; then
     				f_SetDesktop
   				fi
 				;;
@@ -216,9 +217,9 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input
+				read -N 1 -rs input_cascade
 
-  				if [ "$input" = "e" ]; then
+  				if [ "$input_cascade" = "e" ]; then
     				f_SetGrefikdriver
   				fi
 				;;
@@ -231,9 +232,9 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-				read -N 1 -rs input
+				read -N 1 -rs input_cascade
 
-  				if [ "$input" = "e" ]; then
+  				if [ "$input_cascade" = "e" ]; then
     				f_SetInstallmode
   				fi
 				;;
@@ -249,9 +250,9 @@ function f_game_master() {
 					echo -e "==========================================================="
   					echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-					read -N 1 -rs input
+					read -N 1 -rs input_cascade
 
-  					if [ "$input" = "e" ]; then
+  					if [ "$input_cascade" = "e" ]; then
     					f_generate_harddrive_menu
   					fi
   				fi
@@ -268,9 +269,9 @@ function f_game_master() {
 					echo -e "==========================================================="
   					echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-					read -N 1 -rs input
+					read -N 1 -rs input_cascade
 
-  					if [ "$input" = "e" ]; then
+  					if [ "$input_cascade" = "e" ]; then
     					f_set_swap_size
   					fi
   				fi
@@ -301,9 +302,9 @@ function f_game_master() {
 				echo -e "==========================================================="
   				echo -e "(1) Back |\t| (5) Start Installation |\t| (9) Ende |"
   				
-				read -N 1 -rs input
+				read -N 1 -rs input_cascade
 
-  				if [ "$input" = "5" ]; then
+  				if [ "$input_cascade" = "5" ]; then
     				f_start_setup
     				break
   				fi
@@ -311,15 +312,13 @@ function f_game_master() {
 
 			esac
   		 
-  		read -rsn input
-
-		  
+  		read -rsn input_cascade
 		  	
-  		if [ "$input" = "1" ]; then
+  		if [ "$input_cascade" = "1" ]; then
     		input_cascade_index=$(( $input_cascade_index - 1 ))
-  		elif [ "$input" = "2" ]; then
+  		elif [ "$input_cascade" = "2" ]; then
     		input_cascade_index=$(( $input_cascade_index + 1 ))
-    	elif [ "$input" = "9" ]; then
+    	elif [ "$input_cascade" = "9" ]; then
     		exit
   		fi
 		

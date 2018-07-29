@@ -13,17 +13,14 @@ function f_pakage_install() {
 
 
 
-
-
-
-
-
 # Desktops installation
 #===============================================================================
 
 function f_install_desktop() {
 	f_pakage_install $1
 }
+
+
 
 function f_install_i3_cosmetics() {
 
@@ -32,13 +29,6 @@ function f_install_i3_cosmetics() {
 	arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME yaourt -S --noconfirm polybar-git"
 }
 #===============================================================================
-
-
-
-
-
-
-
 
 
 

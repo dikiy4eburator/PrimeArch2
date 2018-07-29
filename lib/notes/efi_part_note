@@ -1,0 +1,11 @@
+Please make shure you make folowing partitions:
+
+1. EFI ca. 100-256 Mb ( code: ef00 )
+2. SWAP At yor shoise ( code: 8200 )
+	
+if you want an extra HOME partition
+3. ROOT ca. 20-40 Gb ( code: 8300 )
+4. HOME rest of the harddrive ( code: 8300 )
+
+otherwise you can give the rest of the memory
+to the ROOT partition

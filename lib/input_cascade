@@ -208,7 +208,6 @@ function f_set_swap_size()
 
 		echo "==========================================================================="
 		echo -e "How mutch SWAP do you want\n"
-		echo -e "0. NO SWAP"
 		echo -e "1.\t1024 MB"
 		echo -e "2.\t2048 MB"
 		echo -e "3.\t4096 MB"
@@ -227,8 +226,6 @@ function f_set_swap_size()
     		SWAPSIZE=8192M
     	elif [ "$input_swap" = "5" ]; then
     		SWAPSIZE=16384M
-    	elif [ "$input_swap" = "0" ]; then
-    		SWAPSIZE=0M
     	fi
 }
 
@@ -241,7 +238,7 @@ function f_SetInstallmode()
 		echo "Please select the Instalation mod\n"
 		echo "1. Auto"
 		echo "2. Manual"
-		echo "3. Root on ZFS !!! DISABLED !!!"
+		# echo "3. Root on ZFS !!! DISABLED !!!"
 				
 		read -rsn1 input_instal_mod
 
@@ -249,8 +246,8 @@ function f_SetInstallmode()
     		INSTALLMOD=Auto
   		elif [ "$input_instal_mod" = "2" ]; then
     		INSTALLMOD=manual
-  		elif [ "$input_instal_mod" = "3" ]; then
-    		INSTALLMOD=DISABLED	
+  		# elif [ "$input_instal_mod" = "3" ]; then
+    		# INSTALLMOD=DISABLED	
     	fi
 	}
 
