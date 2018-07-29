@@ -206,7 +206,7 @@ function f_set_swap_size()
 	{
 		clear
 
-		echo "==========================================================================="
+		echo -e "==========================================================================="
 		echo -e "How mutch SWAP do you want\n"
 		echo -e "1.\t1024 MB"
 		echo -e "2.\t2048 MB"
@@ -234,10 +234,10 @@ function f_SetInstallmode()
 	{
 		clear
 		
-		echo "============================================================================"
-		echo "Please select the Instalation mod\n"
-		echo "1. Auto"
-		echo "2. Manual"
+		echo -e "============================================================================"
+		echo -e "Please select the Instalation mod\n"
+		echo -e "1. Auto"
+		echo -e "2. Manual"
 		# echo "3. Root on ZFS !!! DISABLED !!!"
 				
 		read -rsn1 input_instal_mod
