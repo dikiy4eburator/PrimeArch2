@@ -262,20 +262,20 @@ function f_input_cascade() {
 				echo -e "==========================================================="
 				echo -e "Summary:"
 				echo -e ""
-				echo -e "Languge:\t\t$LANGUAGE"
-				echo -e "User:\t\t\t$USERNAME"
-				echo -e "User password:\t\t$USERPASSWORD"
-				echo -e "Activate Root:\t\t$ROOTACCOUNT"
-				echo -e "Timezone:\t\t$TIMEZONE | $TIMESUBZONE | $TIMEFORMAT"
-				echo -e "Hostname:\t\t$HOSTNAME"
-				echo -e "Desktop:\t\t$DESKTOP"
-				echo -e "Grefikdriver:\t\t$GRAFIKDRIVER"
-				echo -e "Installmode:\t\t$INSTALLMOD"
+				echo -e "Languge:\t$LANGUAGE"
+				echo -e "User:\t\t$USERNAME"
+				echo -e "User password:\t:)"
+				echo -e "Root account:\t$ROOTACCOUNT"
+				echo -e "Timezone:\t$TIMEZONE | $TIMESUBZONE | $TIMEFORMAT"
+				echo -e "Hostname:\t$HOSTNAME"
+				echo -e "Desktop:\t$DESKTOP"
+				echo -e "Grefikdriver:\t$GRAFIKDRIVER"
+				echo -e "Installmode:\t$INSTALLMOD"
 				
 				if [ "$INSTALLMOD" = "Auto" ];
 					then
-    					echo -e "Harddrive:\t\t$HDDNAME"
-						echo -e "SWAP size:\t\t$SWAPSIZE MB\n"
+    					echo -e "Harddrive:\t$HDDNAME"
+						echo -e "SWAP size:\t$SWAPSIZE MB\n"
     			fi
 				
 				echo -e "==========================================================="
