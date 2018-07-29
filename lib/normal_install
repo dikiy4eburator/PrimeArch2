@@ -104,7 +104,7 @@ function f_normal_installation() {
 		cinnamon )
 			f_install_desktop pakages_cinnamon ;;
 		
-		"No Desktop" )
+		"nodesktop" )
 			;;
 	esac
 	#===============================================================================
@@ -129,7 +129,7 @@ function f_normal_installation() {
 		Nouveau )
 			pacstrap /mnt xf86-video-nouveau ;;
 		
-		"No Video driver" )
+		"nografik" )
 			;;
 	esac
 	#===============================================================================

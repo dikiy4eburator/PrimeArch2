@@ -222,10 +222,8 @@ function f_input_cascade() {
   				fi ;;
 
 			10 )
-				if [ "$INSTALLMOD" = "manual" ];
+				if [ "$INSTALLMOD" = "Auto" ];
 					then
-    					:
-    				else
     					echo -e "Page $input_cascade_index of $MAXPAGES"					
 						echo -e "==========================================================="
 						echo -e "Select a harddrive for the installation\n\n"
@@ -242,10 +240,8 @@ function f_input_cascade() {
   				fi ;;
 
 			11 )
-				if [ "$INSTALLMOD" = "manual" ];
+				if [ "$INSTALLMOD" = "Auto" ];
 					then
-    					:
-    				else
     					echo -e "Page $input_cascade_index of $MAXPAGES"
 						echo -e "==========================================================="
 						echo -e "Select the size of the SWAP.\n\n"
@@ -276,13 +272,11 @@ function f_input_cascade() {
 				echo -e "Grefikdriver:\t\t$GRAFIKDRIVER"
 				echo -e "Installmode:\t\t$INSTALLMOD"
 				
-				if [ "$INSTALLMOD" = "manual" ];
+				if [ "$INSTALLMOD" = "Auto" ];
 					then
-    					:
-    				else
-						echo -e "Harddrive:\t\t$HDDNAME"
+    					echo -e "Harddrive:\t\t$HDDNAME"
 						echo -e "SWAP size:\t\t$SWAPSIZE MB\n"
-				fi
+    			fi
 				
 				echo -e "==========================================================="
   				echo -e "(1) Back |\t| (5) Start Installation |\t| (9) Ende |"
@@ -314,7 +308,6 @@ function f_input_cascade() {
 
 
 		#===== Stay in Range 1 -> MAXPAGES================================================
-
 		if [ "$input_cascade_index" = $(( $MAXPAGES + 1 )) ] ;
 			then
   				input_cascade_index=$MAXPAGES

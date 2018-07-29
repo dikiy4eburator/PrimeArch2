@@ -77,57 +77,56 @@ function f_SetRootAccount() {
   	fi
 }
 
-function f_SetTimezone()
-	{
-		# SET TIME
-		#====================================================================================
-		# SET TIMEZONE
-		ls -l /usr/share/zoneinfo/ | awk '{ if($1 ~ /d/ && $9 !~ /posix/ && $9 !~ /right/ && $9 !~ /Etc/) print $9 " " ++s}' > /tmp/time_region_in
+function f_SetTimezone() {
+	# SET TIME
+	#====================================================================================
+	# SET TIMEZONE
+	ls -l /usr/share/zoneinfo/ | awk '{ if($1 ~ /d/ && $9 !~ /posix/ && $9 !~ /right/ && $9 !~ /Etc/) print $9 " " ++s}' > /tmp/time_region_in
 
-		dialog \
-		--backtitle "PrimeArch Installer" \
-		--title "Time setup" \
-		--begin $BoxStartY $BoxStartX \
-		--menu "\nSelect your regeon" 20 $BoxWhith 20 \
-			$( awk '{ print }' < /tmp/time_region_in ) \
-			2>/tmp/time_region_out
+	dialog \
+	--backtitle "PrimeArch Installer" \
+	--title "Time setup" \
+	--begin $BoxStartY $BoxStartX \
+	--menu "\nSelect your regeon" 20 $BoxWhith 20 \
+		$( awk '{ print }' < /tmp/time_region_in ) \
+		2>/tmp/time_region_out
 
-		TIMEZONE=$(awk '{print}' < /tmp/time_region_out)
-		rm /tmp/time_region_out
-
-
-
-		# SET SUBTIMEZONE
-		ls -l /usr/share/zoneinfo/$TIMEZONE | awk 'NR>=2{ print $9 " " ++s }' > /tmp/time_subregion_in
-
-		dialog \
-		--backtitle "PrimeArch Installer" \
-		--title "Time setup" \
-		--begin $BoxStartY $BoxStartX \
-		--menu "\nSelect your sub regeon" 20 $BoxWhith 20 \
-			$( awk '{ print }' < /tmp/time_subregion_in ) \
-			2>/tmp/time_subregion_out
-
-		TIMESUBZONE=$(awk '{print}' < /tmp/time_subregion_out)
-		rm /tmp/time_subregion_out
+	TIMEZONE=$(awk '{print}' < /tmp/time_region_out)
+	rm /tmp/time_region_out
 
 
 
-		# SET TIMEFORMAT
-		dialog \
-		--backtitle "PrimeArch Installer" \
-		--title "Time setup" \
-		--begin $BoxStartY $BoxStartX \
-		--menu "\nSelect the time format" 11 $BoxWhith 2 \
-			utc         1 \
-			localtime   2 \
-			2>/tmp/time_format
+	# SET SUBTIMEZONE
+	ls -l /usr/share/zoneinfo/$TIMEZONE | awk 'NR>=2{ print $9 " " ++s }' > /tmp/time_subregion_in
 
-		TIMEFORMAT=$(awk '{print}' 	< /tmp/time_format)
-		rm /tmp/time_format
+	dialog \
+	--backtitle "PrimeArch Installer" \
+	--title "Time setup" \
+	--begin $BoxStartY $BoxStartX \
+	--menu "\nSelect your sub regeon" 20 $BoxWhith 20 \
+		$( awk '{ print }' < /tmp/time_subregion_in ) \
+		2>/tmp/time_subregion_out
+
+	TIMESUBZONE=$(awk '{print}' < /tmp/time_subregion_out)
+	rm /tmp/time_subregion_out
+
+
+
+	# SET TIMEFORMAT
+	dialog \
+	--backtitle "PrimeArch Installer" \
+	--title "Time setup" \
+	--begin $BoxStartY $BoxStartX \
+	--menu "\nSelect the time format" 11 $BoxWhith 2 \
+		utc         1 \
+		localtime   2 \
+		2>/tmp/time_format
+
+	TIMEFORMAT=$(awk '{print}' 	< /tmp/time_format)
+	rm /tmp/time_format
 		
-		#====================================================================================
-	}
+	#====================================================================================
+}
 
 
 function f_SetHostname() {
@@ -274,19 +273,4 @@ function f_SetInstallmode() {
   		then
     		INSTALLMOD=manual
   	fi
-}
-
-
-function f_SetHarddrive() {
-	# read devices
-	HDDLIST=$(lsblk -o NAME,SIZE,MODEL,TYPE | grep disk)
-	
-	clear
-	echo "==========================================================================="
-	echo -e "selekt harddrive for the installation\n"
-	awk '{print NR": "$0}' <<< $HDDLIST
-		
-	read -rsn1 HDDNR
-
-	HDDNAME=$(awk -v x="$HDDNR" 'NR == x''{print $1}' <<< $HDDLIST)
 }
