@@ -4,7 +4,6 @@
 # //////////////////    VARIABELS DEFINITION    //////////////
 # ////////////////////////////////////////////////////////////
 
-# set Variabels
 BoxWhith=70
 consol_X=$(tput cols)
 consol_Y=$(tput lines)
@@ -29,7 +28,7 @@ DESKTOP=cinnamon
 GRAFIKDRIVER=virtualbox
 
 INSTALLMOD=Auto
-SWAPSIZE=2048M
+SWAPSIZE=1024M
 HDDNAME=none
 
 # variables for manual munting only
@@ -54,10 +53,6 @@ SWAP_MOUNTED="not mounted"
 # //////////////////    INCLUDES			    //////////////
 # ////////////////////////////////////////////////////////////
 
-source $working_dir/lib/input_cascade
-source $working_dir/lib/normal_install
-
-
 source $working_dir/lib/funktions/harddrive_operations
 source $working_dir/lib/funktions/harddrive_operations_normal_manual
 source $working_dir/lib/funktions/harddrive_operations_btrfs
@@ -66,9 +61,8 @@ source $working_dir/lib/funktions/user_operations
 source $working_dir/lib/funktions/languge_operations
 source $working_dir/lib/funktions/install_pacages
 
-
-# source $working_dir/lib/zfs_install
-# source $working_dir/lib/funktions/harddrive_operations_zfs
+source $working_dir/lib/input_cascade
+source $working_dir/lib/normal_install
 #===============================================================================
 
 
@@ -84,18 +78,19 @@ source $working_dir/lib/funktions/install_pacages
 # //////////////////    INPUT CASKADE	   ///////////////////
 # ////////////////////////////////////////////////////////////
 
-function f_game_master() {
+function f_input_cascade() {
 
 	while $setup_process ; do
 		
 		#===== Stay in Range 1 -> MAXPAGES================================================
 
-		if [ "$input_cascade_index" = "$(( $MAXPAGES + 1 ))" ; then
-  			input_cascade_index=$MAXPAGES
-  		fi
-
-  		if [ "$input_cascade_index" = "0" ]; then
-  			input_cascade_index=1
+		if [ "$input_cascade_index" = "$(( $MAXPAGES + 1 ))" ;
+			then
+  				input_cascade_index=$MAXPAGES
+  		
+  		elif [ "$input_cascade_index" = "0" ]; 
+  			then
+  				input_cascade_index=1
   		fi
 		#=================================================================================
 
@@ -113,10 +108,10 @@ function f_game_master() {
   				
 				read -N 1 -rs input_cascade
 
-  				if [ "$input_cascade" = "e" ]; then
-    				f_SetLanguage
-  				fi
-				;;
+  				if [ "$input_cascade" = "e" ];
+  					then
+    					f_SetLanguage
+  				fi ;;
 
 			2 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
@@ -128,10 +123,10 @@ function f_game_master() {
   				
 				read -N 1 -rs input_cascade
 
-  				if [ "$input_cascade" = "e" ]; then
-    				f_SetUserName
-  				fi
-				;;
+  				if [ "$input_cascade" = "e" ];
+  					then
+    					f_SetUserName
+  				fi ;;
 
 			3 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
@@ -144,10 +139,10 @@ function f_game_master() {
   				
 				read -N 1 -rs input_cascade
 
-  				if [ "$input_cascade" = "e" ]; then
-    				f_SetUserPassword
-  				fi
-  				;;
+  				if [ "$input_cascade" = "e" ];
+  					then
+    					f_SetUserPassword
+  				fi ;;
 
 			4 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
@@ -159,10 +154,10 @@ function f_game_master() {
   				
 				read -N 1 -rs input_cascade
 
-  				if [ "$input_cascade" = "e" ]; then
-    				f_SetRootAccount
-  				fi
-				;;
+  				if [ "$input_cascade" = "e" ];
+  					then
+    					f_SetRootAccount
+  				fi ;;
 
 			5 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
@@ -174,10 +169,10 @@ function f_game_master() {
   				
 				read -N 1 -rs input_cascade
 
-  				if [ "$input_cascade" = "e" ]; then
-    				f_SetTimezone
-  				fi
-				;;
+  				if [ "$input_cascade" = "e" ];
+  					then
+    					f_SetTimezone
+  				fi ;;
 
 			6 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
@@ -189,10 +184,10 @@ function f_game_master() {
   				
 				read -N 1 -rs input_cascade
 
-  				if [ "$input_cascade" = "e" ]; then
-    				f_SetHostname
-  				fi
-				;;
+  				if [ "$input_cascade" = "e" ];
+  					then
+    					f_SetHostname
+  				fi ;;
 
 			7 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
@@ -204,10 +199,10 @@ function f_game_master() {
   				
 				read -N 1 -rs input_cascade
 
-  				if [ "$input_cascade" = "e" ]; then
-    				f_SetDesktop
-  				fi
-				;;
+  				if [ "$input_cascade" = "e" ];
+  					then
+    					f_SetDesktop
+  				fi ;;
 
 			8 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
@@ -219,10 +214,10 @@ function f_game_master() {
   				
 				read -N 1 -rs input_cascade
 
-  				if [ "$input_cascade" = "e" ]; then
-    				f_SetGrefikdriver
-  				fi
-				;;
+  				if [ "$input_cascade" = "e" ];
+  					then
+    					f_SetGrefikdriver
+  				fi ;;
 
 			9 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"					
@@ -234,48 +229,50 @@ function f_game_master() {
   				
 				read -N 1 -rs input_cascade
 
-  				if [ "$input_cascade" = "e" ]; then
-    				f_SetInstallmode
-  				fi
-				;;
+  				if [ "$input_cascade" = "e" ];
+  					then
+    					f_SetInstallmode
+  				fi ;;
 
 			10 )
-				if [ "$INSTALLMOD" = "manual" ]; then
-    				:
-    			else
-    				echo -e "Page $input_cascade_index of $MAXPAGES"					
-					echo -e "==========================================================="
-					echo -e "Select a harddrive for the installation\n\n"
-					echo -e "Aktual harddrive: $HDDNAME"
-					echo -e "==========================================================="
-  					echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
+				if [ "$INSTALLMOD" = "manual" ];
+					then
+    					:
+    				else
+    					echo -e "Page $input_cascade_index of $MAXPAGES"					
+						echo -e "==========================================================="
+						echo -e "Select a harddrive for the installation\n\n"
+						echo -e "Aktual harddrive: $HDDNAME"
+						echo -e "==========================================================="
+  						echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-					read -N 1 -rs input_cascade
+						read -N 1 -rs input_cascade
 
-  					if [ "$input_cascade" = "e" ]; then
-    					f_generate_harddrive_menu
-  					fi
-  				fi
-				;;
+  						if [ "$input_cascade" = "e" ];
+  							then
+    							f_generate_harddrive_menu
+  						fi
+  				fi ;;
 
 			11 )
-				if [ "$INSTALLMOD" = "manual" ]; then
-    				:
-    			else
-    				echo -e "Page $input_cascade_index of $MAXPAGES"
-					echo -e "==========================================================="
-					echo -e "Select the size of the SWAP.\n\n"
-					echo -e "Aktual SWAP size: $SWAPSIZE"
-					echo -e "==========================================================="
-  					echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
+				if [ "$INSTALLMOD" = "manual" ];
+					then
+    					:
+    				else
+    					echo -e "Page $input_cascade_index of $MAXPAGES"
+						echo -e "==========================================================="
+						echo -e "Select the size of the SWAP.\n\n"
+						echo -e "Aktual SWAP size: $SWAPSIZE"
+						echo -e "==========================================================="
+  						echo -e "(1) Back | (2) Next | (e) Edit |\t\t| (9) End |"
   				
-					read -N 1 -rs input_cascade
+						read -N 1 -rs input_cascade
 
-  					if [ "$input_cascade" = "e" ]; then
-    					f_set_swap_size
-  					fi
-  				fi
-				;;
+  						if [ "$input_cascade" = "e" ];
+  							then
+    							f_set_swap_size
+  						fi
+  				fi ;;
 
 			12 )
 				echo -e "Page $input_cascade_index of $MAXPAGES"
@@ -292,11 +289,12 @@ function f_game_master() {
 				echo -e "Grefikdriver:\t\t$GRAFIKDRIVER"
 				echo -e "Installmode:\t\t$INSTALLMOD"
 				
-				if [ "$INSTALLMOD" = "manual" ]; then
-    				:
-    			else
-					echo -e "Harddrive:\t\t$HDDNAME"
-					echo -e "SWAP size:\t\t$SWAPSIZE MB\n"
+				if [ "$INSTALLMOD" = "manual" ];
+					then
+    					:
+    				else
+						echo -e "Harddrive:\t\t$HDDNAME"
+						echo -e "SWAP size:\t\t$SWAPSIZE MB\n"
 				fi
 				
 				echo -e "==========================================================="
@@ -304,22 +302,27 @@ function f_game_master() {
   				
 				read -N 1 -rs input_cascade
 
-  				if [ "$input_cascade" = "5" ]; then
-    				f_start_setup
-    				break
-  				fi
-				;;
+  				if [ "$input_cascade" = "5" ];
+  					then
+    					f_start_setup
+    					break
+  				fi ;;
 
 			esac
   		 
-  		read -rsn input_cascade
+  		read -rsn1 input_cascade
 		  	
-  		if [ "$input_cascade" = "1" ]; then
-    		input_cascade_index=$(( $input_cascade_index - 1 ))
-  		elif [ "$input_cascade" = "2" ]; then
-    		input_cascade_index=$(( $input_cascade_index + 1 ))
-    	elif [ "$input_cascade" = "9" ]; then
-    		exit
+  		if [ "$input_cascade" = "1" ];
+  			then
+    			input_cascade_index=$(( $input_cascade_index - 1 ))
+  		
+  		elif [ "$input_cascade" = "2" ];
+  			then
+    			input_cascade_index=$(( $input_cascade_index + 1 ))
+    	
+    	elif [ "$input_cascade" = "9" ];
+    		then
+    			setup_process=false
   		fi
 		
   	done
@@ -348,12 +351,6 @@ function f_start_setup() {
 		manual )
 			f_manual_partition
 			f_normal_installation ;;
-		
-		zfs )
-			f_zfs_harddrive_preparation
-			f_zfs_installation ;;
-		
-		
 	esac
 }
 #===============================================================================
@@ -367,11 +364,11 @@ function f_start_setup() {
 
 
 
-f_game_master
+f_input_cascade
 
 clear
 echo -e "==============================================================="
-echo -e "Press ENTER to finish"
+echo -e "PrimeArch was installed\n\n"
 echo -e "==============================================================="
 echo -e "\t\t\t\t\t\t| (ENTER) End |"
 

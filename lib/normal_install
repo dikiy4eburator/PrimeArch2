@@ -6,7 +6,7 @@ function f_normal_installation() {
 	#===============================================================================
 	clear
 	echo -e "==========================================================="
-	echo -e "	\nUpdating Mirrorlist\n\nPlease do not close the terminal\nthis could take some time\n"
+	echo -e "Updating Mirrorlist\n\n\nPlease do not close the terminal\nthis could take some time\n"
 	echo -e "==========================================================="
 	
 	reflector --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
@@ -145,11 +145,8 @@ function f_normal_installation() {
 
 	# INSTALL YAOURT COSMETICS
 	#===============================================================================
-	
 	f_install_trizen
 	f_install_aur_cosmetiks
-	
-	#arch-chroot /mnt /bin/bash -c "sudo -u $USERNAME trizen -S --noconfirm grub-btrfs"
 	#===============================================================================
 
 
@@ -182,23 +179,13 @@ function f_normal_installation() {
 	# lightdm
 	arch-chroot /mnt /bin/bash -c "systemctl enable lightdm.service"
 	#===============================================================================
-	
 
 
-
-	arch-chroot /mnt /bin/bash -c "mkinitcpio -p linux"
-	
-	mkdir -p /mnt/boot/virgina
-	
-	cp -f -v /mnt/boot/vmlinuz-linux			/mnt/boot/virgina/vmlinuz-linux
-	cp -f -v /mnt/boot/initramfs-linux.img		/mnt/boot/virgina/initramfs-linux.img
-
-	arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"
-	
 
 
 	#GRUB INSTALLATION
 	#===============================================================================
+	
 	if [[ -d "/sys/firmware/efi/efivars" ]];
 		then
 			# install grub efi
@@ -208,8 +195,25 @@ function f_normal_installation() {
 			arch-chroot /mnt /bin/bash -c "grub-install /dev/$HDDNAME"
 	fi
 
-	mv -f -v $working_dir/lib/configs/btrfs/grub.cfg	/mnt/boot/grub/grub.cfg
 	
-	# arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
+
+	# Generate grub.cfg
+	#------------------------------------------------------------------------------
+	if [ "$INSTALLMOD" = "Auto" ];
+		then
+			arch-chroot /mnt /bin/bash -c "mkinitcpio -p linux"
+			arch-chroot /mnt /bin/bash -c "btrfs subvol snapshot / /.snapshots/virgina"
+	
+			mkdir -p /mnt/boot/virgina
+			cp -f -v /mnt/boot/vmlinuz-linux			/mnt/boot/virgina/vmlinuz-linux
+			cp -f -v /mnt/boot/initramfs-linux.img		/mnt/boot/virgina/initramfs-linux.img
+
+			mv -f -v $working_dir/lib/configs/btrfs/grub.cfg	/mnt/boot/grub/grub.cfg
+	
+		else
+			arch-chroot /mnt /bin/bash -c "mkinitcpio -p linux"
+			arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
+	fi
+	 
 	#===============================================================================
 }

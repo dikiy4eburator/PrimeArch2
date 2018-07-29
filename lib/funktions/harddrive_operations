@@ -83,15 +83,3 @@ function f_generate_partition_menu() {
 	PARTNAME=$(awk -v x="$PARTNR" 'NR == x''{print $1}' <<< $PARTLIST)
 }
 #===============================================================================
-
-
-
-
-
-	#dialog \
-	#--backtitle "PrimeArch" \
-	#--begin $BoxStartY $BoxStartX \
-	#--title "Shoose the partition" \
-	#--menu "Shoose the partition for "$HDDNAME 15 $BoxWhith 7 \
-		#$(awk ' { print $HDDNAME"\t"$2 } ' < /tmp/partlist) \
-		#2>/tmp/part_name

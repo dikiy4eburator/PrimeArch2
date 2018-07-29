@@ -1,77 +1,81 @@
 #!/bin/bash
 
-function f_SetLanguage()
-	{
-		clear
+# ////////////////////////////////////////////////////////////
+# //		funktions to manipulate							//
+# //		the main installation variables		 			//
+# ////////////////////////////////////////////////////////////
+
+
+function f_SetLanguage() {
+	clear
+	echo "============================================================================"
+	echo -e "Please Select You language by entering the coresponding number\n"
+	echo -e "1. German"
+	echo -e "2. English"
+	echo -e "3. Russian"
 		
-		echo "============================================================================"
-		echo -e "Please Select You language by entering the coresponding number\n"
-		echo "1. German"
-		echo "2. English"
-		echo "3. Russian"
-		
-  		read -rsn1 input_language
+  	read -rsn1 input_language
 
-  		if [ "$input_language" = "1" ]; then
-    			LANGUAGE=german
-  		elif [ "$input_language" = "2" ]; then
-    			LANGUAGE=english
-  		elif [ "$input_language" = "3" ]; then
-    			LANGUAGE=russian
-  		fi
-  	}
-
-
-function f_SetUserName()
-	{
-		clear
-		
-		echo 	"============================================================================"
-		echo 	"Please enter username."
-		echo -e "\n\n"
-		echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
-		echo -n "Name: " ; read USERNAME
-	}
+  	if [ "$input_language" = "1" ];
+  		then
+    		LANGUAGE=german
+  		
+  	elif [ "$input_language" = "2" ];
+  		then
+    		LANGUAGE=english
+  		
+  	elif [ "$input_language" = "3" ];
+  		then
+    		LANGUAGE=russian
+  	fi
+}
 
 
-function f_SetUserPassword()
-	{
-		clear
-		
-		echo 	"============================================================================"
-		echo 	"Please enter the password for $USERNAME."
-		echo -e "\n\n"
-		echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
-		echo -n "Password: " ; read USERPASSWORD
-	}
+function f_SetUserName() {
+	clear
+	echo -e "============================================================================"
+	echo -e "Please enter username."
+	echo -e "\n\n"
+	echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
+	echo -n "Name: " ; read USERNAME
+}
 
 
-function f_SetRootAccount()
-	{
-		clear
-	
-		echo "============================================================================"
-		echo "Activate root Account?"
-		echo ""
-		echo "1. no"
-		echo "2. yes"
+function f_SetUserPassword() {
+	clear
+	echo -e	"============================================================================"
+	echo -e	"Please enter the password for $USERNAME."
+	echo -e "\n\n"
+	echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
+	echo -n "Password: " ; read USERPASSWORD
+}
 
-		read -rsn1 input_root
 
-  		if [ "$input_root" = "1" ]; then
-    			ROOTACCOUNT=no
-  		elif [ "$input_root" = "2" ]; then
+function f_SetRootAccount() {
+	clear
+	echo -e "============================================================================"
+	echo -e "Activate root Account?"
+	echo -e ""
+	echo -e "1. no"
+	echo -e "2. yes"
 
-				clear
-		
-				echo 	"============================================================================"
-				echo -e	"Please enter the root password\n\n"
-				echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
-				echo -n "New password: " ; read ROOTPASSWORD
+	read -rsn1 input_root
+
+  	if [ "$input_root" = "1" ];
+  		then
+    		ROOTACCOUNT=no
+  		
+  	elif [ "$input_root" = "2" ];
+  		then
+			clear
+			echo -e "============================================================================"
+			echo -e	"Please enter the root password\n\n"
+			echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
+			echo -n "New password: " ; read ROOTPASSWORD
 				
-				ROOTACCOUNT=yes
-  		fi
-	}
+			ROOTACCOUNT=yes
+  	fi
+}
 
 function f_SetTimezone()
 	{
@@ -127,10 +131,8 @@ function f_SetTimezone()
 
 
 function f_SetHostname() {
-	
 	clear
-		
-	echo 	"============================================================================"
+	echo -e	"============================================================================"
 	echo -e	"Please enter the Hostname.\n\n"
 	echo 	"Note: Forbidden caracters: *[!@#\$%^\&*()_+].*"
 	echo -n "Enter the new hostname: " ; read HOSTNAME
@@ -138,131 +140,153 @@ function f_SetHostname() {
 }
 
 
-function f_SetDesktop()
-	{
-		clear
+function f_SetDesktop() {
+	clear
+	echo -e "============================================================================"
+	echo -e "Please Select You Desktop"
+	echo -e ""
+	echo -e "1. i3"
+	echo -e "2. Cinnamon"
+	echo -e "3. Gnome"
+	echo -e "4. XFce"
+	echo -e "5. Mate"
+	echo -e "6. No Desktop"
 		
-		echo "============================================================================"
-		echo "Please Select You Desktop"
-		echo ""
-		echo "1. i3"
-		echo "2. Cinnamon"
-		echo "3. Gnome"
-		echo "4. XFce"
-		echo "5. Mate"
-		echo "6. No Desktop"
-		
-		read -rsn1 input_desktop
+	read -rsn1 input_desktop
 
-  		if [ "$input_desktop" = "1" ]; then
+  	if [ "$input_desktop" = "1" ];
+  		then
     		DESKTOP=i3
-  		elif [ "$input_desktop" = "2" ]; then
+  		
+  	elif [ "$input_desktop" = "2" ];
+  		then
     		DESKTOP=cinnamon
-  		elif [ "$input_desktop" = "3" ]; then
+  		
+  	elif [ "$input_desktop" = "3" ];
+  		then
     		DESKTOP=gnome
-    	elif [ "$input_desktop" = "4" ]; then
+    	
+    elif [ "$input_desktop" = "4" ];
+    	then
     		DESKTOP=xfce
-    	elif [ "$input_desktop" = "5" ]; then
+    	
+    elif [ "$input_desktop" = "5" ];
+    	then
     		DESKTOP=mate
-    	elif [ "$input_desktop" = "6" ]; then
+    	
+    elif [ "$input_desktop" = "6" ];
+    	then
     		DESKTOP=nodesktop
-  		fi
-	}
-
-
-function f_SetGrefikdriver()
-	{
-		clear
-		
-		echo "============================================================================"
-		echo "Please Select You Grafik driver"
-		echo ""
-		echo "1. VirtualBox"
-		echo "2. Nvidia"
-		echo "3. Nouveau"
-		echo "4. Ati"
-		echo "5. Intel"
-		echo "6. No Grafik"
-			
-		read -rsn1 input_grafik
-
-  		if [ "$input_grafik" = "1" ]; then
-    		GRAFIKDRIVER=virtualbox
-  		elif [ "$input_grafik" = "2" ]; then
-    		GRAFIKDRIVER=nvidia
-  		elif [ "$input_grafik" = "3" ]; then
-    		GRAFIKDRIVER=nouveau
-    	elif [ "$input_grafik" = "4" ]; then
-    		GRAFIKDRIVER=ati
-    	elif [ "$input_grafik" = "5" ]; then
-    		GRAFIKDRIVER=intel
-    	elif [ "$input_grafik" = "6" ]; then
-    		GRAFIKDRIVER=nografik
-  		fi
-	}
-
-
-function f_set_swap_size()
-	{
-		clear
-
-		echo -e "==========================================================================="
-		echo -e "How mutch SWAP do you want\n"
-		echo -e "1.\t1024 MB"
-		echo -e "2.\t2048 MB"
-		echo -e "3.\t4096 MB"
-		echo -e "4.\t8192 MB"
-		echo -e "5.\t16384 MB"
-		
-  		read -rsn1 input_swap
-
-  		if [ "$input_swap" = "1" ]; then
-    		SWAPSIZE=1024M
-  		elif [ "$input_swap" = "2" ]; then
-    		SWAPSIZE=2048M
-  		elif [ "$input_swap" = "3" ]; then
-    		SWAPSIZE=4096M
-    	elif [ "$input_swap" = "4" ]; then
-    		SWAPSIZE=8192M
-    	elif [ "$input_swap" = "5" ]; then
-    		SWAPSIZE=16384M
-    	fi
+  	fi
 }
 
 
-function f_SetInstallmode()
-	{
-		clear
-		
-		echo -e "============================================================================"
-		echo -e "Please select the Instalation mod\n"
-		echo -e "1. Auto"
-		echo -e "2. Manual"
-		# echo "3. Root on ZFS !!! DISABLED !!!"
-				
-		read -rsn1 input_instal_mod
+function f_SetGrefikdriver() {
+	clear
+	echo -e "============================================================================"
+	echo -e "Please Select You Grafik driver"
+	echo -e ""
+	echo -e "1. VirtualBox"
+	echo -e "2. Nvidia"
+	echo -e "3. Nouveau"
+	echo -e "4. Ati"
+	echo -e "5. Intel"
+	echo -e "6. No Grafik"
+			
+	read -rsn1 input_grafik
 
-  		if [ "$input_instal_mod" = "1" ]; then
+  	if [ "$input_grafik" = "1" ];
+  		then
+    		GRAFIKDRIVER=virtualbox
+  		
+  	elif [ "$input_grafik" = "2" ];
+  		then
+    		GRAFIKDRIVER=nvidia
+  		
+  	elif [ "$input_grafik" = "3" ];
+  		then
+    		GRAFIKDRIVER=nouveau
+    	
+    elif [ "$input_grafik" = "4" ];
+    	then
+    		GRAFIKDRIVER=ati
+    	
+    elif [ "$input_grafik" = "5" ];
+    	then
+    		GRAFIKDRIVER=intel
+    	
+    elif [ "$input_grafik" = "6" ];
+    	then
+    		GRAFIKDRIVER=nografik
+  	fi
+}
+
+
+function f_set_swap_size() {
+	clear
+	echo -e "==========================================================================="
+	echo -e "How mutch SWAP do you want\n"
+	echo -e "1.\t1024 MB"
+	echo -e "2.\t2048 MB"
+	echo -e "3.\t4096 MB"
+	echo -e "4.\t8192 MB"
+	echo -e "5.\t16384 MB"
+		
+  	read -rsn1 input_swap
+
+  	if [ "$input_swap" = "1" ];
+  		then
+    		SWAPSIZE=1024M
+  		
+  	elif [ "$input_swap" = "2" ];
+  		then
+    		SWAPSIZE=2048M
+  		
+  	elif [ "$input_swap" = "3" ];
+  		then
+    		SWAPSIZE=4096M
+    	
+    elif [ "$input_swap" = "4" ];
+    	then
+    		SWAPSIZE=8192M
+    	
+    elif [ "$input_swap" = "5" ];
+    	then
+    		SWAPSIZE=16384M
+    fi
+}
+
+
+function f_SetInstallmode() {
+	clear
+	echo -e "============================================================================"
+	echo -e "Please select the Instalation mod\n"
+	echo -e "1. Auto"
+	echo -e "2. Manual"
+					
+	read -rsn1 input_instal_mod
+
+  	if [ "$input_instal_mod" = "1" ];
+  		then
     		INSTALLMOD=Auto
-  		elif [ "$input_instal_mod" = "2" ]; then
+  	
+  	elif [ "$input_instal_mod" = "2" ];
+  		then
     		INSTALLMOD=manual
-  		# elif [ "$input_instal_mod" = "3" ]; then
-    		# INSTALLMOD=DISABLED	
-    	fi
-	}
+  	fi
+}
 
 
-function f_SetHarddrive()
-	{
-		# read devices
-		HDDLIST=$(lsblk -o NAME,SIZE,MODEL,TYPE | grep disk)
-		clear
-
-		echo "==========================================================================="
-		echo -e "selekt harddrive for the installation\n"
-		awk '{print NR": "$0}' <<< $HDDLIST
+function f_SetHarddrive() {
+	# read devices
+	HDDLIST=$(lsblk -o NAME,SIZE,MODEL,TYPE | grep disk)
+	
+	clear
+	echo "==========================================================================="
+	echo -e "selekt harddrive for the installation\n"
+	awk '{print NR": "$0}' <<< $HDDLIST
 		
-		read -rsn1 HDDNR
+	read -rsn1 HDDNR
 
-		HDDNAME=$(awk -v x="$HDDNR" 'NR == x''{print $1}' <<< $HDDLIST)
-	}
+	HDDNAME=$(awk -v x="$HDDNR" 'NR == x''{print $1}' <<< $HDDLIST)
+}
